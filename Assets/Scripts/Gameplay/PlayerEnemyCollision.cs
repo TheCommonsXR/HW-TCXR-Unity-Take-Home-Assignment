@@ -27,7 +27,7 @@ namespace Platformer.Gameplay
                 var enemyHealth = enemy.GetComponent<Health>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.Decrement();
+                    enemyHealth.Decrement(1); // Added new method parameters, player now deals 1 damage to enemy every stomp
                     if (!enemyHealth.IsAlive)
                     {
                         Schedule<EnemyDeath>().enemy = enemy;
@@ -46,7 +46,7 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                player.health.Decrement(enemy.damage); // Instead of killing the player immediately, take the enemy's new damage value and call Decrement on player's Health script with it
             }
         }
     }

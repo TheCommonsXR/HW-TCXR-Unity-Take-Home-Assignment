@@ -18,7 +18,10 @@ namespace Platformer.Gameplay
             player.controlEnabled = false;
             if (player.audioSource && player.respawnAudio)
                 player.audioSource.PlayOneShot(player.respawnAudio);
-            player.health.Increment();
+
+            // player.health.Increment(); Removed due to being an unreliable method of resetting player's health
+            player.health.Awake(); // Made health's Awake method public to allow for this script to properly and reliable set player's health back to max
+
             player.Teleport(model.spawnPoint.transform.position);
             player.jumpState = PlayerController.JumpState.Grounded;
             player.animator.SetBool("dead", false);

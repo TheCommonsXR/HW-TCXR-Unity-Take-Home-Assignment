@@ -22,21 +22,33 @@ namespace Platformer.Mechanics
 
         int currentHP;
 
+        [SerializeField] RectTransform healthBar; // New health bar object to visualize current health
+
+        /// <summary>
+        /// Updates the health bar of the entity if it exists.
+        /// </summary>
+        void UpdateHealthBar()
+        {
+            if (healthBar) healthBar.offsetMax = new Vector2(Mathf.Lerp(-0.8f, 0, (float)currentHP / maxHP), 0); // Divide current health by max health and use the percentage to resize the health bar filling
+        }
+
         /// <summary>
         /// Increment the HP of the entity.
         /// </summary>
         public void Increment()
         {
             currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
+            UpdateHealthBar(); // Update health bar whenever health is incremented
         }
 
         /// <summary>
         /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
         /// current HP reaches 0.
         /// </summary>
-        public void Decrement()
+        public void Decrement(int amount) // Now decreases entity health using a parameter instead of only by 1
         {
-            currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
+            currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
+            UpdateHealthBar(); // Update health bar whenever health is decremented
             if (currentHP == 0)
             {
                 var ev = Schedule<HealthIsZero>();
@@ -49,12 +61,13 @@ namespace Platformer.Mechanics
         /// </summary>
         public void Die()
         {
-            while (currentHP > 0) Decrement();
+            Decrement(currentHP); // Changed functionality to decrement entity's current health all at once instead of decrementing one HP at a time
         }
 
-        void Awake()
+        public void Awake() // Changed to public to allow PlayerSpawn to reset player's health correctly upon respawning
         {
             currentHP = maxHP;
+            UpdateHealthBar(); // Update health bar on spawn/respawn
         }
     }
 }

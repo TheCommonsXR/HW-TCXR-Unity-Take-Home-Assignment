@@ -17,9 +17,14 @@ namespace Platformer.Gameplay
         public override void Execute()
         {
             var player = model.player;
-            if (player.health.IsAlive)
-            {
-                player.health.Die();
+
+            // IsAlive is being changed to false before this can fire, not allowing the player to die.
+            // Removing this condition causes an infinite loop because Die is being called, which kills the player a second time, calling this event again.
+            // Ended up removing both condition and stopping it from calling Die in order to stop the infinite loop
+
+            // if (player.health.IsAlive)
+            // {
+                // player.health.Die();
                 model.virtualCamera.m_Follow = null;
                 model.virtualCamera.m_LookAt = null;
                 // player.collider.enabled = false;
@@ -30,7 +35,7 @@ namespace Platformer.Gameplay
                 player.animator.SetTrigger("hurt");
                 player.animator.SetBool("dead", true);
                 Simulation.Schedule<PlayerSpawn>(2);
-            }
+            // }
         }
     }
 }
