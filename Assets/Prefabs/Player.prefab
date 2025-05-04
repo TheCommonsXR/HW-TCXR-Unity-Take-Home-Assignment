@@ -278,6 +278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 5
   healthBar: {fileID: 3088247723235892973}
+  entityRenderer: {fileID: 212064061491315838}
 --- !u!61 &1824045667
 BoxCollider2D:
   m_ObjectHideFlags: 0
