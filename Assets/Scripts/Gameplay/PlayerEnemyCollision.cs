@@ -53,7 +53,7 @@ namespace Platformer.Gameplay
                 {
                     return;
                 }
-                player.health.DecreaseHealth(enemy.damage.GetDamageAmount());
+                player.health.DecreaseHealth(enemy.GetDamage());
                 
                 if (!player.health.IsAlive)
                 {

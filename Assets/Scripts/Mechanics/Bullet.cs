@@ -4,15 +4,16 @@ using UnityEngine;
 
 namespace Platformer.Mechanics
 {
-    [RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D), typeof(SpriteRenderer))]
+    [RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D), typeof(Damage))]
     public class Bullet : MonoBehaviour
     {
         [SerializeField]
+        [Range(0, 100)]
         private float speed = 10f; // Speed of the bullet
         [SerializeField]
+        [Range(0, 10)]
         private float lifetime = 3f; // Lifetime of the bullet in seconds
-        [SerializeField]
-        private int damage = 1; // Damage dealt by the bullet
+        Damage damage;
         Rigidbody2D rigidBody;
         CircleCollider2D circleCollider;
 
@@ -20,9 +21,8 @@ namespace Platformer.Mechanics
         {
             rigidBody = GetComponent<Rigidbody2D>();
             circleCollider = GetComponent<CircleCollider2D>();
+            damage = GetComponent<Damage>();
             // Set the bullet's velocity
-            //Vector2 direction = new Vector2(1, 0); // Change this to the desired direction
-            //rigidBody.velocity = direction.normalized * speed;
             StartCoroutine(TimeToDestruction());
         }
 
@@ -39,12 +39,12 @@ namespace Platformer.Mechanics
 
         public void SetDamage(int newDamage)
         {
-            damage = newDamage;
+            damage.SetDamageAmount(newDamage);
         }
 
         public int GetDamage()
         {
-            return damage;
+            return damage.GetDamageAmount();
         }
 
     }

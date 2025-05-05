@@ -35,11 +35,13 @@ namespace Platformer.Mechanics
         public bool controlEnabled = true;
         public bool isImmune = false;
         [SerializeField]
-        float immunityDuration = 1.0f;
+        [Range(0, 100)]
+        float immunityDuration = 1.0f; // How long the player is immune after taking damage
         [SerializeField]
+        [Range(0.1f, 100)]
         float timeBetweenShots = 0.5f; // Time between shots in seconds
         [SerializeField]
-        int bulletDamage = 1;
+        int bulletDamage = 1; // How much damage bullets from this player do
         bool facingRight = true;
         bool jump;
         bool canFire = true; // Flag to check if the player can fire

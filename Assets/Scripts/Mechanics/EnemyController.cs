@@ -14,7 +14,7 @@ namespace Platformer.Mechanics
     {
         public PatrolPath path;
         public AudioClip ouch;
-        public Damage damage;
+        Damage damage;
 
         internal PatrolPath.Mover mover;
         internal AnimationController control;
@@ -60,6 +60,11 @@ namespace Platformer.Mechanics
                 if (mover == null) mover = path.CreateMover(control.maxSpeed * 0.5f);
                 control.move.x = Mathf.Clamp(mover.Position.x - transform.position.x, -1, 1);
             }
+        }
+
+        public int GetDamage()
+        {
+            return damage.GetDamageAmount();
         }
 
     }
