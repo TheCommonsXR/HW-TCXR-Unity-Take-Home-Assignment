@@ -31,7 +31,7 @@ namespace Platformer.Mechanics
         }
 
         // Allows changing health by other classes by a specified amount without going over maxHP or under 0.
-        public void ChangeHealth(int amount)
+        public void DecreaseHealth(int amount)
         {
             currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
             if (currentHP == 0)

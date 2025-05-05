@@ -17,9 +17,15 @@ namespace Platformer.Gameplay
         public override void Execute()
         {
             var player = model.player;
+            // Original code here had a bug where the player was already "dead" and so this code would never run.
             if (player.health.IsAlive)
             {
+                // If the player isn't already dead, but this event was called, make the player die for real
                 player.health.Die();
+            }
+            if (!player.health.IsAlive)
+            {
+                // Only when the player is dead do we want to execute this code block
                 model.virtualCamera.m_Follow = null;
                 model.virtualCamera.m_LookAt = null;
                 // player.collider.enabled = false;

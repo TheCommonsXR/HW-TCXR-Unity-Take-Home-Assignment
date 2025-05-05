@@ -33,7 +33,8 @@ namespace Platformer.Mechanics
         /*internal new*/ public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
-
+        public bool isImmune = false;
+        public float immunityDuration = 1.0f;
         bool jump;
         Vector2 move;
         SpriteRenderer spriteRenderer;
@@ -137,5 +138,20 @@ namespace Platformer.Mechanics
             InFlight,
             Landed
         }
+
+        public void StartImmunityTimeCoroutine()
+        {
+            StartCoroutine(ImmunityTime());
+        }
+
+        IEnumerator ImmunityTime()
+        {
+            Debug.Log("Start Player Immunity");
+            isImmune = true;
+            yield return new WaitForSeconds(immunityDuration);
+            isImmune = false;
+            Debug.Log("End Player Immunity");
+        }
+
     }
 }
