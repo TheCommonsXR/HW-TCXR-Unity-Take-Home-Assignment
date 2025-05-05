@@ -9,11 +9,12 @@ namespace Platformer.Mechanics
     /// <summary>
     /// A simple controller for enemies. Provides movement control over a patrol path.
     /// </summary>
-    [RequireComponent(typeof(AnimationController), typeof(Collider2D))]
+    [RequireComponent(typeof(AnimationController), typeof(Collider2D), typeof(Damage))] // Every enemy will need to do damage... If an enemy needs to do no damage, designer can set damage to 0.
     public class EnemyController : MonoBehaviour
     {
         public PatrolPath path;
         public AudioClip ouch;
+        Damage damage;
 
         internal PatrolPath.Mover mover;
         internal AnimationController control;
@@ -29,6 +30,7 @@ namespace Platformer.Mechanics
             _collider = GetComponent<Collider2D>();
             _audio = GetComponent<AudioSource>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+            damage = GetComponent<Damage>();
         }
 
         void OnCollisionEnter2D(Collision2D collision)
@@ -39,6 +41,15 @@ namespace Platformer.Mechanics
                 var ev = Schedule<PlayerEnemyCollision>();
                 ev.player = player;
                 ev.enemy = this;
+                return;
+            }
+            var bullet = collision.gameObject.GetComponent<Bullet>();
+            if (bullet != null)
+            {
+                var ev = Schedule<BulletEnemyCollision>();
+                ev.enemy = this;
+                ev.bullet = bullet;
+                return;
             }
         }
 
@@ -49,6 +60,11 @@ namespace Platformer.Mechanics
                 if (mover == null) mover = path.CreateMover(control.maxSpeed * 0.5f);
                 control.move.x = Mathf.Clamp(mover.Position.x - transform.position.x, -1, 1);
             }
+        }
+
+        public int GetDamage()
+        {
+            return damage.GetDamageAmount();
         }
 
     }

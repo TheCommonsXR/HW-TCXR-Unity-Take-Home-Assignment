@@ -17,7 +17,7 @@ namespace Platformer.Mechanics
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
-
+        public GameObject bulletPrefab;
         /// <summary>
         /// Max horizontal speed of the player.
         /// </summary>
@@ -33,8 +33,18 @@ namespace Platformer.Mechanics
         /*internal new*/ public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
-
+        public bool isImmune = false;
+        [SerializeField]
+        [Range(0, 100)]
+        float immunityDuration = 1.0f; // How long the player is immune after taking damage
+        [SerializeField]
+        [Range(0.1f, 100)]
+        float timeBetweenShots = 0.5f; // Time between shots in seconds
+        [SerializeField]
+        int bulletDamage = 1; // How much damage bullets from this player do
+        bool facingRight = true;
         bool jump;
+        bool canFire = true; // Flag to check if the player can fire
         Vector2 move;
         SpriteRenderer spriteRenderer;
         internal Animator animator;
@@ -62,6 +72,29 @@ namespace Platformer.Mechanics
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
+                }
+                if (Input.GetButton("Fire1") && canFire) // Was bound to left ctrl, I changed it to left shift. But if that doesn't get committed left ctrl should work too.
+                {
+                    // If player's velocity is positive, fire to the right. If it's negative, fire to the left.
+                    // If the player is not moving, fire to the last direction the player was moving.
+
+                    // This is a bandaid for a bug where the bullets would collide with the player and stop moving if the player was facing left.
+                    // In the real world, I would use physics layers to prevent this from happening.
+                    Vector3 spawnPosition = transform.position;
+                    if (facingRight)
+                    {
+                        spawnPosition.x += 0.5f; // Adjust spawn position to the right
+                    }
+                    else
+                    {
+                        spawnPosition.x -= 0.5f; // Adjust spawn position to the left
+                    }
+                    // Create the bullet at the spawn position and modify its components to shoot in the correct direction with the correct damage value
+                    GameObject bulletObject = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+                    Bullet bulletComponent = bulletObject.GetComponent<Bullet>();
+                    bulletComponent.SetDirection(facingRight ? Vector2.right : Vector2.left);
+                    bulletComponent.SetDamage(bulletDamage);
+                    StartCoroutine(StartFireCooldown());
                 }
             }
             else
@@ -127,6 +160,15 @@ namespace Platformer.Mechanics
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
             targetVelocity = move * maxSpeed;
+            // Use the player's velocity to determine the direction the player is facing. If it's 0, just don't change the direction.
+            if (velocity.x > 0)
+            {
+                facingRight = true;
+            }
+            else if (velocity.x < 0)
+            {
+                facingRight = false;
+            }
         }
 
         public enum JumpState
@@ -137,5 +179,25 @@ namespace Platformer.Mechanics
             InFlight,
             Landed
         }
+
+        public void StartImmunityTimeCoroutine()
+        {
+            StartCoroutine(ImmunityTime());
+        }
+
+        IEnumerator ImmunityTime()
+        {
+            isImmune = true;
+            yield return new WaitForSeconds(immunityDuration);
+            isImmune = false;
+        }
+
+        IEnumerator StartFireCooldown()
+        {
+            canFire = false;
+            yield return new WaitForSeconds(timeBetweenShots);
+            canFire = true;
+        }
+
     }
 }

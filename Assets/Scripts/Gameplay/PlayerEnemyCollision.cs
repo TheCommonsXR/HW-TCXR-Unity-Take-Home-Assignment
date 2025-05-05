@@ -46,7 +46,25 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                // The player will immediately die no matter what their health is given this implementation.
+                //Schedule<PlayerDeath>();
+                // Instead, damage the player based on a component the enemy is required to have. Determine death based on if the player is still alive.
+                if (player.isImmune)
+                {
+                    return;
+                }
+                player.health.DecreaseHealth(enemy.GetDamage());
+                
+                if (!player.health.IsAlive)
+                {
+                    Schedule<PlayerDeath>();
+                }
+                else if (player.audioSource && player.ouchAudio)
+                {
+                    // If the player isn't dying, then still play the audio to give feedback to the player.
+                    player.audioSource.PlayOneShot(player.ouchAudio);
+                }    
+                player.StartImmunityTimeCoroutine();
             }
         }
     }

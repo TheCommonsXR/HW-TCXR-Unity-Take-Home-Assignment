@@ -30,6 +30,17 @@ namespace Platformer.Mechanics
             currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
         }
 
+        // Allows changing health by other classes by a specified amount without going over maxHP or under 0.
+        public void DecreaseHealth(int amount)
+        {
+            currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
+            if (currentHP == 0)
+            {
+                var ev = Schedule<HealthIsZero>();
+                ev.health = this;
+            }
+        }
+
         /// <summary>
         /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
         /// current HP reaches 0.
