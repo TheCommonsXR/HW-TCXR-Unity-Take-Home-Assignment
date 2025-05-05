@@ -59,6 +59,11 @@ namespace Platformer.Gameplay
                 {
                     Schedule<PlayerDeath>();
                 }
+                else if (player.audioSource && player.ouchAudio)
+                {
+                    // If the player isn't dying, then still play the audio to give feedback to the player.
+                    player.audioSource.PlayOneShot(player.ouchAudio);
+                }    
                 player.StartImmunityTimeCoroutine();
             }
         }
