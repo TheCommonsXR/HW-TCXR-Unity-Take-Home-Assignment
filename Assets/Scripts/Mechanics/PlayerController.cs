@@ -17,7 +17,7 @@ namespace Platformer.Mechanics
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
-
+        public GameObject bulletPrefab;
         /// <summary>
         /// Max horizontal speed of the player.
         /// </summary>
@@ -34,8 +34,15 @@ namespace Platformer.Mechanics
         public Health health;
         public bool controlEnabled = true;
         public bool isImmune = false;
-        public float immunityDuration = 1.0f;
+        [SerializeField]
+        float immunityDuration = 1.0f;
+        [SerializeField]
+        float timeBetweenShots = 0.5f; // Time between shots in seconds
+        [SerializeField]
+        int bulletDamage = 1;
+        bool facingRight = true;
         bool jump;
+        bool canFire = true; // Flag to check if the player can fire
         Vector2 move;
         SpriteRenderer spriteRenderer;
         internal Animator animator;
@@ -63,6 +70,16 @@ namespace Platformer.Mechanics
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
+                }
+                if (Input.GetButton("Fire1") && canFire) // Was bound to left ctrl, I changed it to left shift. But if that doesn't get committed left ctrl should work too.
+                {
+                    // If player's velocity is positive, fire to the right. If it's negative, fire to the left.
+                    // If the player is not moving, fire to the last direction the player was moving.
+                    GameObject bulletObject = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+                    Bullet bulletComponent = bulletObject.GetComponent<Bullet>();
+                    bulletComponent.SetDirection(facingRight ? Vector2.right : Vector2.left);
+                    bulletComponent.SetDamage(bulletDamage);
+                    StartCoroutine(StartFireCooldown());
                 }
             }
             else
@@ -128,6 +145,15 @@ namespace Platformer.Mechanics
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
             targetVelocity = move * maxSpeed;
+            // Use the player's velocity to determine the direction the player is facing. If it's 0, just don't change the direction.
+            if (velocity.x > 0)
+            {
+                facingRight = true;
+            }
+            else if (velocity.x < 0)
+            {
+                facingRight = false;
+            }
         }
 
         public enum JumpState
@@ -146,11 +172,16 @@ namespace Platformer.Mechanics
 
         IEnumerator ImmunityTime()
         {
-            Debug.Log("Start Player Immunity");
             isImmune = true;
             yield return new WaitForSeconds(immunityDuration);
             isImmune = false;
-            Debug.Log("End Player Immunity");
+        }
+
+        IEnumerator StartFireCooldown()
+        {
+            canFire = false;
+            yield return new WaitForSeconds(timeBetweenShots);
+            canFire = true;
         }
 
     }

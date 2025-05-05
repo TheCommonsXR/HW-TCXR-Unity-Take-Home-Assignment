@@ -41,6 +41,15 @@ namespace Platformer.Mechanics
                 var ev = Schedule<PlayerEnemyCollision>();
                 ev.player = player;
                 ev.enemy = this;
+                return;
+            }
+            var bullet = collision.gameObject.GetComponent<Bullet>();
+            if (bullet != null)
+            {
+                var ev = Schedule<BulletEnemyCollision>();
+                ev.enemy = this;
+                ev.bullet = bullet;
+                return;
             }
         }
 
