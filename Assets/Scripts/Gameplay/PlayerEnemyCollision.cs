@@ -46,7 +46,14 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                // The player will immediately die no matter what their health is given this implementation.
+                //Schedule<PlayerDeath>();
+                // Instead, damage the player based on a component the enemy is required to have. Determine death based on if the player is still alive.
+                player.health.ChangeHealth(enemy.damage.GetDamageAmount());
+                if (player.health.IsAlive)
+                {
+                    Schedule<PlayerDeath>();
+                }
             }
         }
     }
