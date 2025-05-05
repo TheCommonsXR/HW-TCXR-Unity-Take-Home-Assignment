@@ -16,7 +16,6 @@ namespace Platformer.Gameplay
 
         public override void Execute()
         {
-            Debug.Log("BulletEnemyCollision Executing...");
             var enemyHealth = enemy.GetComponent<Health>();
             if (enemyHealth != null)
             {
