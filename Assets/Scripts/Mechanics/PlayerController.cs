@@ -77,7 +77,20 @@ namespace Platformer.Mechanics
                 {
                     // If player's velocity is positive, fire to the right. If it's negative, fire to the left.
                     // If the player is not moving, fire to the last direction the player was moving.
-                    GameObject bulletObject = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+
+                    // This is a bandaid for a bug where the bullets would collide with the player and stop moving if the player was facing left.
+                    // In the real world, I would use physics layers to prevent this from happening.
+                    Vector3 spawnPosition = transform.position;
+                    if (facingRight)
+                    {
+                        spawnPosition.x += 0.5f; // Adjust spawn position to the right
+                    }
+                    else
+                    {
+                        spawnPosition.x -= 0.5f; // Adjust spawn position to the left
+                    }
+                    // Create the bullet at the spawn position and modify its components to shoot in the correct direction with the correct damage value
+                    GameObject bulletObject = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
                     Bullet bulletComponent = bulletObject.GetComponent<Bullet>();
                     bulletComponent.SetDirection(facingRight ? Vector2.right : Vector2.left);
                     bulletComponent.SetDamage(bulletDamage);
