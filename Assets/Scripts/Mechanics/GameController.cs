@@ -11,6 +11,8 @@ namespace Platformer.Mechanics
     public class GameController : MonoBehaviour
     {
         public static GameController Instance { get; private set; }
+        public PlayerController player;
+        public Gamemode gamemode;
 
         //This model field is public and can be therefore be modified in the 
         //inspector.
@@ -23,6 +25,15 @@ namespace Platformer.Mechanics
         void OnEnable()
         {
             Instance = this;
+            if (gamemode) // If a gamemode is input, use the values and apply them to the player
+            {
+                player.transform.position = gamemode.playerSpawn;
+                player.health.maxHP = gamemode.playerHealth;
+                player.health.Awake();
+                player.bulletDamage = gamemode.gunDamage;
+                player.maxSpeed = gamemode.playerSpeed;
+                player.jumpTakeOffSpeed = gamemode.playerJumpPower;
+            }
         }
 
         void OnDisable()
