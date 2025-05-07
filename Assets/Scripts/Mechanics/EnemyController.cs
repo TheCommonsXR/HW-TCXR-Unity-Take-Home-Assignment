@@ -14,6 +14,7 @@ namespace Platformer.Mechanics
     {
         public PatrolPath path;
         public AudioClip ouch;
+        public int damage; // Added new variable damage to dictate how much damage this enemy does on contact with player
 
         internal PatrolPath.Mover mover;
         internal AnimationController control;

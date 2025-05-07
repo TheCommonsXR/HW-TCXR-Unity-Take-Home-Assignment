@@ -33,6 +33,10 @@ namespace Platformer.Mechanics
         /*internal new*/ public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
+        public GameObject bullet; // Bullet prefab to fire
+        public Transform firePoint; // Transform marking where the bullet should fire from
+        public int bulletDamage; // How much damage the player's bullets should deal
+        public Transform gun; // Player gun reference
 
         bool jump;
         Vector2 move;
@@ -62,6 +66,10 @@ namespace Platformer.Mechanics
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
+                }
+                if (Input.GetKeyDown("f")) // On F, fire a bullet from FirePoint towards where the player sprite faces
+                {
+                    Instantiate(bullet, firePoint.position, Quaternion.identity).GetComponent<Bullet>().Launch(!spriteRenderer.flipX, bulletDamage);
                 }
             }
             else
@@ -118,10 +126,21 @@ namespace Platformer.Mechanics
                 }
             }
 
+            // Took advantage of player facing direction conditions to determine how to position and flip the player's gun
             if (move.x > 0.01f)
+            {
                 spriteRenderer.flipX = false;
+
+                gun.localPosition = new Vector3(0.4f, 0, 0);
+                gun.localScale = new Vector3(1.5f, 1.5f, 1);
+            }
             else if (move.x < -0.01f)
+            {
                 spriteRenderer.flipX = true;
+
+                gun.localPosition = new Vector3(-0.4f, 0, 0);
+                gun.localScale = new Vector3(-1.5f, 1.5f, 1);
+            }
 
             animator.SetBool("grounded", IsGrounded);
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
