@@ -14,6 +14,8 @@ namespace Platformer.Mechanics
     {
         public PatrolPath path;
         public AudioClip ouch;
+        public int damage = 2;
+        public Health health;
 
         internal PatrolPath.Mover mover;
         internal AnimationController control;
@@ -39,6 +41,10 @@ namespace Platformer.Mechanics
                 var ev = Schedule<PlayerEnemyCollision>();
                 ev.player = player;
                 ev.enemy = this;
+            } else if (collision.gameObject.tag == "bullet"){
+                var ev = Schedule<BulletEnemyCollision>();
+                ev.enemy = this;
+                ev.bullet = collision.gameObject;
             }
         }
 
