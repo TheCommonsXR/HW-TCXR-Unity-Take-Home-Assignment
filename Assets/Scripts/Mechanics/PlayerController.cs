@@ -17,6 +17,10 @@ namespace Platformer.Mechanics
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
+        public GameObject bulletPrefab;
+        public Transform firePoint;
+        public GameObject gun;
+        public float bulletSpeed = 5;
 
         /// <summary>
         /// Max horizontal speed of the player.
@@ -26,6 +30,8 @@ namespace Platformer.Mechanics
         /// Initial jump velocity at the start of a jump.
         /// </summary>
         public float jumpTakeOffSpeed = 7;
+
+        private bool flipped = false;
 
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
@@ -62,6 +68,15 @@ namespace Platformer.Mechanics
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
+                }
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    // Debug.Log("Fire1");
+                    var ev = Schedule<PlayerShoot>();
+                    ev.firePoint = firePoint;
+                    ev.bulletPrefab = bulletPrefab;
+                    ev.bulletSpeed = 5;
+                    ev.flipped = flipped;
                 }
             }
             else
@@ -118,11 +133,16 @@ namespace Platformer.Mechanics
                 }
             }
 
-            if (move.x > 0.01f)
+            if (move.x > 0.01f){
                 spriteRenderer.flipX = false;
-            else if (move.x < -0.01f)
+                flipped = false;
+                gun.transform.rotation = Quaternion.Euler(0, 0, 0);
+            } else if (move.x < -0.01f){
                 spriteRenderer.flipX = true;
-
+                flipped = true;
+                gun.transform.rotation = Quaternion.Euler(0, 180, 0);
+            }
+            
             animator.SetBool("grounded", IsGrounded);
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
