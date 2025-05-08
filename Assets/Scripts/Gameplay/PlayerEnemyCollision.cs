@@ -46,7 +46,26 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+
+                /// <summary>
+                /// Takes a set amount of damage from the enemy. When health reaches 0, player death is called.
+                /// </summary>
+
+                Health playerHealth = player.GetComponent<Health>();
+
+
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(enemy.damage);
+                    if (playerHealth.GetCurrentHP() == 0)
+                    {
+                        UnityEngine.Debug.Log("Scheduling Player Death.");
+                        Schedule<PlayerDeath>();
+
+                    }
+
+                }
+                   
             }
         }
     }

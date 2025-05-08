@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
@@ -52,9 +53,36 @@ namespace Platformer.Mechanics
             while (currentHP > 0) Decrement();
         }
 
+        /// <summary>
+        /// Decrement the HP of the entitiy by set damage.
+        /// </summary>
+        public void TakeDamage (int damage)
+        {
+            currentHP = Mathf.Clamp(currentHP - damage, 0, maxHP);
+            
+
+            UnityEngine.Debug.Log("Damage Taken: " + damage);
+            UnityEngine.Debug.Log("Current Health: " + currentHP);
+
+            if (currentHP == 0)
+            {
+                UnityEngine.Debug.Log("Health Is Zero");
+                var ev = Schedule<HealthIsZero>();
+                ev.health = this;
+            }
+        }
         void Awake()
         {
             currentHP = maxHP;
+        }
+
+        /// <summary>
+        /// Gets the current HP.
+        /// </summary>
+
+        public int GetCurrentHP()
+        {
+            return currentHP;
         }
     }
 }
