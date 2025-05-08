@@ -119,9 +119,9 @@ namespace Platformer.Mechanics
             }
 
             if (move.x > 0.01f)
-                spriteRenderer.flipX = false;
+                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             else if (move.x < -0.01f)
-                spriteRenderer.flipX = true;
+                transform.rotation = Quaternion.Euler(0f, 180f, 0f); ;
 
             animator.SetBool("grounded", IsGrounded);
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
