@@ -11,6 +11,8 @@ namespace Platformer.Mechanics
     /// </summary>
     public class Health : MonoBehaviour
     {
+        public float cooldown = 1.0f;
+        private float start = Mathf.NegativeInfinity; // Allows damage to be taken at the beginning.
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
@@ -58,6 +60,15 @@ namespace Platformer.Mechanics
         /// </summary>
         public void TakeDamage (int damage)
         {
+
+            if (!DamageCooldown())
+            {
+                UnityEngine.Debug.Log("Can't take damage — still in cooldown.");
+                return;
+            }
+
+            start = Time.time;
+
             currentHP = Mathf.Clamp(currentHP - damage, 0, maxHP);
             
 
@@ -83,6 +94,18 @@ namespace Platformer.Mechanics
         public int GetCurrentHP()
         {
             return currentHP;
+        }
+
+
+        /// <summary>
+        /// Cooldown for damage taken.
+        /// </summary>
+        public bool DamageCooldown()
+        {
+            float timeSinceLastDamage = Time.time - start;
+            // UnityEngine.Debug.Log("Time since last damage: " + timeSinceLastDamage);
+            return Time.time - start >= cooldown;
+
         }
     }
 }
