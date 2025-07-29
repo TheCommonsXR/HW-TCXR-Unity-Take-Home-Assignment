@@ -18,7 +18,7 @@ namespace Platformer.Mechanics
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
         /// </summary>
-        public bool IsAlive => currentHP > 0;
+        public bool IsAlive => currentHP > -1;
 
         int currentHP;
 
@@ -27,7 +27,7 @@ namespace Platformer.Mechanics
         /// </summary>
         public void Increment()
         {
-            currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
+            currentHP = Mathf.Clamp(currentHP + maxHP, 0, maxHP);
         }
 
         /// <summary>
@@ -50,6 +50,15 @@ namespace Platformer.Mechanics
         public void Die()
         {
             while (currentHP > 0) Decrement();
+        }
+
+        public void TakeDamage(int damage)
+        {
+            currentHP = Mathf.Clamp(currentHP - damage, 0, maxHP);
+            if (currentHP <= 0)
+            {
+                Schedule<PlayerDeath>();
+            }
         }
 
         void Awake()
