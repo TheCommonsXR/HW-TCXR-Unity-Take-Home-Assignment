@@ -70,6 +70,7 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
+            model.canvas.panels[4].GetComponent<HUDController>().UpdateHealthTMP(health.currentHP);
         }
 
         void UpdateJumpState()

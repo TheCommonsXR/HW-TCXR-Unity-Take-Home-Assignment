@@ -1,4 +1,5 @@
 using Platformer.Mechanics;
+using Platformer.UI;
 using UnityEngine;
 
 namespace Platformer.Model
@@ -37,6 +38,11 @@ namespace Platformer.Model
         /// the user releases the jump input.
         /// </summary>
         public float jumpDeceleration = 0.5f;
+
+        /// <summary>
+        /// UI Canvas object 
+        /// </summary>
+        public MainUIController canvas;
 
     }
 }
