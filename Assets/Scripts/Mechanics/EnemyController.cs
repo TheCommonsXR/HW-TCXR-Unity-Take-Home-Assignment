@@ -43,6 +43,14 @@ namespace Platformer.Mechanics
             }
         }
 
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if(collision.gameObject.CompareTag("Bullet"))
+            {
+                Destroy(gameObject);
+            }
+        }
+
         void Update()
         {
             if (path != null)

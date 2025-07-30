@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: GameMode
   m_EditorClassIdentifier: 
   modeName: Test
-  playerStartHealth: 300
+  playerStartHealth: 100
   playerStartPosition: {fileID: 6608584400083964194, guid: 85785d5a2aefd50409c3e77fb815a8c5,
     type: 3}

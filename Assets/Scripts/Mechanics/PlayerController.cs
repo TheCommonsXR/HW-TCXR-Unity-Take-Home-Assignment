@@ -42,6 +42,10 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => collider2d.bounds;
 
+        public GameObject bulletPrefab;
+        public Transform bulletSpawnPoint;
+
+
         void Awake()
         {
             health = GetComponent<Health>();
@@ -66,6 +70,12 @@ namespace Platformer.Mechanics
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
                 }
+
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    FireBullet();
+                }
+
             }
             else
             {
@@ -75,6 +85,18 @@ namespace Platformer.Mechanics
             base.Update();
             model.canvas.panels[4].GetComponent<HUDController>().UpdateHealthTMP(health.currentHP); //Updates player health TMP on HUD
         }
+
+        void FireBullet()
+        {
+            if (bulletPrefab == null) return;
+
+            Vector2 direction = spriteRenderer.flipX ? Vector2.left : Vector2.right;
+
+            GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+            Bullet bulletScript = bullet.GetComponent<Bullet>();
+            bulletScript.Initialize(direction);
+        }
+
 
         void UpdateJumpState()
         {
