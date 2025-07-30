@@ -11,6 +11,7 @@ namespace Platformer.Mechanics
     public class GameController : MonoBehaviour
     {
         public static GameController Instance { get; private set; }
+        public GameMode gameMode;
 
         //This model field is public and can be therefore be modified in the 
         //inspector.
@@ -28,6 +29,12 @@ namespace Platformer.Mechanics
         void OnDisable()
         {
             if (Instance == this) Instance = null;
+        }
+
+        private void Awake()
+        {
+            model.playerStartHealth = gameMode.playerStartHealth;
+            model.spawnPoint = gameMode.playerStartPosition;
         }
 
         void Update()

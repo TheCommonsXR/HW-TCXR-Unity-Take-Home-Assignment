@@ -26,7 +26,7 @@ namespace Platformer.Model
         /// <summary>
         /// The spawn point in the scene.
         /// </summary>
-        public Transform spawnPoint;
+        internal Transform spawnPoint;
 
         /// <summary>
         /// A global jump modifier applied to all initial jump velocities.
@@ -43,6 +43,11 @@ namespace Platformer.Model
         /// UI Canvas object 
         /// </summary>
         public MainUIController canvas;
+
+        /// <summary>
+        /// Player starting health
+        /// </summary>
+        internal int playerStartHealth;
 
     }
 }

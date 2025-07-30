@@ -49,6 +49,9 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+
+            health.maxHP = model.playerStartHealth;
+            health.currentHP = health.maxHP;
         }
 
         protected override void Update()
@@ -70,7 +73,7 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
-            model.canvas.panels[4].GetComponent<HUDController>().UpdateHealthTMP(health.currentHP);
+            model.canvas.panels[4].GetComponent<HUDController>().UpdateHealthTMP(health.currentHP); //Updates player health TMP on HUD
         }
 
         void UpdateJumpState()
