@@ -6,9 +6,11 @@ using static Platformer.Core.Simulation;
 
 namespace Platformer.Gameplay
 {
+
     /// <summary>
     /// Fired when a Player collides with an Enemy.
     /// </summary>
+    /// <typeparam name="EnemyCollision"></typeparam>
     public class PlayerEnemyCollision : Simulation.Event<PlayerEnemyCollision>
     {
         public EnemyController enemy;
@@ -44,17 +46,7 @@ namespace Platformer.Gameplay
             }
             else
             {
-                // Damage player instead of instant death
-                var health = player.GetComponent<Health>();
-                if (health != null)
-                {
-                    health.TakenDamage(enemy.Damage);
-
-                    if (!health.IsAlive)
-                    {
-                        Schedule<PlayerDeath>();
-                    }
-                }
+                Schedule<PlayerDeath>();
             }
         }
     }
