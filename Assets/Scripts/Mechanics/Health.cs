@@ -13,7 +13,7 @@ namespace Platformer.Mechanics
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
-        public int maxHP = 3;
+        public int maxHP = 1;
 
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
@@ -21,10 +21,6 @@ namespace Platformer.Mechanics
         public bool IsAlive => currentHP > 0;
 
         int currentHP;
-
-        // Q2: immunity variables
-        [SerializeField] private float immunityDuration = 1f;
-        private float lastDamageTime = -10f;
 
         /// <summary>
         /// Increment the HP of the entity.
@@ -45,7 +41,6 @@ namespace Platformer.Mechanics
             {
                 var ev = Schedule<HealthIsZero>();
                 ev.health = this;
-                Debug.Log($"{gameObject.name} reaches 0 HP!");
             }
         }
 
@@ -54,11 +49,6 @@ namespace Platformer.Mechanics
         /// </summary>
         public void TakenDamage(int amount)
         {
-            if (Time.time - lastDamageTime < immunityDuration)
-                return;
-
-            lastDamageTime = Time.time;
-
             for (int i = 0; i < amount; i++)
             {
                 Decrement();
@@ -72,8 +62,7 @@ namespace Platformer.Mechanics
         /// </summary>
         public void Die()
         {
-            while (currentHP > 0)
-                Decrement();
+            while (currentHP > 0) Decrement();
         }
 
         void Awake()
