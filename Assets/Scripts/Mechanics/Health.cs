@@ -45,6 +45,19 @@ namespace Platformer.Mechanics
         }
 
         /// <summary>
+        /// Apply damage to this entity.
+        /// </summary>
+        public void TakenDamage(int amount)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                Decrement();
+            }
+
+            Debug.Log($"{gameObject.name} took {amount} damage. Current HP: {currentHP}/{maxHP}");
+        }
+
+        /// <summary>
         /// Decrement the HP of the entitiy until HP reaches 0.
         /// </summary>
         public void Die()

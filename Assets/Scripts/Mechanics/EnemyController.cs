@@ -15,6 +15,9 @@ namespace Platformer.Mechanics
         public PatrolPath path;
         public AudioClip ouch;
 
+        [SerializeField] private int damage = 1;
+        public int Damage => damage;
+
         internal PatrolPath.Mover mover;
         internal AnimationController control;
         internal Collider2D _collider;
@@ -36,6 +39,18 @@ namespace Platformer.Mechanics
             var player = collision.gameObject.GetComponent<PlayerController>();
             if (player != null)
             {
+                var health = player.GetComponent<Health>();
+                if (health != null && health.IsAlive)
+                {
+                    // Apply damage using Health component
+                    health.TakenDamage(Damage);
+
+                    // Optional hit sound
+                    if (_audio != null && ouch != null)
+                        _audio.PlayOneShot(ouch);
+                }
+
+                // Trigger stomp/bounce logic via event
                 var ev = Schedule<PlayerEnemyCollision>();
                 ev.player = player;
                 ev.enemy = this;
@@ -50,6 +65,6 @@ namespace Platformer.Mechanics
                 control.move.x = Mathf.Clamp(mover.Position.x - transform.position.x, -1, 1);
             }
         }
-
     }
 }
+
