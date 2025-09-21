@@ -13,10 +13,13 @@ namespace Platformer.Gameplay
     {
         private PlatformerModel model = Simulation.GetModel<PlatformerModel>();
         public int damageAmount = 0;
-        public override void Execute() {
+        public override void Execute() 
+        {
             if (!model.player.health.IsAlive) return;
+            if (!model.player.health.IsVulnerable()) return;
             model.player.DoHurtEffect();
             model.player.health.TakeDamage(damageAmount);
+            model.player.health.ResetDamageCooldownTimer();
         }
     }
     

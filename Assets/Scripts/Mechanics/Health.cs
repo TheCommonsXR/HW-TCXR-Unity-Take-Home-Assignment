@@ -10,6 +10,10 @@ namespace Platformer.Mechanics
     /// </summary>
     public class Health : MonoBehaviour
     {
+        // Handle damage debounce
+        public float takeDamageCooldown = 1f;
+        private float takeDamageCooldownTimer = 0f;
+        
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
@@ -62,7 +66,7 @@ namespace Platformer.Mechanics
         }
 
         /// <summary>
-        /// Decrement the HP of the entitiy until HP reaches 0.
+        /// Decrement the HP of the entity until HP reaches 0.
         /// </summary>
         public void Die()
         {
@@ -72,6 +76,29 @@ namespace Platformer.Mechanics
         void Awake()
         {
             currentHP = maxHP;
+        }
+
+        private void Update()
+        {
+            // Internal timer for damage debounce
+            takeDamageCooldownTimer = Mathf.Clamp(takeDamageCooldownTimer - Time.deltaTime, 0f, takeDamageCooldown);
+        }
+
+        /// <summary>
+        /// Returns true if entity is currently vulnerable to damage and false otherwise.
+        /// </summary>
+        /// <returns>A bool determining if entity is vulnerable to damage.</returns>
+        public bool IsVulnerable()
+        {
+            return takeDamageCooldownTimer <= 0f;
+        }
+
+        /// <summary>
+        /// Resets the internal damage cooldown timer, effectively making the entity invulnerable for takeDamageCooldown seconds.
+        /// </summary>
+        public void ResetDamageCooldownTimer()
+        {
+            takeDamageCooldownTimer = takeDamageCooldown;
         }
     }
 }

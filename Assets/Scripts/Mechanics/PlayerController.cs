@@ -148,7 +148,8 @@ namespace Platformer.Mechanics
             Landed
         }
 
-        public void DoHurtEffect(float duration = 0.5f) {
+        public void DoHurtEffect(float duration = 0.5f)
+        {
             audioSource.PlayOneShot(ouchAudio);
             if (hurtEffectCoroutine != null) {
                 StopCoroutine(hurtEffectCoroutine);
@@ -157,10 +158,13 @@ namespace Platformer.Mechanics
             StartCoroutine(HurtEffectCoroutine(duration));
         }
 
-        private IEnumerator HurtEffectCoroutine(float duration) {
+        private IEnumerator HurtEffectCoroutine(float duration)
+        {
             spriteRenderer.color = Color.red;
             yield return new WaitForSeconds(duration);
             spriteRenderer.color = originalSpriteColor;
         }
+
+        
     }
 }
