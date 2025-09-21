@@ -100,5 +100,13 @@ namespace Platformer.Mechanics
         {
             takeDamageCooldownTimer = takeDamageCooldown;
         }
+
+        /// <summary>
+        /// Get's the entity's current health.
+        /// </summary>
+        /// <returns>The entity's current health.</returns>
+        public int GetCurrentHP() {
+            return currentHP;
+        }
     }
 }

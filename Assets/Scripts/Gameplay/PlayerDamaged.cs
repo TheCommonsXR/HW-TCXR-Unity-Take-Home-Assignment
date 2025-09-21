@@ -20,6 +20,7 @@ namespace Platformer.Gameplay
             model.player.DoHurtEffect();
             model.player.health.TakeDamage(damageAmount);
             model.player.health.ResetDamageCooldownTimer();
+            PlayerUIDelegates.InvokeOnHealthChanged(model.player.health.GetCurrentHP(), model.player.health.maxHP);
         }
     }
     
