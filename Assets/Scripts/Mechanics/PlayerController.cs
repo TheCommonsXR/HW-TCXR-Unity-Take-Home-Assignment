@@ -39,6 +39,11 @@ namespace Platformer.Mechanics
         SpriteRenderer spriteRenderer;
         internal Animator animator;
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
+        
+        // Fields for damage effect
+        private SpriteRenderer sprite;
+        private Coroutine hurtEffectCoroutine;
+        private Color originalSpriteColor;
 
         public Bounds Bounds => collider2d.bounds;
 
@@ -49,6 +54,11 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+            sprite = GetComponent<SpriteRenderer>();
+        }
+
+        override protected void Start() {
+            originalSpriteColor = sprite.color;
         }
 
         protected override void Update()
@@ -136,6 +146,21 @@ namespace Platformer.Mechanics
             Jumping,
             InFlight,
             Landed
+        }
+
+        public void DoHurtEffect(float duration = 0.5f) {
+            audioSource.PlayOneShot(ouchAudio);
+            if (hurtEffectCoroutine != null) {
+                StopCoroutine(hurtEffectCoroutine);
+                hurtEffectCoroutine = null;
+            }
+            StartCoroutine(HurtEffectCoroutine(duration));
+        }
+
+        private IEnumerator HurtEffectCoroutine(float duration) {
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(duration);
+            spriteRenderer.color = originalSpriteColor;
         }
     }
 }

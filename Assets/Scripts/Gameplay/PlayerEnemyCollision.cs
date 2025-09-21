@@ -21,9 +21,13 @@ namespace Platformer.Gameplay
         public override void Execute()
         {
             var willHurtEnemy = player.Bounds.center.y >= enemy.Bounds.max.y;
-
-            if (willHurtEnemy)
+            // Deal damage to player if player misses the conditions to deal damage on the enemy
+            if (!willHurtEnemy)
             {
+                Schedule<PlayerDamaged>().damageAmount = enemy.attackDamage;
+                return;
+            }
+            // Handle enemy damaging logic
                 var enemyHealth = enemy.GetComponent<Health>();
                 if (enemyHealth != null)
                 {
@@ -43,11 +47,6 @@ namespace Platformer.Gameplay
                     Schedule<EnemyDeath>().enemy = enemy;
                     player.Bounce(2);
                 }
-            }
-            else
-            {
-                Schedule<PlayerDeath>();
-            }
         }
     }
 }
