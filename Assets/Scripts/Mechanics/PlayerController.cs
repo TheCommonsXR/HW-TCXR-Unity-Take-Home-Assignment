@@ -42,6 +42,9 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => collider2d.bounds;
 
+        public BulletSpawner bulletSpawner;
+        public int bulletDamage = 20;
+
         void Awake()
         {
             health = GetComponent<Health>();
@@ -49,6 +52,7 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+            bulletSpawner = GetComponent<BulletSpawner>();
         }
 
         protected override void Update()
@@ -62,6 +66,12 @@ namespace Platformer.Mechanics
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
+                }
+                // Bullet Spawning
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    float invertDirection = spriteRenderer.flipX ? -1.0f : 1.0f;
+                    bulletSpawner.SpawnBullet(transform.position, Vector3.right * invertDirection, bulletDamage);
                 }
             }
             else

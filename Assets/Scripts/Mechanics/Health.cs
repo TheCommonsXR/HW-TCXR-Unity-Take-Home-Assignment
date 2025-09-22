@@ -57,8 +57,12 @@ namespace Platformer.Mechanics
             currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
             if (currentHP == 0)
             {
-                var ev = Schedule<HealthIsZero>();
-                ev.health = this;
+                // Ensure the Following is only Run on Player
+                if (gameObject.GetComponent<PlayerController>() != null)
+                {
+                    var ev = Schedule<HealthIsZero>();
+                    ev.health = this;
+                }
             }
         }
 
@@ -76,8 +80,17 @@ namespace Platformer.Mechanics
 
             if (currentHP == 0)
             {
-                var ev = Schedule<HealthIsZero>();
-                ev.health = this;
+                // Ensure the Following is only Run on Player
+                if (gameObject.GetComponent<PlayerController>() != null)
+                {
+                    var ev = Schedule<HealthIsZero>();
+                    ev.health = this;
+                }
+                else if (gameObject.GetComponent<EnemyController>() != null)
+                {
+                    var ev = Schedule<EnemyDeath>();
+                    ev.enemy = gameObject.GetComponent<EnemyController>();
+                }
             }
             if (displayDamageUI != null)
             {

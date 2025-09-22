@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8509783501685719824}
   - component: {fileID: 6082575806313374961}
   - component: {fileID: 1824045667}
+  - component: {fileID: 2079130669584349402}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -279,6 +280,7 @@ MonoBehaviour:
   maxHP: 1
   healthLabel: {fileID: 3966080212402135585}
   displayDamageUI: {fileID: 1683905874079060759}
+  immunityTime: 1
 --- !u!61 &1824045667
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -325,6 +327,21 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.32, y: 0.54}
   m_EdgeRadius: 0
+--- !u!114 &2079130669584349402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208144871472054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a24fd705b5ce8974fbd684acc845ef2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 4853844989634913082, guid: a77fe725bba0a0d4f84bf2c66d0ce1b2,
+    type: 3}
+  speed: 20
 --- !u!1 &524915795739417999
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,7 +27,8 @@ namespace Platformer.Gameplay
                 var enemyHealth = enemy.GetComponent<Health>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.Decrement();
+                    // Jumping on Enemy should Kill them Instantly (Assumed from Original Mechanic)
+                    enemyHealth.Die();
                     if (!enemyHealth.IsAlive)
                     {
                         Schedule<EnemyDeath>().enemy = enemy;
