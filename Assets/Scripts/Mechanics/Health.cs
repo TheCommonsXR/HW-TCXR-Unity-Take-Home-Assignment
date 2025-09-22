@@ -1,6 +1,7 @@
 using System;
 using Platformer.Gameplay;
 using UnityEngine;
+using UnityEngine.UI;
 using static Platformer.Core.Simulation;
 
 namespace Platformer.Mechanics
@@ -13,12 +14,23 @@ namespace Platformer.Mechanics
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
-        public int maxHP = 1;
+        public int maxHP = 100;
 
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
         /// </summary>
         public bool IsAlive => currentHP > 0;
+
+        /// <summary>
+        /// UI Label for Health
+        /// </summary>
+        public Text healthLabel;
+
+        /// <summary>
+        /// UI for Damage Dealt
+        /// </summary>
+        public DisplayDamageUI displayDamageUI;
+
 
         int currentHP;
 
@@ -45,6 +57,35 @@ namespace Platformer.Mechanics
         }
 
         /// <summary>
+        /// Take X Amount of Damage. Will trigger a HealthIsZero event when
+        /// current HP reaches 0.
+        /// </summary>
+        public void TakeDamage(int damage)
+        {
+            currentHP = (currentHP - damage > 0) ? currentHP - damage : 0; // Clip to 0
+
+            if (currentHP == 0)
+            {
+                var ev = Schedule<HealthIsZero>();
+                ev.health = this;
+            }
+            if (displayDamageUI != null)
+            {
+                displayDamageUI.DisplayDamage(damage);
+            }
+            UpdateUI();
+        }
+
+        /// <summary>
+        /// Reset the Health to the Maximum Amont
+        /// </summary>
+        public void ResetHP()
+        {
+            currentHP = maxHP;
+            UpdateUI();
+        }
+
+        /// <summary>
         /// Decrement the HP of the entitiy until HP reaches 0.
         /// </summary>
         public void Die()
@@ -52,9 +93,17 @@ namespace Platformer.Mechanics
             while (currentHP > 0) Decrement();
         }
 
+        void UpdateUI()
+        {
+            if (healthLabel != null)
+            {
+                healthLabel.text = currentHP.ToString();
+            }
+        }
+
         void Awake()
         {
-            currentHP = maxHP;
+            ResetHP();
         }
     }
 }

@@ -16,21 +16,20 @@ namespace Platformer.Gameplay
 
         public override void Execute()
         {
+            // Simply Kill the Player and Respawn, we don't need to check if the Player is Alive or not
+            //
             var player = model.player;
-            if (player.health.IsAlive)
-            {
-                player.health.Die();
-                model.virtualCamera.m_Follow = null;
-                model.virtualCamera.m_LookAt = null;
-                // player.collider.enabled = false;
-                player.controlEnabled = false;
+            player.health.Die();
+            model.virtualCamera.m_Follow = null;
+            model.virtualCamera.m_LookAt = null;
+            // player.collider.enabled = false;
+            player.controlEnabled = false;
 
-                if (player.audioSource && player.ouchAudio)
-                    player.audioSource.PlayOneShot(player.ouchAudio);
-                player.animator.SetTrigger("hurt");
-                player.animator.SetBool("dead", true);
-                Simulation.Schedule<PlayerSpawn>(2);
-            }
+            if (player.audioSource && player.ouchAudio)
+                player.audioSource.PlayOneShot(player.ouchAudio);
+            player.animator.SetTrigger("hurt");
+            player.animator.SetBool("dead", true);
+            Simulation.Schedule<PlayerSpawn>(2);
         }
     }
 }

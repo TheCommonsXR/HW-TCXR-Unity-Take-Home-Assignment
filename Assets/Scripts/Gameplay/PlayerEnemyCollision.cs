@@ -46,7 +46,8 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                // Player should take Damage as Specified by Enemy
+                player.GetComponent<Health>().TakeDamage(enemy.damage);
             }
         }
     }
