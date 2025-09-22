@@ -31,7 +31,13 @@ namespace Platformer.Mechanics
         /// </summary>
         public DisplayDamageUI displayDamageUI;
 
-
+        /// <summary>
+        /// Immunity after Collision with Other Entity
+        /// </summary>
+        public float immunityTime = 1.0f; // Seconds
+        float immunityTimer = 0.0f;
+        bool activateImmunity = false;
+        
         int currentHP;
 
         /// <summary>
@@ -62,6 +68,10 @@ namespace Platformer.Mechanics
         /// </summary>
         public void TakeDamage(int damage)
         {
+            // Don't Apply Damage if currently immune
+            if (activateImmunity)
+                return;
+
             currentHP = (currentHP - damage > 0) ? currentHP - damage : 0; // Clip to 0
 
             if (currentHP == 0)
@@ -74,6 +84,8 @@ namespace Platformer.Mechanics
                 displayDamageUI.DisplayDamage(damage);
             }
             UpdateUI();
+
+            activateImmunity = true;
         }
 
         /// <summary>
@@ -104,6 +116,20 @@ namespace Platformer.Mechanics
         void Awake()
         {
             ResetHP();
+        }
+
+        private void Update()
+        {
+            // Apply Immunity until timer runs out
+            if (activateImmunity)
+            {
+                immunityTimer += Time.deltaTime;
+                if (immunityTimer > immunityTime)
+                {
+                    activateImmunity = false;
+                    immunityTimer = 0.0f;
+                }
+            }
         }
     }
 }
