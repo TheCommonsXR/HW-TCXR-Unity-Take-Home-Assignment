@@ -44,6 +44,10 @@ namespace Platformer.Mechanics
         private SpriteRenderer sprite;
         private Coroutine hurtEffectCoroutine;
         private Color originalSpriteColor;
+        
+        // Fields for firing gun
+        [SerializeField] private int gunDamage = 1;
+        [SerializeField] private GameObject projectilePrefab;
 
         public Bounds Bounds => collider2d.bounds;
 
@@ -63,23 +67,31 @@ namespace Platformer.Mechanics
 
         protected override void Update()
         {
-            if (controlEnabled)
-            {
-                move.x = Input.GetAxis("Horizontal");
-                if (jumpState == JumpState.Grounded && Input.GetButtonDown("Jump"))
-                    jumpState = JumpState.PrepareToJump;
-                else if (Input.GetButtonUp("Jump"))
-                {
-                    stopJump = true;
-                    Schedule<PlayerStopJump>().player = this;
-                }
-            }
-            else
-            {
-                move.x = 0;
-            }
             UpdateJumpState();
             base.Update();
+
+            if (!controlEnabled) {
+                move.x = 0;
+                return;
+            }
+            
+            // Using old Unity input system for firing gun
+            if (Input.GetKeyDown(KeyCode.F)) {
+                GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+                PlayerProjectile projectileScript = projectile.GetComponent<PlayerProjectile>();
+                projectileScript.Initialize(sprite.flipX ? Vector3.left : Vector3.right, gunDamage);
+            }
+            
+            move.x = Input.GetAxis("Horizontal");
+            if (jumpState == JumpState.Grounded && Input.GetButtonDown("Jump"))
+                jumpState = JumpState.PrepareToJump;
+            else if (Input.GetButtonUp("Jump"))
+            {
+                stopJump = true;
+                Schedule<PlayerStopJump>().player = this;
+            }
+            
+            
         }
 
         void UpdateJumpState()

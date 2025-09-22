@@ -6,8 +6,8 @@ using static Platformer.Core.Simulation;
 namespace Platformer.Gameplay
 {
     /// <summary>
-    /// Fired when the player health reaches 0. This usually would result in a 
-    /// PlayerDeath event.
+    /// Fired when an entity's health reaches 0. This usually would result in a 
+    /// PlayerDeath or EnemyDeath event.
     /// </summary>
     /// <typeparam name="HealthIsZero"></typeparam>
     public class HealthIsZero : Simulation.Event<HealthIsZero>
@@ -16,7 +16,11 @@ namespace Platformer.Gameplay
 
         public override void Execute()
         {
-            Schedule<PlayerDeath>();
+            if (health.isPlayer) {
+                Schedule<PlayerDeath>();
+            } else {
+                Schedule<EnemyDeath>().enemy = health.GetComponent<EnemyController>();
+            }
         }
     }
 }

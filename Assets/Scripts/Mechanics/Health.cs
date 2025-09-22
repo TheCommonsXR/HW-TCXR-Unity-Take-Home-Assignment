@@ -8,8 +8,9 @@ namespace Platformer.Mechanics
     /// <summary>
     /// Represebts the current vital statistics of some game entity.
     /// </summary>
-    public class Health : MonoBehaviour
-    {
+    public class Health : MonoBehaviour {
+        public bool isPlayer = false;
+        
         // Handle damage debounce
         public float takeDamageCooldown = 1f;
         private float takeDamageCooldownTimer = 0f;
@@ -60,8 +61,7 @@ namespace Platformer.Mechanics
             if (!IsAlive) return;
             currentHP = Math.Clamp(currentHP - damage, 0, maxHP);
             if (currentHP == 0) {
-                var ev = Schedule<HealthIsZero>();
-                ev.health = this;
+                var ev = Schedule<HealthIsZero>().health = this;
             }
         }
 

@@ -61,8 +61,11 @@ MonoBehaviour:
   jumpState: 0
   collider2d: {fileID: 0}
   audioSource: {fileID: 0}
-  health: {fileID: 0}
+  health: {fileID: 6082575806313374961}
   controlEnabled: 1
+  gunDamage: 1
+  projectilePrefab: {fileID: 3943053819311347309, guid: 05b8e4048f0b0493c96ede3aaeec7f69,
+    type: 3}
 --- !u!212 &212064061491315838
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -275,7 +278,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffad43bb006db4856a9c527b89b48db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 1
+  isPlayer: 1
+  takeDamageCooldown: 1
+  maxHP: 10
 --- !u!61 &1824045667
 BoxCollider2D:
   m_ObjectHideFlags: 0
