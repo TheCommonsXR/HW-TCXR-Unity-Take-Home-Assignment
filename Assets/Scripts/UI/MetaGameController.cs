@@ -18,7 +18,7 @@ namespace Platformer.UI
         /// <summary>
         /// A list of canvas objects which are used during gameplay (when the main ui is turned off)
         /// </summary>
-        public Canvas[] gamePlayCanvasii;
+        public Canvas[] gamePlayCanvas;
 
         /// <summary>
         /// The game controller.
@@ -50,13 +50,13 @@ namespace Platformer.UI
             {
                 Time.timeScale = 0;
                 mainMenu.gameObject.SetActive(true);
-                foreach (var i in gamePlayCanvasii) i.gameObject.SetActive(false);
+                foreach (var i in gamePlayCanvas) i.gameObject.SetActive(false);
             }
             else
             {
                 Time.timeScale = 1;
                 mainMenu.gameObject.SetActive(false);
-                foreach (var i in gamePlayCanvasii) i.gameObject.SetActive(true);
+                foreach (var i in gamePlayCanvas) i.gameObject.SetActive(true);
             }
             this.showMainCanvas = show;
         }

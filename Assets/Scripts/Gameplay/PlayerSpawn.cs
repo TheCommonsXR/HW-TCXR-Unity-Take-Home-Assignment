@@ -10,6 +10,8 @@ namespace Platformer.Gameplay
     public class PlayerSpawn : Simulation.Event<PlayerSpawn>
     {
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
+        
+        
 
         public override void Execute()
         {
@@ -25,7 +27,7 @@ namespace Platformer.Gameplay
             model.virtualCamera.m_Follow = player.transform;
             model.virtualCamera.m_LookAt = player.transform;
             Simulation.Schedule<EnablePlayerInput>(2f);
-            PlayerUIDelegates.InvokeOnHealthChanged(model.player.health.GetCurrentHP(), model.player.health.maxHP);
+            GameDelegates.InvokeOnPlayerHealthChanged(model.player.health.GetCurrentHP(), model.player.health.maxHP);
         }
     }
 }

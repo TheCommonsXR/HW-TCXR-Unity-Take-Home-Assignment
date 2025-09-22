@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Platformer.Mechanics
 {
     /// <summary>
-    /// This class exposes the the game model in the inspector, and ticks the
+    /// This class exposes the game model in the inspector, and ticks the
     /// simulation.
     /// </summary> 
     public class GameController : MonoBehaviour
@@ -19,10 +19,20 @@ namespace Platformer.Mechanics
         //shared reference when the scene loads, allowing the model to be
         //conveniently configured inside the inspector.
         public PlatformerModel model = Simulation.GetModel<PlatformerModel>();
+        [SerializeField] private GameMode gameModePreset;
+        public GameMode GameModePreset {
+            get => gameModePreset;
+            set  {
+                if (gameModePreset == value) return;
+                gameModePreset = value;
+                GameDelegates.InvokeOnGameModeChanged(gameModePreset);
+            }
+        }
 
         void OnEnable()
         {
             Instance = this;
+            GameDelegates.InvokeOnGameModeChanged(GameModePreset);
         }
 
         void OnDisable()

@@ -116,7 +116,7 @@ namespace Platformer.Mechanics
             var moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
 
             var move = moveAlongGround * deltaPosition.x;
-
+            
             PerformMovement(move, false);
 
             move = Vector2.up * deltaPosition.y;
@@ -131,6 +131,7 @@ namespace Platformer.Mechanics
 
             if (distance > minMoveDistance)
             {
+           
                 //check if we hit anything in current direction of travel
                 var count = body.Cast(move, contactFilter, hitBuffer, distance + shellRadius);
                 for (var i = 0; i < count; i++)
@@ -169,6 +170,7 @@ namespace Platformer.Mechanics
                     distance = modifiedDistance < distance ? modifiedDistance : distance;
                 }
             }
+            Debug.Log(body);
             body.position = body.position + move.normalized * distance;
         }
 

@@ -61,7 +61,7 @@ namespace Platformer.Mechanics
             if (!IsAlive) return;
             currentHP = Math.Clamp(currentHP - damage, 0, maxHP);
             if (currentHP == 0) {
-                var ev = Schedule<HealthIsZero>().health = this;
+                Schedule<HealthIsZero>().health = this;
             }
         }
 
@@ -99,6 +99,14 @@ namespace Platformer.Mechanics
         public void ResetDamageCooldownTimer()
         {
             takeDamageCooldownTimer = takeDamageCooldown;
+        }
+
+        /// <summary>
+        /// Sets the entity's damage immunity window's duration to a new given value.
+        /// </summary>
+        /// <param name="newDamageCooldown">The new immunity duration for the entity after taking damage.</param>
+        public void SetDamageCooldown(float newDamageCooldown) {
+            takeDamageCooldown = newDamageCooldown;
         }
 
         /// <summary>

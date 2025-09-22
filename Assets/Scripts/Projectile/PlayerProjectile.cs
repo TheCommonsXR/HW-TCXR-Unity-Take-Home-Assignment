@@ -18,13 +18,18 @@ public class PlayerProjectile : MonoBehaviour {
             if (enemyHealth.isPlayer) {
                 return;
             }
+            EnemyController enemyController = other.GetComponent<EnemyController>();
+            if (enemyController != null) {
+                enemyController.DoHurtEffect();
+            }
             enemyHealth.TakeDamage(projectileDamage);
         } 
         Destroy(gameObject);
     }
 
-    public void Initialize(Vector3 dir, int gunDamage) {
+    public void Initialize(Vector3 dir, int gunDamage, float newSpeed) {
         direction = dir;
         projectileDamage = gunDamage;
+        projectileSpeed = newSpeed;
     }
 }

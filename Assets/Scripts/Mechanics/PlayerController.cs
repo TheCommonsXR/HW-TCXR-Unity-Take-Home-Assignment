@@ -48,6 +48,7 @@ namespace Platformer.Mechanics
         // Fields for firing gun
         [SerializeField] private int gunDamage = 1;
         [SerializeField] private GameObject projectilePrefab;
+        [SerializeField] private float projectileSpeed = 5f;
 
         public Bounds Bounds => collider2d.bounds;
 
@@ -59,6 +60,16 @@ namespace Platformer.Mechanics
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
             sprite = GetComponent<SpriteRenderer>();
+        }
+
+        override protected void OnEnable() {
+            base.OnEnable();
+            GameDelegates.OnGameModeChanged += OnGameModeChanged;
+        }
+
+        override protected void OnDisable() {
+            base.OnDisable();
+            GameDelegates.OnGameModeChanged -= OnGameModeChanged;
         }
 
         override protected void Start() {
@@ -79,7 +90,7 @@ namespace Platformer.Mechanics
             if (Input.GetKeyDown(KeyCode.F)) {
                 GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
                 PlayerProjectile projectileScript = projectile.GetComponent<PlayerProjectile>();
-                projectileScript.Initialize(sprite.flipX ? Vector3.left : Vector3.right, gunDamage);
+                projectileScript.Initialize(sprite.flipX ? Vector3.left : Vector3.right, gunDamage, projectileSpeed);
             }
             
             move.x = Input.GetAxis("Horizontal");
@@ -177,6 +188,19 @@ namespace Platformer.Mechanics
             spriteRenderer.color = originalSpriteColor;
         }
 
+        private void OnGameModeChanged(GameMode newGameMode) {
+            maxSpeed = newGameMode.MaxPlayerSpeed;
+            jumpTakeOffSpeed = newGameMode.PlayerJumpTakeoffSpeed;
+            gunDamage = newGameMode.PlayerBulletDamage;
+            projectileSpeed = newGameMode.PlayerBulletSpeed;
+            Time.timeScale = newGameMode.SimulationSpeed;
+            model.spawnPoint.transform.position = newGameMode.SpawnPosition;
+            health.maxHP = newGameMode.PlayerHealth;
+            health.SetHP(health.maxHP);
+            health.SetDamageCooldown(newGameMode.PlayerImmunityDurationWhenDamaged);
+            model.jumpModifier = newGameMode.GlobalJumpModifier;
+            model.jumpDeceleration = newGameMode.GlobalJumpDeceleration;
+        }
         
     }
 }

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8509783501685719824}
   - component: {fileID: 6082575806313374961}
   - component: {fileID: 1824045667}
+  - component: {fileID: 3187462219749885441}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -59,13 +60,14 @@ MonoBehaviour:
   maxSpeed: 3
   jumpTakeOffSpeed: 7
   jumpState: 0
-  collider2d: {fileID: 0}
-  audioSource: {fileID: 0}
+  collider2d: {fileID: 1824045667}
+  audioSource: {fileID: 8509783501685719824}
   health: {fileID: 6082575806313374961}
   controlEnabled: 1
   gunDamage: 1
   projectilePrefab: {fileID: 3943053819311347309, guid: 05b8e4048f0b0493c96ede3aaeec7f69,
     type: 3}
+  projectileSpeed: 5
 --- !u!212 &212064061491315838
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -327,3 +329,16 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.32, y: 0.54}
   m_EdgeRadius: 0
+--- !u!114 &3187462219749885441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208144871472054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8534e17a0f90604c9afd4f5c73d829f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Id: 2cedde77-9eec-414f-a172-5c4b3c8e2891

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Platformer.Gameplay;
 using UnityEngine;
@@ -24,12 +25,20 @@ namespace Platformer.Mechanics
         public Bounds Bounds => _collider.bounds;
         public int attackDamage = 1;
 
+        // Hurt visual effect
+        private Coroutine hurtEffectCoroutine;
+        private Color originalSpriteColor;
+        
         void Awake()
         {
             control = GetComponent<AnimationController>();
             _collider = GetComponent<Collider2D>();
             _audio = GetComponent<AudioSource>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
+        private void Start() {
+            originalSpriteColor = spriteRenderer.color;
         }
 
         void OnCollisionEnter2D(Collision2D collision)
@@ -51,6 +60,23 @@ namespace Platformer.Mechanics
                 control.move.x = Mathf.Clamp(mover.Position.x - transform.position.x, -1, 1);
             }
         }
+        
+        public void DoHurtEffect(float duration = 0.5f)
+        {
+            if (hurtEffectCoroutine != null) {
+                StopCoroutine(hurtEffectCoroutine);
+                hurtEffectCoroutine = null;
+            }
+            StartCoroutine(HurtEffectCoroutine(duration));
+        }
 
+        private IEnumerator HurtEffectCoroutine(float duration)
+        {
+            _audio.PlayOneShot(ouch);
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(duration);
+            spriteRenderer.color = originalSpriteColor;
+        }
+        
     }
 }

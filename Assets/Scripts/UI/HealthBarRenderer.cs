@@ -8,7 +8,7 @@ public class HealthBarRenderer : MonoBehaviour {
     [SerializeField] private Slider slider;
 
     private void OnEnable() {
-        PlayerUIDelegates.OnHealthChanged += UpdateHealthBar;
+        GameDelegates.OnPlayerHealthChanged += UpdateHealthBar;
     }
 
     private void UpdateHealthBar(int newHealth, int newMaxHealth) {
