@@ -170,7 +170,6 @@ namespace Platformer.Mechanics
                     distance = modifiedDistance < distance ? modifiedDistance : distance;
                 }
             }
-            Debug.Log(body);
             body.position = body.position + move.normalized * distance;
         }
 
