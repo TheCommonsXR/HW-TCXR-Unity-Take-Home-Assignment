@@ -15,6 +15,8 @@ namespace Platformer.Mechanics
         public PatrolPath path;
         public AudioClip ouch;
 
+        [field: SerializeField] public int Damage { get; private set; } = 1;
+
         internal PatrolPath.Mover mover;
         internal AnimationController control;
         internal Collider2D _collider;
