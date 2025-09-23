@@ -49,6 +49,9 @@ namespace Platformer.Gameplay
                 var playerHealth = player.GetComponent<Health>();
                 if (playerHealth != null)
                 {
+                    if (playerHealth.isImmune)
+                        return;
+
                     playerHealth.Decrement(enemy.Damage);
                     if (playerHealth.IsAlive)
                     {

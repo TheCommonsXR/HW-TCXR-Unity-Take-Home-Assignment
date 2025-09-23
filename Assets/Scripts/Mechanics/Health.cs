@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
@@ -20,7 +21,14 @@ namespace Platformer.Mechanics
         /// </summary>
         public bool IsAlive => currentHP > 0;
 
-        int currentHP;
+        [HideInInspector] public bool isImmune = false;
+
+        [SerializeField] private float _immunityDuration = 1f;
+        private int currentHP;
+        
+        private void Awake() => ResetHP();
+
+        public void ResetHP() => currentHP = maxHP;
 
         /// <summary>
         /// Increment the HP of the entity.
@@ -38,6 +46,8 @@ namespace Platformer.Mechanics
         {
             currentHP = Mathf.Clamp(currentHP - damage, 0, maxHP);
 
+            StartCoroutine(ImmunityCoroutine());
+
             if (currentHP == 0)
             {
                 var ev = Schedule<HealthIsZero>();
@@ -45,6 +55,12 @@ namespace Platformer.Mechanics
             }
         }
 
+        private IEnumerator ImmunityCoroutine()
+        {
+            isImmune = true;
+            yield return new WaitForSeconds(_immunityDuration);
+            isImmune = false;
+        }
         /// <summary>
         /// Decrement the HP of the entity until HP reaches 0.
         /// </summary>
@@ -53,11 +69,5 @@ namespace Platformer.Mechanics
             while (currentHP > 0) Decrement();
         }
 
-        public void ResetHP() => currentHP = maxHP;
-
-        void Awake()
-        {
-            ResetHP();
-        }
     }
 }
