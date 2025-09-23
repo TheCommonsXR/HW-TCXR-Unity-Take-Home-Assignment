@@ -49,7 +49,11 @@ namespace Platformer.Gameplay
                 var playerHealth = player.GetComponent<Health>();
                 if (playerHealth != null)
                 {
-                    playerHealth.Decrement();
+                    int numDmg = 0;
+                    while (numDmg < enemy.damage){
+                        playerHealth.Decrement();
+                        numDmg++;
+                    }
                 }
                 else
                 {
