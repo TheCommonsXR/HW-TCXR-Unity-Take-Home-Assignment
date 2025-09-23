@@ -46,7 +46,14 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                // Instead instantly killing the player when colliding with the 
+                // we simply decrease their health by that enemy's damage value
+                player.health.TakeDamage(enemy.enemyDamage);
+                if (player.health.IsAlive)
+                {
+                    player.audioSource.PlayOneShot(player.ouchAudio);
+                    player.animator.SetTrigger("hurt");
+                }
             }
         }
     }

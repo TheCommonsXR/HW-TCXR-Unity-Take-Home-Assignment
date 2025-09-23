@@ -23,6 +23,9 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => _collider.bounds;
 
+        // Amount of damage the player take when collliding with enemy
+        public int enemyDamage = 1;
+
         void Awake()
         {
             control = GetComponent<AnimationController>();

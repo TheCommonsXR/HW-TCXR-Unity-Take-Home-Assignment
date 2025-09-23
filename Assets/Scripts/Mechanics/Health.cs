@@ -44,6 +44,22 @@ namespace Platformer.Mechanics
             }
         }
 
+        // Allows the Player to take damage based on 
+        // an enemy damage value that can be adjusted for each 
+        // enemy instance 
+
+        public void TakeDamage(int amount)
+        {
+            currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
+
+            if (currentHP == 0)
+            {
+                var ev = Schedule<HealthIsZero>();
+                ev.health = this;
+            }
+            
+        }
+
         /// <summary>
         /// Decrement the HP of the entitiy until HP reaches 0.
         /// </summary>
