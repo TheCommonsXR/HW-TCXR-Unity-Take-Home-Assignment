@@ -31,6 +31,21 @@ namespace Platformer.Mechanics
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
+        void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Bullet"))
+            {
+                var damage = collision.GetComponent<BulletScript>().damage;
+                var enemyHealth = GetComponent<Health>();
+                enemyHealth.Decrement(damage);
+                Destroy(collision.gameObject);
+                if (!enemyHealth.IsAlive)
+                {
+                    Schedule<EnemyDeath>().enemy = this;
+                }
+            }
+        }
+
         void OnCollisionEnter2D(Collision2D collision)
         {
             var player = collision.gameObject.GetComponent<PlayerController>();

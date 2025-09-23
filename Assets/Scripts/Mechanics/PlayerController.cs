@@ -34,7 +34,11 @@ namespace Platformer.Mechanics
         public Health health;
         public bool controlEnabled = true;
         public bool IsInvincible = false;
+        public int bulletDamage = 1;
+        public int bulletSpeed = 250;
+        public GameObject bulletPrefab;
 
+        bool facingRight = true;
         float invincibleTime = 0;
         bool jump;
         Vector2 move;
@@ -58,12 +62,24 @@ namespace Platformer.Mechanics
             if (controlEnabled)
             {
                 move.x = Input.GetAxis("Horizontal");
+                if (move.x > 0)
+                {
+                    facingRight = true;
+                } else if (move.x < 0) {
+                    facingRight = false;
+                }
+
                 if (jumpState == JumpState.Grounded && Input.GetButtonDown("Jump"))
                     jumpState = JumpState.PrepareToJump;
                 else if (Input.GetButtonUp("Jump"))
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
+                }
+
+                if (Input.GetKeyDown(KeyCode.B)) // if player presses "B" on keyboard
+                {
+                    FireBullet();
                 }
             }
             else
@@ -131,6 +147,21 @@ namespace Platformer.Mechanics
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
             targetVelocity = move * maxSpeed;
+        }
+
+        void FireBullet()
+        {
+            var bullet = Instantiate(bulletPrefab);
+            bullet.transform.position = new Vector3(transform.position.x, transform.position.y - 0.1f, transform.position.z);
+            if (facingRight)
+            {
+                bullet.GetComponent<Rigidbody2D>().AddForce(transform.right * bulletSpeed);
+            }
+            else
+            {
+                bullet.GetComponent<Rigidbody2D>().AddForce(transform.right * -1 * bulletSpeed);
+            }
+            bullet.GetComponent<BulletScript>().damage = bulletDamage;
         }
 
         // turns on invincibility, sets the timer to one second
