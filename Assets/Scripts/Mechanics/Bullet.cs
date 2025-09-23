@@ -7,8 +7,7 @@ public class Bullet : MonoBehaviour
 {
     public float speed = 3f;
     public int damage = 1;
-
-    [SerializeField] private float _duration = 3f;
+    public float duration = 3f;
 
     private Vector2 _direction;
     private Coroutine flightTime;
@@ -20,7 +19,7 @@ public class Bullet : MonoBehaviour
             StopCoroutine(flightTime);
         }
 
-        flightTime = StartCoroutine(FlightTimer());
+        flightTime = StartCoroutine(SetInactiveAfterLifetime());
     }
 
     private void Update()
@@ -28,9 +27,9 @@ public class Bullet : MonoBehaviour
         transform.Translate(_direction * speed * Time.deltaTime);
     }
 
-    private IEnumerator FlightTimer()
+    private IEnumerator SetInactiveAfterLifetime()
     {
-        yield return new WaitForSeconds(_duration);
+        yield return new WaitForSeconds(duration);
         gameObject.SetActive(false);
     }
 

@@ -24,8 +24,11 @@ public class BulletPoolManager : MonoBehaviour
         _pool = new Bullet[_poolSize];
         for (int i = 0; i < _poolSize; i++)
         {
-            _pool[i] = Instantiate(_bulletPrefab, transform);
-            _pool[i].gameObject.SetActive(false);
+            Bullet _bullet = Instantiate(_bulletPrefab, transform);
+
+            _bullet.gameObject.SetActive(false);
+            _pool[i] = _bullet;
+            GameModeManager.Instance.ApplyProjectileSettings(_bullet);
         }
     }
 

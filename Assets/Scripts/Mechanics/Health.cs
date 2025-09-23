@@ -30,6 +30,12 @@ namespace Platformer.Mechanics
         
         private void Awake() => ResetHP();
 
+        public void SetNewMaxHP(int newHP)
+        {
+            maxHP = newHP;
+            ResetHP();
+        }
+
         public void ResetHP() => currentHP = maxHP;
 
         /// <summary>

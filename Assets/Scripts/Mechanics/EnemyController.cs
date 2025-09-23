@@ -15,7 +15,8 @@ namespace Platformer.Mechanics
         public PatrolPath path;
         public AudioClip ouch;
 
-        [field: SerializeField] public int Damage { get; private set; } = 1;
+        public Health health;
+        [field: SerializeField] public int Damage { get; set; } = 1;
 
         internal PatrolPath.Mover mover;
         internal Animator animator;
@@ -28,6 +29,7 @@ namespace Platformer.Mechanics
 
         void Awake()
         {
+            health = GetComponent<Health>();
             control = GetComponent<AnimationController>();
             _collider = GetComponent<Collider2D>();
             audioSource = GetComponent<AudioSource>();

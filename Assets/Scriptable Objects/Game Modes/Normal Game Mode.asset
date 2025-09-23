@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 271299232ddb0c1448d772fbcc37d243, type: 3}
+  m_Name: Normal Game Mode
+  m_EditorClassIdentifier: 
+  maxPlayerHealth: 5
+  startingPosition: {x: 3, y: 0, z: 1}
+  respawnPosition: {fileID: 4225261185164204560, guid: 65b2bdfe201b6eb4fa5c29ed26f8497e,
+    type: 3}
+  bulletSpeed: 3
+  bulletDamage: 2
+  bulletDuration: 3
+  maxEnemyHealth: 3
+  enemyDamage: 2

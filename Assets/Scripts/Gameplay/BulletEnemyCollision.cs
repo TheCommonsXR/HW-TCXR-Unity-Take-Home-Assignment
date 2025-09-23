@@ -19,7 +19,7 @@ namespace Platformer.Gameplay
         public override void Execute()
         {
             
-            var enemyHealth = enemy.GetComponent<Health>();
+            var enemyHealth = enemy.health;
             if (enemyHealth != null)
             {
                 enemyHealth.Decrement(bullet.damage);
