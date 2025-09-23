@@ -46,6 +46,15 @@ namespace Platformer.Gameplay
             }
             else
             {
+                var playerHealth = player.GetComponent<Health>();
+                if (playerHealth != null)
+                {
+                    playerHealth.Decrement();
+                }
+                else
+                {
+                    Debug.LogError("Player Health Component is Null");
+                }
                 Schedule<PlayerDeath>();
             }
         }
