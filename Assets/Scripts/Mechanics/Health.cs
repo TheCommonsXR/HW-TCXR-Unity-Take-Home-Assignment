@@ -46,16 +46,18 @@ namespace Platformer.Mechanics
         }
 
         /// <summary>
-        /// Decrement the HP of the entitiy until HP reaches 0.
+        /// Decrement the HP of the entity until HP reaches 0.
         /// </summary>
         public void Die()
         {
             while (currentHP > 0) Decrement();
         }
 
+        public void ResetHP() => currentHP = maxHP;
+
         void Awake()
         {
-            currentHP = maxHP;
+            ResetHP();
         }
     }
 }

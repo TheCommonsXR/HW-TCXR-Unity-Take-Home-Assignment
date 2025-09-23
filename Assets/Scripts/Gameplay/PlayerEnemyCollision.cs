@@ -50,9 +50,10 @@ namespace Platformer.Gameplay
                 if (playerHealth != null)
                 {
                     playerHealth.Decrement(enemy.Damage);
-                    if (!playerHealth.IsAlive)
+                    if (playerHealth.IsAlive)
                     {
-                        Schedule<PlayerDeath>();
+                        player.damageText.text.text = enemy.Damage.ToString();
+                        Schedule<PlayerDamaged>();
                     }
                 }
                 else
