@@ -1,0 +1,41 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BulletPoolManager : MonoBehaviour
+{
+    public static BulletPoolManager Instance;
+
+    [SerializeField] private Bullet _bulletPrefab;
+    [SerializeField] private int _poolSize = 20;
+
+    private Bullet[] _pool;
+    private int _index = 0;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
+        _pool = new Bullet[_poolSize];
+        for (int i = 0; i < _poolSize; i++)
+        {
+            _pool[i] = Instantiate(_bulletPrefab, transform);
+            _pool[i].gameObject.SetActive(false);
+        }
+    }
+
+    public void FireBullet(Vector3 position, Vector2 direction)
+    {
+        Bullet bullet = _pool[_index];
+        _index = (_index + 1) % _poolSize;
+
+        bullet.transform.position = position;
+        bullet.gameObject.SetActive(true);
+        bullet.Shoot(direction);
+    }
+}

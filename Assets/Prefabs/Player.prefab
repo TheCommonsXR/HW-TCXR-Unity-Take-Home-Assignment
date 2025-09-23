@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8509783501685719824}
   - component: {fileID: 6082575806313374961}
   - component: {fileID: 1824045667}
+  - component: {fileID: 4292018493699017221}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -37,6 +38,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1433474657399532347}
+  - {fileID: 4480370231565937536}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114230831923080080
@@ -277,7 +279,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffad43bb006db4856a9c527b89b48db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayer: 1
   maxHP: 5
+  isImmune: 0
+  _immunityDuration: 1
 --- !u!61 &1824045667
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -324,6 +329,50 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.32, y: 0.54}
   m_EdgeRadius: 0
+--- !u!114 &4292018493699017221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208144871472054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0743378cd3c02048b57ca7eeb20dafb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _firePoint: {fileID: 4480370231565937536}
+--- !u!1 &3321716598972688486
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4480370231565937536}
+  m_Layer: 13
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4480370231565937536
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3321716598972688486}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.38, y: -0.165, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4520396350849616}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5499058266661129367
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,7 +386,7 @@ GameObject:
   - component: {fileID: 8484322680961951801}
   - component: {fileID: 580477724683990300}
   m_Layer: 13
-  m_Name: Text (TMP)
+  m_Name: Damaged Readout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -11,6 +11,8 @@ namespace Platformer.Mechanics
     /// </summary>
     public class Health : MonoBehaviour
     {
+        public bool isPlayer = false;
+
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>

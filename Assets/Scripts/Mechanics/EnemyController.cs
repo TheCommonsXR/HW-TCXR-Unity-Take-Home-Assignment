@@ -18,9 +18,10 @@ namespace Platformer.Mechanics
         [field: SerializeField] public int Damage { get; private set; } = 1;
 
         internal PatrolPath.Mover mover;
+        internal Animator animator;
         internal AnimationController control;
         internal Collider2D _collider;
-        internal AudioSource _audio;
+        internal AudioSource audioSource;
         SpriteRenderer spriteRenderer;
 
         public Bounds Bounds => _collider.bounds;
@@ -29,17 +30,23 @@ namespace Platformer.Mechanics
         {
             control = GetComponent<AnimationController>();
             _collider = GetComponent<Collider2D>();
-            _audio = GetComponent<AudioSource>();
+            audioSource = GetComponent<AudioSource>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+            animator = GetComponent<Animator>();
         }
 
         void OnCollisionEnter2D(Collision2D collision)
         {
-            var player = collision.gameObject.GetComponent<PlayerController>();
-            if (player != null)
+            if (collision.gameObject.TryGetComponent<PlayerController>(out var player))
             {
                 var ev = Schedule<PlayerEnemyCollision>();
                 ev.player = player;
+                ev.enemy = this;
+            }
+            else if (collision.gameObject.TryGetComponent<Bullet>(out var bullet))
+            {
+                var ev = Schedule<BulletEnemyCollision>();
+                ev.bullet = bullet;
                 ev.enemy = this;
             }
         }

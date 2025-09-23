@@ -4,19 +4,19 @@ using Platformer.Mechanics;
 namespace Platformer.Gameplay
 {
     /// <summary>
-    /// Fired when the health component on an enemy has a hitpoint value of  0.
+    /// Fired when the enemy is hurt
     /// </summary>
-    /// <typeparam name="EnemyDeath"></typeparam>
-    public class EnemyDeath : Simulation.Event<EnemyDeath>
+    /// <typeparam name="EnemyDamaged"></typeparam>
+    public class EnemyDamaged : Simulation.Event<EnemyDamaged>
     {
         public EnemyController enemy;
 
         public override void Execute()
         {
-            enemy._collider.enabled = false;
-            enemy.control.enabled = false;
             if (enemy.audioSource && enemy.ouch)
                 enemy.audioSource.PlayOneShot(enemy.ouch);
+
+            enemy.animator.SetTrigger("hurt");
         }
     }
 }

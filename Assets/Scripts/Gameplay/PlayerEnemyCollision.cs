@@ -35,6 +35,7 @@ namespace Platformer.Gameplay
                     }
                     else
                     {
+                        Schedule<EnemyDamaged>().enemy = enemy;
                         player.Bounce(7);
                     }
                 }

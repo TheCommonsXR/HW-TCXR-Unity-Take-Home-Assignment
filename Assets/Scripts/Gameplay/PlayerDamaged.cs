@@ -1,15 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using Platformer.Core;
 using Platformer.Model;
-using UnityEngine;
 
 namespace Platformer.Gameplay
 {
     /// <summary>
-    /// Fired when the player has died.
+    /// Fired when the player has been hurt.
     /// </summary>
-    /// <typeparam name="PlayerDeath"></typeparam>
+    /// <typeparam name="PlayerDamaged"></typeparam>
     public class PlayerDamaged : Simulation.Event<PlayerDamaged>
     {
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
