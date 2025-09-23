@@ -33,7 +33,9 @@ namespace Platformer.Mechanics
         /*internal new*/ public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
+        public bool IsInvincible = false;
 
+        float invincibleTime = 0;
         bool jump;
         Vector2 move;
         SpriteRenderer spriteRenderer;
@@ -70,6 +72,8 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
+
+            UpdateInvincibility();
         }
 
         void UpdateJumpState()
@@ -127,6 +131,26 @@ namespace Platformer.Mechanics
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
             targetVelocity = move * maxSpeed;
+        }
+
+        // turns on invincibility, sets the timer to one second
+        public void EnableInvincibility()
+        {
+            IsInvincible = true;
+            invincibleTime = 1;
+        }
+
+        // updates the invincibility timer, if invincible
+        public void UpdateInvincibility()
+        {
+            if (IsInvincible)
+            {
+                invincibleTime -= Time.deltaTime;
+                if (invincibleTime <= 0)
+                {
+                    IsInvincible = false;
+                }
+            }
         }
 
         public enum JumpState

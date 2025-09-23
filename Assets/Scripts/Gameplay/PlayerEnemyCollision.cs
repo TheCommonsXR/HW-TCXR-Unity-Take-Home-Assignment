@@ -46,9 +46,11 @@ namespace Platformer.Gameplay
             }
             else
             {
-                if (player.health.IsAlive)
+                if (player.health.IsAlive && !player.IsInvincible)
                 {
                     player.health.Decrement();
+                    player.EnableInvincibility();
+                    Schedule<PlayerHurt>();
                 }
             }
         }
