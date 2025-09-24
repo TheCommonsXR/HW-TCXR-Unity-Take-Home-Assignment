@@ -33,6 +33,8 @@ namespace Platformer.Mechanics
         /*internal new*/ public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
+        public bool isInvincible = false;
+        public float invincibilityDuration = 1f;
 
         bool jump;
         Vector2 move;
@@ -136,6 +138,24 @@ namespace Platformer.Mechanics
             Jumping,
             InFlight,
             Landed
+        }
+
+        public IEnumerator InvicibilityFrames()
+        {
+            isInvincible = true;
+            SpriteRenderer sr = GetComponent<SpriteRenderer>();
+            float elapsed = 0f;
+            while (elapsed < invincibilityDuration)
+            {
+                if (sr != null)
+                    sr.enabled = !sr.enabled;
+                yield return new WaitForSeconds(0.1f);
+                elapsed += 0.1f;
+            }
+
+            if (sr != null)
+                sr.enabled = true;
+            isInvincible = false;
         }
     }
 }

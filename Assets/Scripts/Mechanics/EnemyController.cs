@@ -41,15 +41,21 @@ namespace Platformer.Mechanics
             var player = collision.gameObject.GetComponent<PlayerController>();
             if (player != null)
             {
-                var health = player.GetComponent<Health>();
-                if (health != null)
+                if (!player.isInvincible)
                 {
-                    health.Decrement(damage);
-                    if (!health.IsAlive)
+                    var health = player.GetComponent<Health>();
+                    if (health != null)
                     {
-                        var ev = Schedule<PlayerEnemyCollision>();
-                        ev.player = player;
-                        ev.enemy = this;
+                        health.Decrement(damage);
+
+                        if (!health.IsAlive)
+                        {
+                            var ev = Schedule<PlayerEnemyCollision>();
+                            ev.player = player;
+                            ev.enemy = this;
+                        }
+
+                        player.StartCoroutine(player.InvicibilityFrames());
                     }
                 }
             }
