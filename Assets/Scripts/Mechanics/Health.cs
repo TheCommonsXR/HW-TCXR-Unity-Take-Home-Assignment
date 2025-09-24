@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
@@ -20,9 +20,17 @@ namespace Platformer.Mechanics
         /// Indicates if the entity should be considered 'alive'.
         /// </summary>
         public bool IsAlive => currentHP > 0;
+        public bool isInvincible = false; //flag to indicate if player is currently invincible
 
         int currentHP;
         int Player_damage;
+
+        IEnumerator InvincibilityFrames(float duration) //function to handle invincibility frames
+        {
+            isInvincible = true;
+            yield return new WaitForSeconds(duration);
+            isInvincible = false;
+        }
 
         /// <summary>
         /// Increment the HP of the entity.
@@ -38,6 +46,20 @@ namespace Platformer.Mechanics
         /// current HP reaches 0.
         /// </summary>
         public void Decrement()
+        {
+            Random random = new Random();
+            Player_damage = random.Next(1, 8); //decrease health by a random amount between 1 and 7 when hit by an enemy
+            currentHP = currentHP - Player_damage;
+            currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
+            float duration = 1.0f; // Duration of the invincibility frames
+            StartCoroutine(InvincibilityFrames(duration));
+            if (currentHP == 0)
+            {
+                var ev = Schedule<HealthIsZero>();
+                ev.health = this;
+            }
+        }
+        public void Enemy_Decrement()
         {
             Random random = new Random();
             Player_damage = random.Next(1, 8); //decrease health by a random amount between 1 and 7 when hit by an enemy

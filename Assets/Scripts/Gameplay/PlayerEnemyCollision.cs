@@ -25,17 +25,22 @@ namespace Platformer.Gameplay
             if (willHurtEnemy)
             {
                 var enemyHealth = enemy.GetComponent<Health>();
+                var playerHealth = player.GetComponent<Health>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.Decrement(); //adjusted in health.cs to decrease by random amohnt between 1 and 7
-                    if (!enemyHealth.IsAlive)
+                    if(player.health.isInvincible == false) //only apply damage if player is not invincible
                     {
-                        Schedule<EnemyDeath>().enemy = enemy;
-                        player.Bounce(2);
-                    }
-                    else
-                    {
-                        player.Bounce(7);
+                        enemyHealth.Enemy_Decrement(); //adjusted in health.cs to not have invincibility frames for enemies
+                        playerHealth.Decrement(); //decrease player health when colliding on enemy
+                        if (!enemyHealth.IsAlive)
+                        {
+                            Schedule<EnemyDeath>().enemy = enemy;
+                            player.Bounce(2);
+                        }
+                        else
+                        {
+                            player.Bounce(7);
+                        }
                     }
                 }
                 else
