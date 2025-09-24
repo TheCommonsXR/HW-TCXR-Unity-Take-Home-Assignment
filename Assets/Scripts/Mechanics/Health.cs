@@ -20,7 +20,19 @@ namespace Platformer.Mechanics
         /// </summary>
         public bool IsAlive => currentHP > 0;
 
+      
+        /// <summary>
+        /// The current hit points for the entity.
+        /// </summary>
         public int currentHP;
+
+        /// <summary>
+        /// Indicates if the entity should be considered invulnerable for collisions
+        /// </summary>
+        public bool IsInvulnerable { get; private set; }
+
+        float invulnerableTimer = 0f;
+
 
         /// <summary>
         /// Increment the HP of the entity.
@@ -55,6 +67,22 @@ namespace Platformer.Mechanics
         void Awake()
         {
             currentHP = maxHP;
+        }
+
+        public void StartInvulnerability(float duration)
+        {
+            IsInvulnerable = true;
+            invulnerableTimer = duration;
+        }
+
+        void Update()
+        {
+            if (IsInvulnerable)
+            {
+                invulnerableTimer -= Time.deltaTime;
+                if (invulnerableTimer <= 0f)
+                    IsInvulnerable = false;
+            }
         }
     }
 }

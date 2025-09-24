@@ -47,19 +47,21 @@ namespace Platformer.Gameplay
             else
             {
                 var playerHealth = player.GetComponent<Health>();
-                if (playerHealth != null)
+                if (playerHealth != null && !playerHealth.IsInvulnerable)
                 {
                     int numDmg = 0;
+
                     while (numDmg < enemy.damage){
                         playerHealth.Decrement();
                         numDmg++;
                     }
+                    playerHealth.StartInvulnerability(1.0f);
+                    
                 }
                 else
                 {
                     Debug.LogError("Player Health Component is Null");
                 }
-                Schedule<PlayerDeath>();
             }
         }
     }
