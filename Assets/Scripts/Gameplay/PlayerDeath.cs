@@ -17,8 +17,8 @@ namespace Platformer.Gameplay
         public override void Execute()
         {
             var player = model.player;
-            if (player.health.IsAlive)
-            {
+            //if (player.health.IsAlive) This check is unnecessary because this event only gets scheduled when health reaches 0
+            //{
                 player.health.Die();
                 model.virtualCamera.m_Follow = null;
                 model.virtualCamera.m_LookAt = null;
@@ -30,7 +30,7 @@ namespace Platformer.Gameplay
                 player.animator.SetTrigger("hurt");
                 player.animator.SetBool("dead", true);
                 Simulation.Schedule<PlayerSpawn>(2);
-            }
+            //}
         }
     }
 }

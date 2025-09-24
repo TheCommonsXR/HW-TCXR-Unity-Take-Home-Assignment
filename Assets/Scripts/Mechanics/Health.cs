@@ -2,6 +2,7 @@ using System;
 using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
+using Random = System.Random;
 
 namespace Platformer.Mechanics
 {
@@ -13,7 +14,7 @@ namespace Platformer.Mechanics
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
-        public int maxHP = 1;
+        public int maxHP = 50; //changed from 1 to 50 to give player more health
 
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
@@ -21,13 +22,15 @@ namespace Platformer.Mechanics
         public bool IsAlive => currentHP > 0;
 
         int currentHP;
+        int Player_damage;
 
         /// <summary>
         /// Increment the HP of the entity.
         /// </summary>
         public void Increment()
         {
-            currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
+            //currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
+            currentHP = maxHP; //changed to always restore to max health when respawning cdew   
         }
 
         /// <summary>
@@ -36,6 +39,9 @@ namespace Platformer.Mechanics
         /// </summary>
         public void Decrement()
         {
+            Random random = new Random();
+            Player_damage = random.Next(1, 8); //decrease health by a random amount between 1 and 7 when hit by an enemy
+            currentHP = currentHP - Player_damage;
             currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
             if (currentHP == 0)
             {
@@ -55,6 +61,11 @@ namespace Platformer.Mechanics
         void Awake()
         {
             currentHP = maxHP;
+        }
+        public void DisplayHealth() //Displays current health and damage taken in console for feedback
+        {
+            Debug.Log("Damage Taken: " + Player_damage);
+            Debug.Log("Current Health: " + currentHP);
         }
     }
 }

@@ -20,6 +20,7 @@ namespace Platformer.Mechanics
         internal Collider2D _collider;
         internal AudioSource _audio;
         SpriteRenderer spriteRenderer;
+        public int enemy_damage = 2; //global variable for enemy damage
 
         public Bounds Bounds => _collider.bounds;
 
