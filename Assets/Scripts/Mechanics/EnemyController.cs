@@ -23,6 +23,11 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => _collider.bounds;
 
+        /// <summary>
+        /// How much damage this enemy does to the player when colliding
+        /// </summary>
+        public int damage = 1;
+
         void Awake()
         {
             control = GetComponent<AnimationController>();
@@ -36,9 +41,17 @@ namespace Platformer.Mechanics
             var player = collision.gameObject.GetComponent<PlayerController>();
             if (player != null)
             {
-                var ev = Schedule<PlayerEnemyCollision>();
-                ev.player = player;
-                ev.enemy = this;
+                var health = player.GetComponent<Health>();
+                if (health != null)
+                {
+                    health.Decrement(damage);
+                    if (!health.IsAlive)
+                    {
+                        var ev = Schedule<PlayerEnemyCollision>();
+                        ev.player = player;
+                        ev.enemy = this;
+                    }
+                }
             }
         }
 
