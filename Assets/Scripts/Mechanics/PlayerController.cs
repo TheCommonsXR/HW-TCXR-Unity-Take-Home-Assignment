@@ -33,6 +33,7 @@ namespace Platformer.Mechanics
         /*internal new*/ public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
+        public GameObject Bullet; // Reference to the bullet prefab
 
         bool jump;
         Vector2 move;
@@ -70,6 +71,21 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
+
+            if(Input.GetKeyDown(KeyCode.Space) == true)
+            {
+                FireGun();
+            }
+        }
+
+        void FireGun()
+        {   
+            Bullets bullet = Instantiate(Bullet).GetComponent<Bullets>();
+            if (bullet == null) return; // If there's no Bullet component, exit the function
+            Instantiate(bullet, transform.position, Quaternion.identity); //Define bullet spawn position
+            bullet.Fire(); // Fire the bullet to the right
+        
+
         }
 
         void UpdateJumpState()

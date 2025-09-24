@@ -22,7 +22,7 @@ namespace Platformer.Mechanics
         public bool IsAlive => currentHP > 0;
         public bool isInvincible = false; //flag to indicate if player is currently invincible
 
-        int currentHP;
+        public int currentHP;
         int Player_damage;
 
         IEnumerator InvincibilityFrames(float duration) //function to handle invincibility frames
