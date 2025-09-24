@@ -34,6 +34,9 @@ namespace Platformer.Mechanics
         public Health health;
         public bool controlEnabled = true;
 
+        // Checks if the player is currently Invulnerable or not 
+        public bool isInvulnerable = false;
+
         bool jump;
         Vector2 move;
         SpriteRenderer spriteRenderer;
@@ -41,6 +44,13 @@ namespace Platformer.Mechanics
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
         public Bounds Bounds => collider2d.bounds;
+
+        // After taking damage make the player invulnerable for on second
+        public IEnumerator InvulnerabilityCooldown()
+        {
+            yield return new WaitForSeconds(1f);
+            isInvulnerable = false;
+        }
 
         void Awake()
         {

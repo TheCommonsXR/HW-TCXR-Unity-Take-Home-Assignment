@@ -46,13 +46,21 @@ namespace Platformer.Gameplay
             }
             else
             {
-                // Instead instantly killing the player when colliding with the 
-                // we simply decrease their health by that enemy's damage value
-                player.health.TakeDamage(enemy.enemyDamage);
+                if (player.isInvulnerable) return;
+                
+                    // Instead instantly killing the player when colliding with the 
+                    // we simply decrease their health by that enemy's damage value
+                    player.health.TakeDamage(enemy.enemyDamage);
                 if (player.health.IsAlive)
                 {
                     player.audioSource.PlayOneShot(player.ouchAudio);
                     player.animator.SetTrigger("hurt");
+
+                    // Upon taking damage the temporary invinciblity is set 
+                    player.isInvulnerable = true;
+                    // The cooldown timer immediately starts and make the player vulnerable again after one second
+                    player.StartCoroutine(player.InvulnerabilityCooldown());
+                        
                 }
             }
         }
