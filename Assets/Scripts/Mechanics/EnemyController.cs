@@ -25,6 +25,22 @@ namespace Platformer.Mechanics
 
         // Amount of damage the player take when collliding with enemy
         public int enemyDamage = 1;
+        public int enemyMaxHealth = 5;
+
+        int currentEnemyHealth;
+
+        // Allows the enemy to take damage forom the bullents 
+        // based on the bullet damage value t
+
+        public void EnemyTakeDamage(int amount)
+        {
+            currentEnemyHealth = Mathf.Clamp(currentEnemyHealth - 1, 0, enemyMaxHealth);
+
+            if (currentEnemyHealth == 0)
+            {
+                Destroy(gameObject);
+            }
+        }
 
         void Awake()
         {
@@ -32,6 +48,7 @@ namespace Platformer.Mechanics
             _collider = GetComponent<Collider2D>();
             _audio = GetComponent<AudioSource>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+            currentEnemyHealth = enemyMaxHealth;
         }
 
         void OnCollisionEnter2D(Collision2D collision)
