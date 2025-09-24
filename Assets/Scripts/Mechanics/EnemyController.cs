@@ -42,6 +42,11 @@ namespace Platformer.Mechanics
             }
         }
 
+        public void ResetHealth()
+        {
+            currentEnemyHealth = enemyMaxHealth;
+        }
+
         void Awake()
         {
             control = GetComponent<AnimationController>();

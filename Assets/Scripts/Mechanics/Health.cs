@@ -60,6 +60,11 @@ namespace Platformer.Mechanics
             
         }
 
+        public void ResetHealth()
+        {
+            currentHP = maxHP;
+        }
+
         /// <summary>
         /// Decrement the HP of the entitiy until HP reaches 0.
         /// </summary>
