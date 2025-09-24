@@ -36,6 +36,8 @@ namespace Platformer.Mechanics
 
         bool jump;
         Vector2 move;
+        bool fire; 
+
         SpriteRenderer spriteRenderer;
         internal Animator animator;
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
@@ -63,12 +65,23 @@ namespace Platformer.Mechanics
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
                 }
+
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    fire = true;
+                   
+                } else if (Input.GetButtonUp("Fire1"))
+                {
+                    fire = false;
+                    //following the convention from jumping, using an event here would make sense when we want to add animations later
+                }
             }
             else
             {
                 move.x = 0;
             }
             UpdateJumpState();
+            if (fire) FireGun();
             base.Update();
         }
 
@@ -127,6 +140,15 @@ namespace Platformer.Mechanics
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
             targetVelocity = move * maxSpeed;
+        }
+
+        void FireGun()
+        {
+            Vector2 dir = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
+            float offset = collider2d.bounds.extents.x + .5f;
+            Vector2 spawnPos = (Vector2)transform.position + dir * offset;
+
+            BulletPool.Instance.GetBullet(spawnPos, dir);
         }
 
         public enum JumpState
