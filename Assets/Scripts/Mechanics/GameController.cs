@@ -12,6 +12,9 @@ namespace Platformer.Mechanics
     {
         public static GameController Instance { get; private set; }
 
+        [Header("Game Mode Selection")]
+        public GameMode selectedGameMode; // assign in Inspector
+
         //This model field is public and can be therefore be modified in the 
         //inspector.
         //The reference actually comes from the InstanceRegister, and is shared
@@ -23,6 +26,8 @@ namespace Platformer.Mechanics
         void OnEnable()
         {
             Instance = this;
+            if (selectedGameMode != null)
+                ApplyGameMode(selectedGameMode);
         }
 
         void OnDisable()
@@ -33,6 +38,35 @@ namespace Platformer.Mechanics
         void Update()
         {
             if (Instance == this) Simulation.Tick();
+        }
+        void ApplyGameMode(GameMode mode)
+        {
+            model.jumpModifier = mode.jumpModifier;
+            model.jumpDeceleration = mode.jumpDeceleration;
+
+            if (mode.spawnPoint != null)
+                model.spawnPoint.position = mode.spawnPoint;
+
+            Debug.Log("after spawnpoint");
+
+
+            if (model.player != null)
+            {
+                Debug.Log("player not null");
+                if (model.player.health != null)
+                {
+                    model.player.health.maxHP = mode.startingHealth;
+                    model.player.health.currentHP = mode.startingHealth;
+                }
+
+                model.player.bulletDamage = mode.gunDamage;
+
+                if (model.spawnPoint != null)
+                {
+                    Debug.Log("spawn not null");
+                    model.player.transform.position = model.spawnPoint.position;
+                }
+            }
         }
     }
 }
