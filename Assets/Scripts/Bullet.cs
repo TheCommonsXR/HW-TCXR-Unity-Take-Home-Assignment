@@ -1,8 +1,7 @@
 using UnityEngine;
 using Platformer.Mechanics;
-using Platformer.Gameplay;
 
-public class Bullet : KinematicObject
+public class Bullet : MonoBehaviour
 {
     public int damage = 1;
     public float speed = 10.0f;
@@ -10,26 +9,22 @@ public class Bullet : KinematicObject
 
     float currentLifeTimer;
     Vector2 direction;
+    private Rigidbody2D rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     public void Init(Vector2 dir)
     {
         direction = dir.normalized;
-        velocity = direction * speed;
-        targetVelocity = direction * speed; 
         currentLifeTimer = lifetime;
-        gravityModifier = 0f;
         gameObject.SetActive(true);
     }
 
-    protected override void ComputeVelocity()
+    void Update()
     {
-        targetVelocity = direction * speed;
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-
         currentLifeTimer -= Time.deltaTime;
 
         if (currentLifeTimer <= 0f)
@@ -37,10 +32,9 @@ public class Bullet : KinematicObject
             BulletPool.Instance.ReturnToPool(this);
         }
     }
-    protected override void FixedUpdate()
+    void FixedUpdate()
     {
-        Vector2 deltaPosition = velocity * Time.deltaTime;
-        body.position += deltaPosition;
+        rb.MovePosition(rb.position + direction * speed * Time.fixedDeltaTime);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -60,10 +54,6 @@ public class Bullet : KinematicObject
             }
             Debug.Log(other.gameObject.name);
             BulletPool.Instance.ReturnToPool(this);
-        } else
-        {
-            Debug.Log(other.gameObject.name);
-            BulletPool.Instance.ReturnToPool(this);
-        }
+        } 
     }
 }
