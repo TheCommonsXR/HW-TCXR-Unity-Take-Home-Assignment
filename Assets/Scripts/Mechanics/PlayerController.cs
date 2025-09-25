@@ -36,7 +36,10 @@ namespace Platformer.Mechanics
 
         bool jump;
         Vector2 move;
-        bool fire; 
+        bool fire;
+
+        public float fireCooldown = 0.25f;
+        private float fireTimer = 0f;
 
         SpriteRenderer spriteRenderer;
         internal Animator animator;
@@ -55,6 +58,9 @@ namespace Platformer.Mechanics
 
         protected override void Update()
         {
+            fireTimer -= Time.deltaTime;
+            if (fireTimer < 0f) fireTimer = 0f;
+
             if (controlEnabled)
             {
                 move.x = Input.GetAxis("Horizontal");
@@ -66,12 +72,12 @@ namespace Platformer.Mechanics
                     Schedule<PlayerStopJump>().player = this;
                 }
 
-                if (Input.GetButtonDown("Fire1"))
+
+                if (Input.GetButton("Fire1") && fireTimer <= 0f)
                 {
                     fire = true;
-                   
-                } else if (Input.GetButtonUp("Fire1"))
-                {
+                    fireTimer = fireCooldown;
+                } else {
                     fire = false;
                     //following the convention from jumping, using an event here would make sense when we want to add animations later
                 }
@@ -144,7 +150,7 @@ namespace Platformer.Mechanics
 
         void FireGun()
         {
-            Vector2 dir = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
+            Vector2 dir = spriteRenderer.flipX ? Vector2.left : Vector2.right;
             float offset = collider2d.bounds.extents.x + .5f;
             Vector2 spawnPos = (Vector2)transform.position + dir * offset;
 

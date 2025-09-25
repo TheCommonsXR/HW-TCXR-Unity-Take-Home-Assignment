@@ -15,6 +15,7 @@ public class Bullet : KinematicObject
     {
         direction = dir.normalized;
         velocity = direction * speed;
+        targetVelocity = direction * speed; 
         currentLifeTimer = lifetime;
         gravityModifier = 0f;
         gameObject.SetActive(true);
@@ -36,15 +37,20 @@ public class Bullet : KinematicObject
             BulletPool.Instance.ReturnToPool(this);
         }
     }
-
-
-
+    protected override void FixedUpdate()
+    {
+        Vector2 deltaPosition = velocity * Time.deltaTime;
+        body.position += deltaPosition;
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         var health = other.GetComponent<Health>();
         if (health != null)
         {
+            // Only deal damage to enemies
+            if (other.GetComponent<PlayerController>() != null) return;
+
             int numDmg = 0;
 
             while (numDmg < damage)
@@ -52,7 +58,7 @@ public class Bullet : KinematicObject
                 health.Decrement();
                 numDmg++;
             }
-
+            Debug.Log(other.gameObject.name);
             BulletPool.Instance.ReturnToPool(this);
         } else
         {
