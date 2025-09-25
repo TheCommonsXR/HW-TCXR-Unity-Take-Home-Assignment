@@ -28,11 +28,11 @@ public class BulletPool : MonoBehaviour
         }
     }
 
-    public Bullet GetBullet(Vector2 pos, Vector2 dir)
+    public Bullet GetBullet(Vector2 pos, Vector2 dir, int dmg)
     {
         Bullet bullet = pool.Count > 0 ? pool.Dequeue() : Instantiate(bulletPrefab, transform);
         bullet.transform.position = pos;
-        bullet.Init(dir);
+        bullet.Init(dir, dmg);
         return bullet;
     }
 

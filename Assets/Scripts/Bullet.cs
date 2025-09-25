@@ -16,8 +16,9 @@ public class Bullet : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    public void Init(Vector2 dir)
+    public void Init(Vector2 dir, int dmg)
     {
+        damage = dmg;
         direction = dir.normalized;
         currentLifeTimer = lifetime;
         gameObject.SetActive(true);

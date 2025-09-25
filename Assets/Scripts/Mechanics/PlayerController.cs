@@ -38,6 +38,7 @@ namespace Platformer.Mechanics
         Vector2 move;
         bool fire;
 
+        public int bulletDamage = 1;
         public float fireCooldown = 0.25f;
         private float fireTimer = 0f;
 
@@ -154,7 +155,7 @@ namespace Platformer.Mechanics
             float offset = collider2d.bounds.extents.x + .5f;
             Vector2 spawnPos = (Vector2)transform.position + dir * offset;
 
-            BulletPool.Instance.GetBullet(spawnPos, dir);
+            BulletPool.Instance.GetBullet(spawnPos, dir, bulletDamage);
         }
 
         public enum JumpState

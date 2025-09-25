@@ -24,7 +24,7 @@ namespace Platformer.Mechanics
         /// <summary>
         /// The current hit points for the entity.
         /// </summary>
-        public int currentHP;
+        public int currentHP = 1;
 
         /// <summary>
         /// Indicates if the entity should be considered invulnerable for collisions
@@ -46,7 +46,7 @@ namespace Platformer.Mechanics
         /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
         /// current HP reaches 0.
         /// </summary>
-        public void Decrement()
+        public virtual void Decrement()
         {
             currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
             if (currentHP == 0)
