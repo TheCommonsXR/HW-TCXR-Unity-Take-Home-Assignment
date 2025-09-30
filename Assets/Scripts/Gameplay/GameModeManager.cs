@@ -8,7 +8,7 @@ namespace Platformer.Mechanics
     {
     public GameModeConfig activeConfig;
     public PlayerController player;
-    public EnemyController enemy;
+    public EnemyController[] enemies;
 
     // Start is called before the first frame update
         void Start()
@@ -26,7 +26,7 @@ namespace Platformer.Mechanics
                 {
                     // Same with the enemy hp
                     enemy.enemyMaxHealth = activeConfig.enemyStartingHealth;
-                    enemyResetHealth();
+                    enemy.ResetHealth();
                 }
                 
 
