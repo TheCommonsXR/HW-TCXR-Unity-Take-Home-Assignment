@@ -44,6 +44,12 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => collider2d.bounds;
 
+        public GameObject bulletPrefab;
+        public Transform firePoint;
+        public int bulletDamage = 1;
+        public float fireCooldown = 0.25f;
+        private float lastFireTime;
+
         void Awake()
         {
             health = GetComponent<Health>();
@@ -52,6 +58,8 @@ namespace Platformer.Mechanics
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
         }
+
+        
 
         protected override void Update()
         {
@@ -65,6 +73,8 @@ namespace Platformer.Mechanics
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
                 }
+
+                HandleShooting();
             }
             else
             {
@@ -72,6 +82,25 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
+
+        }
+
+        void HandleShooting()
+        {
+            if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time - lastFireTime >= fireCooldown)
+            {
+                Fire();
+                lastFireTime = Time.time;
+            }
+        }
+
+        void Fire()
+        {
+            Vector2 dir = spriteRenderer.flipX ? Vector2.left : Vector2.right;
+
+            var bulletObj = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+            var bullet = bulletObj.GetComponent<Bullet>();
+            bullet.Init(dir, bulletDamage);
         }
 
         void UpdateJumpState()
@@ -157,5 +186,9 @@ namespace Platformer.Mechanics
                 sr.enabled = true;
             isInvincible = false;
         }
+
+
+
+
     }
 }
