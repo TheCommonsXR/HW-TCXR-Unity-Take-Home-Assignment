@@ -34,9 +34,6 @@ namespace Platformer.Mechanics
         public Health health;
         public bool controlEnabled = true;
 
-        // Checks if the player is currently Invulnerable or not 
-        public bool isInvulnerable = false;
-
         // Sets the damage each bullet will do to the enemy
         public int bulletDamage = 2;
         // Storage for the bullet sprite
@@ -51,13 +48,6 @@ namespace Platformer.Mechanics
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
         public Bounds Bounds => collider2d.bounds;
-
-        // After taking damage make the player invulnerable for on second
-        public IEnumerator InvulnerabilityCooldown()
-        {
-            yield return new WaitForSeconds(1f);
-            isInvulnerable = false;
-        }
 
         // Allow the bullets to shoot out from the player after a button press 
         void Fire()
