@@ -6,24 +6,61 @@ using static Platformer.Core.Simulation;
 namespace Platformer.Mechanics
 {
     /// <summary>
-    /// Represebts the current vital statistics of some game entity.
+    /// Represents the current vital statistics of some game entity.
     /// </summary>
     public class Health : MonoBehaviour
     {
+        [SerializeField] int maxHP = 5;
+        [SerializeField] int currentHP = 0;
+
         /// <summary>
-        /// The maximum hit points for the entity.
+        /// Public read/write for max HP (keeps internal consistency).
         /// </summary>
-        public int maxHP = 5;
+        public int MaxHP
+        {
+            get => maxHP;
+            set
+            {
+                maxHP = Mathf.Max(1, value);
+                if (currentHP > maxHP) currentHP = maxHP;
+            }
+        }
+
+        /// <summary>
+        /// Read-only current HP (external scripts should use methods below).
+        /// </summary>
+        public int CurrentHP => currentHP;
 
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
         /// </summary>
         public bool IsAlive => currentHP > 0;
 
-        int currentHP;
+        void Awake()
+        {
+            // initialize currentHP to max if not set
+            if (currentHP <= 0) currentHP = maxHP;
+        }
 
         /// <summary>
-        /// Increment the HP of the entity.
+        /// Set both max and current HP in a safe way.
+        /// </summary>
+        public void SetHealth(int newMaxHP, int newCurrentHP)
+        {
+            MaxHP = newMaxHP;
+            currentHP = Mathf.Clamp(newCurrentHP, 0, maxHP);
+        }
+
+        /// <summary>
+        /// Restore to full health.
+        /// </summary>
+        public void FullHeal()
+        {
+            currentHP = maxHP;
+        }
+
+        /// <summary>
+        /// Increment the HP by one (clamped).
         /// </summary>
         public void Increment()
         {
@@ -31,13 +68,14 @@ namespace Platformer.Mechanics
         }
 
         /// <summary>
-        /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
-        /// current HP reaches 0.
+        /// Decrement the HP of the entity by a specified amount.
+        /// Will trigger a HealthIsZero event when current HP reaches 0.
         /// </summary>
         public void Decrement(int damage = 1)
         {
+            if (damage <= 0) return;
             currentHP = Mathf.Clamp(currentHP - damage, 0, maxHP);
-            Debug.Log($"Player took {damage} damage. HP is now {currentHP}/{maxHP}");
+            Debug.Log($"Took {damage} damage. HP is now {currentHP}/{maxHP}");
             if (currentHP == 0)
             {
                 var ev = Schedule<HealthIsZero>();
@@ -46,24 +84,13 @@ namespace Platformer.Mechanics
         }
 
         /// <summary>
-        /// Decrement the HP of the entitiy until HP reaches 0.
+        /// Instantly kill the entity (sets HP to zero).
         /// </summary>
         public void Die()
         {
-            while (currentHP > 0) Decrement();
-        }
-        
-        /// <summary>
-        /// Restores HP to full
-        /// </summary>
-        public void FullHeal()
-        {
-            currentHP = maxHP;
-        }
-
-        void Awake()
-        {
-            currentHP = maxHP;
+            currentHP = 0;
+            var ev = Schedule<HealthIsZero>();
+            ev.health = this;
         }
     }
 }

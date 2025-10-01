@@ -49,6 +49,8 @@ namespace Platformer.Mechanics
         public int bulletDamage = 1;
         public float fireCooldown = 0.25f;
         private float lastFireTime;
+        [HideInInspector] public bool canShoot = true;
+
 
         void Awake()
         {
@@ -87,6 +89,8 @@ namespace Platformer.Mechanics
 
         void HandleShooting()
         {
+            if (!canShoot) return;
+
             if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time - lastFireTime >= fireCooldown)
             {
                 Fire();
