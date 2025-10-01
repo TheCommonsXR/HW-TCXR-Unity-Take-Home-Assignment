@@ -13,11 +13,11 @@ public class Bullet : MonoBehaviour
 
     public float speed = 10f;
     private Vector2 direction;
-    private PlayerController shooter;
+    private int damage;
 
-    public void Initialize(PlayerController player, Vector2 dir)
+    public void Initialize(int bulletDamage, Vector2 dir)
     {
-        shooter = player;
+        damage = bulletDamage;
         direction = dir.normalized;
         Destroy(gameObject, 3f);
     }
@@ -29,15 +29,11 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        var enemy = other.GetComponent<EnemyController>();
-        if (enemy != null)
+        var enemyHealth = other.GetComponent<Health>();
+        if (enemyHealth != null)
         {
-            var enemyHealth = enemy.GetComponent<Health>();
-            if (enemy != null)
-            {
-                enemy.EnemyTakeDamage(shooter.bulletDamage);
-                Destroy(gameObject);
-            }
+            enemyHealth.TakeDamage(damage);
+            Destroy(gameObject);
         }
     }
 }

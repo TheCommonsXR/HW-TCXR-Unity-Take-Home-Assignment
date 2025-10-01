@@ -34,13 +34,6 @@ namespace Platformer.Mechanics
         public Health health;
         public bool controlEnabled = true;
 
-        // Sets the damage each bullet will do to the enemy
-        public int bulletDamage = 2;
-        // Storage for the bullet sprite
-        public GameObject bulletPrefab;
-        // Will allow the bullet to spawn from the player 
-        public Transform bulletSpawn;
-
         bool jump;
         Vector2 move;
         SpriteRenderer spriteRenderer;
@@ -48,14 +41,6 @@ namespace Platformer.Mechanics
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
         public Bounds Bounds => collider2d.bounds;
-
-        // Allow the bullets to shoot out from the player after a button press 
-        void Fire()
-        {
-            var bullet = Instantiate(bulletPrefab, bulletSpawn.position, Quaternion.identity);
-            var bulletScript = bullet.GetComponent<Bullet>();
-            bulletScript.Initialize(this, spriteRenderer.flipX ? Vector2.left : Vector2.right);
-        }
 
         void Awake()
         {
@@ -68,11 +53,6 @@ namespace Platformer.Mechanics
 
         protected override void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                Fire();
-            }
-
             if (controlEnabled)
             {
                 move.x = Input.GetAxis("Horizontal");
