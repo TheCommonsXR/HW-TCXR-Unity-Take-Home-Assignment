@@ -10,26 +10,24 @@ namespace Platformer.Mechanics
     public PlayerController player;
     public EnemyController[] enemies;
 
-    // Start is called before the first frame update
+        // Start is called before the first frame update
         void Start()
         {
-            if (activeConfig != null && player != null)
+            if (activeConfig == null) return;
+
+            if (player != null)
             {
-                // Sets the players maxHp to set value 
-                player.health.maxHP = activeConfig.playerStartingHealth;
-                player.health.ResetHealth();
-
-                // Sets the player's inital starting point 
-                player.transform.position = activeConfig.playerSpawnPoint;
-
-                foreach (var enemy in enemies)
+                // Sets the hp, and starting position of the player
+                player.ApplyGameModeSettings(activeConfig);
+            }
+            
+            foreach (var enemy in enemies)
+            {
+                if (enemy != null)
                 {
                     // Same with the enemy hp
-                    enemy.enemyMaxHealth = activeConfig.enemyStartingHealth;
-                    enemy.ResetHealth();
+                    enemy.ApplyGameModeSettingsEnemy(activeConfig);
                 }
-                
-
                 
             }
         }

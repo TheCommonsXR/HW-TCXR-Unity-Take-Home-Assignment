@@ -51,6 +51,13 @@ namespace Platformer.Mechanics
             animator = GetComponent<Animator>();
         }
 
+        public void ApplyGameModeSettings(GameModeConfig config)
+        {
+            health.maxHP = config.playerStartingHealth;
+            health.ResetHealth();
+            transform.position = config.playerSpawnPoint;
+        }
+
         protected override void Update()
         {
             if (controlEnabled)

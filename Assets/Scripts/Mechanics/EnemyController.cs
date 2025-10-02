@@ -30,13 +30,6 @@ namespace Platformer.Mechanics
         // to set its own health value 
         Health health;
 
-       
-
-        // Allows the enemy to take damage forom the bullets 
-        // based on the bullet damage value t
-
-        
-
         void Awake()
         {
             control = GetComponent<AnimationController>();
@@ -51,6 +44,12 @@ namespace Platformer.Mechanics
             {
                 health.maxHP = enemyMaxHealth;
             }
+        }
+
+        public void ApplyGameModeSettingsEnemy(GameModeConfig config)
+        {
+            enemyMaxHealth = config.enemyStartingHealth;
+            health.ResetHealth();
         }
 
         void OnCollisionEnter2D(Collision2D collision)
