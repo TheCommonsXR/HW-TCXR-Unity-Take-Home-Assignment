@@ -1,3 +1,4 @@
+using System.Xml.Schema;
 using Platformer.Core;
 using Platformer.Mechanics;
 using Platformer.Model;
@@ -46,7 +47,22 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                if (player.health)
+                {
+                    if (player.health.Decrement())
+                    {
+                        if (player.audioSource && player.ouchAudio)
+                            player.audioSource.PlayOneShot(player.ouchAudio);
+                        player.animator.SetTrigger("hurt");
+
+                        player.health.MakeInvulnerable(player.invincibilityTime);
+                    }
+
+                }
+                else
+                {
+                    Schedule<PlayerDeath>();
+                }   
             }
         }
     }

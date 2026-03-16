@@ -9,14 +9,14 @@ namespace Platformer.Gameplay
     /// Fired when the player health reaches 0. This usually would result in a 
     /// PlayerDeath event.
     /// </summary>
-    /// <typeparam name="HealthIsZero"></typeparam>
-    public class HealthIsZero : Simulation.Event<HealthIsZero>
+    /// <typeparam name="makeVulnerable"></typeparam>
+    public class MakeVulnerable : Simulation.Event<MakeVulnerable>
     {
         public Health health;
 
         public override void Execute()
         {
-            Schedule<PlayerDeath>();
+            health.IsVulnerable = true;
         }
     }
 }
