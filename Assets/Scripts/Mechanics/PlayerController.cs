@@ -43,6 +43,12 @@ namespace Platformer.Mechanics
 
         public UnityEngine.UI.Slider healthBar;
 
+        // player weapon
+        [SerializeField] private GameObject bulletPrefab;
+        [SerializeField] private Transform firePoint;
+        public float bulletSpeed = 5f;
+        public int bulletDamage = 1;
+
         bool jump;
         Vector2 move;
         float knockbackTimer;
@@ -75,6 +81,11 @@ namespace Platformer.Mechanics
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
+                }
+
+                if(Input.GetButtonDown("Fire1"))
+                {
+                    Shoot();
                 }
             }
             else
@@ -187,6 +198,26 @@ namespace Platformer.Mechanics
 
             healthBar.maxValue = health.maxHP;
             healthBar.value = health.currentHP;
+        }
+
+        void Shoot()
+        {
+            if(bulletPrefab == null) return;
+
+            var spawnPosition = firePoint != null ? firePoint.position: transform.position + new Vector3(spriteRenderer.flipX ? -0.6f : 0.6f, 0f, 0f);
+
+            var bulletObject = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+            var bullet = bulletObject.GetComponent<Bullet>();
+            if (bullet == null) return;
+
+            var facingDirection = spriteRenderer.flipX ? -1f : 1f;
+            bullet.Initialize(facingDirection, bulletSpeed, bulletDamage);
+
+            var bulletCollider = bulletObject.GetComponent<Collider2D>();
+            if (bulletCollider != null && collider2d != null)
+            {
+                Physics2D.IgnoreCollision(bulletCollider, collider2d);
+            }
         }
     }
 }
