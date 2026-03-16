@@ -20,6 +20,8 @@ namespace Platformer.Mechanics
         //conveniently configured inside the inspector.
         public PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
+        public GameModeConfig selectedGameMode;
+
         void OnEnable()
         {
             Instance = this;
@@ -28,6 +30,35 @@ namespace Platformer.Mechanics
         void OnDisable()
         {
             if (Instance == this) Instance = null;
+        }
+
+        private void Start()
+        {
+            ApplySelectedGameMode();
+        }
+
+        [ContextMenu("Apply Selected Game Mode")]
+        public void ApplySelectedGameMode()
+        {
+            if (selectedGameMode == null || model == null || model.player == null) return;
+
+            var player = model.player;
+            var health = player.health != null ? player.health : player.GetComponent<Health>();
+            if (health != null)
+            {
+                health.maxHP = Mathf.Max(1, selectedGameMode.playerMaxHealth);
+                health.currentHP = Mathf.Clamp(selectedGameMode.playerStartHealth, 0, health.maxHP);
+                health.isInvincible = false;
+            }
+
+            if (model.spawnPoint != null)
+            {
+                model.spawnPoint.position = selectedGameMode.playerStartPosition;
+            }
+
+            player.Teleport(selectedGameMode.playerStartPosition);
+            player.jumpState = PlayerController.JumpState.Grounded;
+            player.SyncHealthBar();
         }
 
         void Update()
