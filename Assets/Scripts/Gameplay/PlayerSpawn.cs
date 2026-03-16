@@ -20,7 +20,7 @@ namespace Platformer.Gameplay
                 player.audioSource.PlayOneShot(player.respawnAudio);
             player.health.SetToMax();
             player.health.IsVulnerable = true;
-            player.Teleport(model.spawnPoint.transform.position);
+            player.Teleport(player.spawnPoint);
             player.jumpState = PlayerController.JumpState.Grounded;
             player.animator.SetBool("dead", false);
             model.virtualCamera.m_Follow = player.transform;

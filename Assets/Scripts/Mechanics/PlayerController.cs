@@ -40,6 +40,17 @@ namespace Platformer.Mechanics
         /// </summary>
         public Color playerColor;
 
+        /// <summary>
+        /// The type of bullet the player shoots when firing a bullet
+        /// </summary>
+        public GameObject bulletType;
+        /// <summary>
+        /// The amount of damage a bullet does
+        /// </summary>
+        public float bulletDamage;
+
+        public Vector3 spawnPoint;
+
         [Header("Misc.")]
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
@@ -73,6 +84,11 @@ namespace Platformer.Mechanics
                 spriteRenderer.color = playerColor;
             }
             animator = GetComponent<Animator>();
+
+            if (spawnPoint == null)
+            {
+                spawnPoint = model.spawnPoint.position;
+            }
         }
 
         protected override void Update()
@@ -86,6 +102,20 @@ namespace Platformer.Mechanics
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
+                }
+
+                if (Input.GetButtonDown("Fire3") && bulletType)
+                {
+                    var newBullet = Instantiate(bulletType);
+                    newBullet.transform.position = transform.position;
+                    var bulletPhysics = newBullet.GetComponent<Bullet>();
+
+                    if (bulletPhysics)
+                    {
+                        
+                        bulletPhysics.Initialize(new Vector2(spriteRenderer.flipX? -1: 1, 0), bulletDamage);
+
+                    }
                 }
             }
             else
