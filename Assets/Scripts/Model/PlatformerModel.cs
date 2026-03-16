@@ -23,6 +23,11 @@ namespace Platformer.Model
         public PlayerController player;
 
         /// <summary>
+        /// The current game mode. new players will have their attributes set by this if it exists.
+        /// </summary>
+        public GameMode gameMode;
+
+        /// <summary>
         /// The spawn point in the scene.
         /// </summary>
         public Transform spawnPoint;

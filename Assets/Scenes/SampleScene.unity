@@ -100742,7 +100742,7 @@ PrefabInstance:
     - target: {fileID: 114230831923080080, guid: 7d60c822c3f1b408ea7a00ecdb5e047a,
         type: 3}
       propertyPath: spawnPoint.x
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114230831923080080, guid: 7d60c822c3f1b408ea7a00ecdb5e047a,
         type: 3}
@@ -250083,6 +250083,7 @@ MonoBehaviour:
   model:
     virtualCamera: {fileID: 1946717924}
     player: {fileID: 838423048}
+    gameMode: {fileID: 11400000, guid: fe300756045100642b038b49a175652e, type: 2}
     spawnPoint: {fileID: 421228357}
     jumpModifier: 0.9
     jumpDeceleration: 0

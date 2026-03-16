@@ -70,25 +70,39 @@ namespace Platformer.Mechanics
         void Awake()
         {
             health = GetComponent<Health>();
+            audioSource = GetComponent<AudioSource>();
+            collider2d = GetComponent<Collider2D>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            animator = GetComponent<Animator>();
+
+            if (model.gameMode)
+            {
+                var gameMode = model.gameMode;
+                maxSpeed = gameMode.maxSpeed;
+                jumpTakeOffSpeed = gameMode.jumpHeight;
+                maxHealth = gameMode.maxHealth;
+                health.SetToMax();
+                invincibilityTime = gameMode.invincibilityTime;
+                playerColor = gameMode.playerColor;
+                bulletType = gameMode.bulletType;
+                bulletDamage = gameMode.bulletDamage;
+            }
+
             if (health)
             {
                 health.maxHP = maxHealth;
                 health.SetToMax();
             }
-
-            audioSource = GetComponent<AudioSource>();
-            collider2d = GetComponent<Collider2D>();
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            if (spawnPoint == null)
+            {
+                spawnPoint = model.spawnPoint.position;
+                transform.position = spawnPoint;
+            }
             if (spriteRenderer)
             {
                 spriteRenderer.color = playerColor;
             }
-            animator = GetComponent<Animator>();
 
-            if (spawnPoint == null)
-            {
-                spawnPoint = model.spawnPoint.position;
-            }
         }
 
         protected override void Update()
