@@ -18,7 +18,6 @@ namespace Platformer.Mechanics
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
 
-        [Header("Player Attributes")]
         /// <summary>
         /// Max horizontal speed of the player.
         /// </summary>
@@ -27,20 +26,7 @@ namespace Platformer.Mechanics
         /// Initial jump velocity at the start of a jump.
         /// </summary>
         public float jumpTakeOffSpeed = 7;
-        /// <summary>
-        /// Maximum health.
-        /// </summary>
-        public int maxHealth = 5;
-        /// <summary>
-        /// Amount of time of invincibility the player has after being hit.
-        /// </summary>
-        public float invincibilityTime = 1;
-        /// <summary>
-        /// The player's color.
-        /// </summary>
-        public Color playerColor;
 
-        [Header("Misc.")]
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
         /*internal new*/ public Collider2D collider2d;
@@ -59,19 +45,9 @@ namespace Platformer.Mechanics
         void Awake()
         {
             health = GetComponent<Health>();
-            if (health)
-            {
-                health.maxHP = maxHealth;
-                health.SetToMax();
-            }
-
             audioSource = GetComponent<AudioSource>();
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
-            if (spriteRenderer)
-            {
-                spriteRenderer.color = playerColor;
-            }
             animator = GetComponent<Animator>();
         }
 
