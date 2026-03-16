@@ -18,7 +18,13 @@ namespace Platformer.Gameplay
             player.controlEnabled = false;
             if (player.audioSource && player.respawnAudio)
                 player.audioSource.PlayOneShot(player.respawnAudio);
-            player.health.Increment();
+
+            // fixing health logic
+            //player.health.Increment();
+            player.health.currentHP = player.health.maxHP;
+            player.health.isInvincible = false;
+            player.SyncHealthBar();
+
             player.Teleport(model.spawnPoint.transform.position);
             player.jumpState = PlayerController.JumpState.Grounded;
             player.animator.SetBool("dead", false);

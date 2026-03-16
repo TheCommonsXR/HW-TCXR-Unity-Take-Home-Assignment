@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
@@ -20,7 +21,11 @@ namespace Platformer.Mechanics
         /// </summary>
         public bool IsAlive => currentHP > 0;
 
-        int currentHP;
+        public int currentHP;
+
+        // for Q2
+        public bool isInvincible = false;
+        public float invincibilityDuration = 1.0f;
 
         /// <summary>
         /// Increment the HP of the entity.
@@ -34,13 +39,19 @@ namespace Platformer.Mechanics
         /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
         /// current HP reaches 0.
         /// </summary>
-        public void Decrement()
+        public void Decrement(int damageAmnt = 1)
         {
-            currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
+            if (isInvincible || currentHP <= 0) return;
+
+            currentHP = Mathf.Clamp(currentHP - damageAmnt, 0, maxHP);
             if (currentHP == 0)
             {
                 var ev = Schedule<HealthIsZero>();
                 ev.health = this;
+            }
+            else
+            {
+                StartCoroutine(BecomeInvincible());
             }
         }
 
@@ -55,6 +66,13 @@ namespace Platformer.Mechanics
         void Awake()
         {
             currentHP = maxHP;
+        }
+
+        public IEnumerator BecomeInvincible()
+        {
+            isInvincible = true;
+            yield return new WaitForSeconds(invincibilityDuration);
+            isInvincible = false;
         }
     }
 }

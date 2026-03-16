@@ -15,6 +15,9 @@ namespace Platformer.Mechanics
         public PatrolPath path;
         public AudioClip ouch;
 
+        [Tooltip("Damage to player when colliding with enemy")]
+        public int damage = 1;
+
         internal PatrolPath.Mover mover;
         internal AnimationController control;
         internal Collider2D _collider;
@@ -22,6 +25,8 @@ namespace Platformer.Mechanics
         SpriteRenderer spriteRenderer;
 
         public Bounds Bounds => _collider.bounds;
+
+        
 
         void Awake()
         {

@@ -27,15 +27,26 @@ namespace Platformer.Mechanics
         /// </summary>
         public float jumpTakeOffSpeed = 7;
 
+        // damage knockback
+        public float hurtKnockbackHorizontal = 8f;
+        public float hurtKnockbackVertical = 4f;
+        public float hurtKnockbackDuration = 0.2f;
+
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
-        /*internal new*/ public Collider2D collider2d;
-        /*internal new*/ public AudioSource audioSource;
+        /*internal new*/
+        public Collider2D collider2d;
+        /*internal new*/
+        public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
 
+        public UnityEngine.UI.Slider healthBar;
+
         bool jump;
         Vector2 move;
+        float knockbackTimer;
+        float knockbackSpeedX;
         SpriteRenderer spriteRenderer;
         internal Animator animator;
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
@@ -49,11 +60,13 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+
+            SyncHealthBar();
         }
 
         protected override void Update()
         {
-            if (controlEnabled)
+            if (controlEnabled && knockbackTimer <= 0f)
             {
                 move.x = Input.GetAxis("Horizontal");
                 if (jumpState == JumpState.Grounded && Input.GetButtonDown("Jump"))
@@ -68,6 +81,7 @@ namespace Platformer.Mechanics
             {
                 move.x = 0;
             }
+
             UpdateJumpState();
             base.Update();
         }
@@ -126,7 +140,22 @@ namespace Platformer.Mechanics
             animator.SetBool("grounded", IsGrounded);
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
-            targetVelocity = move * maxSpeed;
+            if (knockbackTimer > 0f)
+            {
+                knockbackTimer -= Time.deltaTime;
+                targetVelocity = new Vector2(knockbackSpeedX, 0f);
+            }
+            else
+            {
+                targetVelocity = move * maxSpeed;
+            }
+        }
+
+        public void ApplyKnockback(float direction)
+        {
+            knockbackSpeedX = Mathf.Sign(direction) * hurtKnockbackHorizontal;
+            knockbackTimer = hurtKnockbackDuration;
+            velocity.y = hurtKnockbackVertical;
         }
 
         public enum JumpState
@@ -136,6 +165,28 @@ namespace Platformer.Mechanics
             Jumping,
             InFlight,
             Landed
+        }
+
+        public void TakeDamageFeedback()
+        {
+            StartCoroutine(DamageFlash());
+            SyncHealthBar();
+        }
+
+        private IEnumerator DamageFlash()
+        {
+            var originalColor = spriteRenderer.color;
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(0.2f);
+            spriteRenderer.color = originalColor;
+        }
+
+        public void SyncHealthBar()
+        {
+            if (healthBar == null || health == null) return;
+
+            healthBar.maxValue = health.maxHP;
+            healthBar.value = health.currentHP;
         }
     }
 }

@@ -46,7 +46,28 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                // processing damage
+                if(!player.health.isInvincible)
+                {
+                    player.health.Decrement(enemy.damage);
+                    player.SyncHealthBar();
+
+                    if (!player.health.IsAlive)
+                    {
+                        Schedule<PlayerDeath>();
+                    }
+                    else
+                    {
+                        player.TakeDamageFeedback();
+                        var knockbackDirection = player.transform.position.x - enemy.transform.position.x;
+                        if (Mathf.Approximately(knockbackDirection, 0f))
+                            knockbackDirection = 1f;
+
+                        player.ApplyKnockback(knockbackDirection);
+                    }
+                }
+                
+                    
             }
         }
     }
