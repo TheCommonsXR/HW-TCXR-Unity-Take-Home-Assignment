@@ -28,7 +28,7 @@ namespace Platformer.Gameplay
                 var enemyHealth = enemy.GetComponent<Health>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.Decrement();
+                    enemyHealth.Decrement(player.jumpDamage);
                     if (!enemyHealth.IsAlive)
                     {
                         Schedule<EnemyDeath>().enemy = enemy;
@@ -49,7 +49,7 @@ namespace Platformer.Gameplay
             {
                 if (player.health)
                 {
-                    if (player.health.Decrement())
+                    if (player.health.Decrement(player.jumpDamage))
                     {
                         if (player.audioSource && player.ouchAudio)
                             player.audioSource.PlayOneShot(player.ouchAudio);

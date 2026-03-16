@@ -20,4 +20,5 @@ MonoBehaviour:
   bulletType: {fileID: 1928438570215021277, guid: 811f5490d942975478d6aa7f44590979,
     type: 3}
   bulletDamage: 1
+  jumpDamage: 1
   spawnPoint: {x: 0, y: -0.5, z: 0}

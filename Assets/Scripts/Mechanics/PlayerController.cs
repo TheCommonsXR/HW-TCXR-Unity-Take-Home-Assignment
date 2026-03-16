@@ -39,7 +39,6 @@ namespace Platformer.Mechanics
         /// The player's color.
         /// </summary>
         public Color playerColor;
-
         /// <summary>
         /// The type of bullet the player shoots when firing a bullet
         /// </summary>
@@ -48,7 +47,13 @@ namespace Platformer.Mechanics
         /// The amount of damage a bullet does
         /// </summary>
         public float bulletDamage;
-
+        /// <summary>
+        /// The amount of damage jumping on an enemy does
+        /// </summary>
+        public int jumpDamage;
+        /// <summary>
+        /// The player's spawn point
+        /// </summary>
         public Vector3 spawnPoint;
 
         [Header("Misc.")]
@@ -86,6 +91,7 @@ namespace Platformer.Mechanics
                 playerColor = gameMode.playerColor;
                 bulletType = gameMode.bulletType;
                 bulletDamage = gameMode.bulletDamage;
+                jumpDamage = gameMode.jumpDamage;
             }
 
             if (health)

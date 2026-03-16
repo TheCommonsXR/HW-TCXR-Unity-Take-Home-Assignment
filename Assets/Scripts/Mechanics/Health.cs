@@ -1,6 +1,7 @@
 using System;
 using Platformer.Gameplay;
 using UnityEngine;
+using UnityEngine.UI;
 using static Platformer.Core.Simulation;
 
 namespace Platformer.Mechanics
@@ -19,7 +20,7 @@ namespace Platformer.Mechanics
         /// Indicates if the entity should be considered 'alive'.
         /// </summary>
         public bool IsAlive => currentHP > 0;
-
+        
         int currentHP;
 
         /// <summary>
@@ -27,12 +28,16 @@ namespace Platformer.Mechanics
         /// </summary>
         public bool IsVulnerable = true;
 
+        public Slider uiHealthBar;
+
+
         /// <summary>
         /// Increment the HP of the entity.
         /// </summary>
         public void Increment()
         {
             currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
+            SetUIHealth(currentHP);
         }
 
         /// <summary>
@@ -41,6 +46,7 @@ namespace Platformer.Mechanics
         public void SetToMax()
         {
             while (currentHP < maxHP) Increment();
+            SetUIHealth(currentHP);
         }
 
         /// <summary>
@@ -57,9 +63,28 @@ namespace Platformer.Mechanics
                     var ev = Schedule<HealthIsZero>();
                     ev.health = this;
                 }
+                SetUIHealth(currentHP);
                 return true;
             }
             return false;
+        }
+
+        public bool Decrement(int amount)
+        {
+            bool damaged = false;
+
+            for (int i = 0; i < amount; i++)
+            {
+                if(currentHP > 0)
+                {
+                    if (Decrement() && !damaged)
+                    {
+                        damaged = true;
+                    }
+                }
+            }
+
+            return damaged;
         }
 
         public void MakeInvulnerable(float time)
@@ -79,9 +104,23 @@ namespace Platformer.Mechanics
             IsVulnerable = false;
         }
 
+        public void SetUIHealth(int health)
+        {
+            if (uiHealthBar)
+            {
+                uiHealthBar.maxValue = maxHP;
+                uiHealthBar.value = health;
+            }
+        }
+
         void Awake()
         {
             currentHP = maxHP;
+
+            if (uiHealthBar)
+            {
+                uiHealthBar.maxValue = maxHP;
+            }
         }
     }
 }

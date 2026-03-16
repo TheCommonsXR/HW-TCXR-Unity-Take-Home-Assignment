@@ -37,6 +37,11 @@ public class GameMode : ScriptableObject
     public float bulletDamage;
 
     /// <summary>
+    /// The amount of damage jumping on an enemy does
+    /// </summary>
+    public int jumpDamage;
+
+    /// <summary>
     /// the player's point of spawn
     /// </summary>
     public Vector3 spawnPoint;
