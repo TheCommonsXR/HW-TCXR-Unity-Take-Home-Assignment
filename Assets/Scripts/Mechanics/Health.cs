@@ -22,6 +22,8 @@ namespace Platformer.Mechanics
         public bool IsAlive => currentHP > 0;
 
         int currentHP;
+        float lastDamageTime = -1000f;
+        public float immunityDuration = 1.0f;
 
         /// <summary>
         /// Increment the HP of the entity.
@@ -33,12 +35,21 @@ namespace Platformer.Mechanics
         }
 
         /// <summary>
+        /// Check if the entity can take damage (immunity period expired).
+        /// </summary>
+        public bool CanTakeDamage()
+        {
+            return Time.time - lastDamageTime > immunityDuration;
+        }
+
+        /// <summary>
         /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
         /// current HP reaches 0.
         /// </summary>
         public void Decrement(int amount = 1)
         {
             currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
+            lastDamageTime = Time.time;
             UpdateHealthBar();
             if (currentHP == 0)
             {
