@@ -18,7 +18,8 @@ public class PlayerConfigLoader : MonoBehaviour
         healthComponent = GetComponent<Health>();
         if (healthComponent != null)        
         {
-            healthComponent.Decrement(currentHealth);
+            healthComponent.SetCurrentHP(currentHealth);
+            healthComponent.UpdateHealthBar();
         }
     }
 }

@@ -23,6 +23,11 @@ namespace Platformer.Mechanics
         public bool IsAlive => currentHP > 0;
 
         int currentHP;
+        public void SetCurrentHP(int hp)
+        {
+            currentHP = Mathf.Clamp(hp, 0, maxHP);
+            UpdateHealthBar();
+        }
 
         /// The last time the entity took damage, used for implementing temporary invincibility.
         float lastDamageTime = -1000f;
