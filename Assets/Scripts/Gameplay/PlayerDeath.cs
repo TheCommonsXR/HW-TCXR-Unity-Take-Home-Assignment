@@ -22,7 +22,7 @@ namespace Platformer.Gameplay
             {
                 player.health.Die();
             }
-            player.health.healthBar.SetHealthBarActive(false);
+            player.health.optionalHealthBar.SetHealthBarActive(false);
             model.virtualCamera.m_Follow = null;
             model.virtualCamera.m_LookAt = null;
             // player.collider.enabled = false;

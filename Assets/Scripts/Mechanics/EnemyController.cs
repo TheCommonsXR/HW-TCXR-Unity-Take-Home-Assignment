@@ -42,6 +42,22 @@ namespace Platformer.Mechanics
                 ev.player = player;
                 ev.enemy = this;
             }
+
+            // Handle bullet collision
+            var bullet = collision.gameObject.GetComponent<Bullet>();
+            if (bullet != null)
+            {
+                var enemyHealth = GetComponent<Health>();
+                if (enemyHealth != null)
+                {
+                    enemyHealth.Decrement(1);  // 1 damage per bullet
+                    if (!enemyHealth.IsAlive)
+                    {
+                        Schedule<EnemyDeath>().enemy = this;
+                    }
+                }
+                Destroy(bullet.gameObject);  // Destroy bullet on hit
+            }
         }
 
         void Update()

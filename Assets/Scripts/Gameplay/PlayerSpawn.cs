@@ -24,7 +24,7 @@ namespace Platformer.Gameplay
             player.animator.SetBool("dead", false);
             model.virtualCamera.m_Follow = player.transform;
             model.virtualCamera.m_LookAt = player.transform;
-            player.health.healthBar.SetHealthBarActive(true);
+            player.health.optionalHealthBar.SetHealthBarActive(true);
             Simulation.Schedule<EnablePlayerInput>(2f);
         }
     }

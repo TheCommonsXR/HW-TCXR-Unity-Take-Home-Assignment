@@ -10,7 +10,8 @@ namespace Platformer.Mechanics
     /// </summary>
     public class Health : MonoBehaviour
     {
-        public HealthBar healthBar;
+        [Tooltip("Player only. Leave empty for enemies.")]
+        public HealthBar optionalHealthBar;
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
@@ -22,8 +23,12 @@ namespace Platformer.Mechanics
         public bool IsAlive => currentHP > 0;
 
         int currentHP;
+
+        /// The last time the entity took damage, used for implementing temporary invincibility.
         float lastDamageTime = -1000f;
-        public float immunityDuration = 1.0f;
+
+        [Tooltip("Player Only. The duration (in seconds) of temporary invincibility after taking damage. Leave it at 0 for enemies.")]
+        public float immunityDuration = 0.0f;
 
         /// <summary>
         /// Increment the HP of the entity.
@@ -51,7 +56,7 @@ namespace Platformer.Mechanics
             currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
             lastDamageTime = Time.time;
             UpdateHealthBar();
-            if (currentHP == 0)
+            if (currentHP == 0 && optionalHealthBar != null)
             {
                 var ev = Schedule<HealthIsZero>();
                 ev.health = this;
@@ -63,9 +68,9 @@ namespace Platformer.Mechanics
         /// </summary>
         public void UpdateHealthBar()
         {
-            if (healthBar != null)
+            if (optionalHealthBar != null)
             {
-                healthBar.UpdateHealthBar(currentHP, maxHP);
+                optionalHealthBar.UpdateHealthBar(currentHP, maxHP);
             }
         }
 
