@@ -29,9 +29,9 @@ public class PlayerConfigEditor : EditorWindow
     private const string FileName = "playerSetting.json";
     private static readonly string FilePath = Path.Combine(Application.dataPath, FileName);
 
-    private Vector3 position = Vector3.zero;
-    private int health = 100;
-    private int damage = 10;
+    private Vector3 spawn_position = Vector3.zero;
+    private int health = 10;
+    private int damage = 1;
 
     private Vector2 scrollPos;
     private PlayerConfigCollection configCollection = new PlayerConfigCollection();
@@ -51,7 +51,7 @@ public class PlayerConfigEditor : EditorWindow
     {
         GUILayout.Label("Current Configuration", EditorStyles.boldLabel);
 
-        position = EditorGUILayout.Vector3Field("Position", position);
+        spawn_position = EditorGUILayout.Vector3Field("Position", spawn_position);
         health = EditorGUILayout.IntField("Health", health);
         damage = EditorGUILayout.IntField("Damage", damage);
 
@@ -64,7 +64,7 @@ public class PlayerConfigEditor : EditorWindow
                 AddNewConfig();
                 ApplyConfigToScene(new PlayerConfig
                 {
-                    position = position,
+                    position = spawn_position,
                     health = health,
                     damage = damage
                 });
@@ -100,7 +100,7 @@ public class PlayerConfigEditor : EditorWindow
                 {
                     if (GUILayout.Button("Load This Config",GUILayout.Height(30)))
                     {
-                        position = cfg.position;
+                        spawn_position = cfg.position;
                         health = cfg.health;
                         damage = cfg.damage;
                         ApplyConfigToScene(cfg);
@@ -140,7 +140,7 @@ public class PlayerConfigEditor : EditorWindow
     {
         PlayerConfig newConfig = new PlayerConfig
         {
-            position = position,
+            position = spawn_position,
             health = health,
             damage = damage,
             savedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
