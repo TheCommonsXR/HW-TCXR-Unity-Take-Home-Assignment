@@ -12,6 +12,8 @@ namespace Platformer.Mechanics
     [RequireComponent(typeof(AnimationController), typeof(Collider2D))]
     public class EnemyController : MonoBehaviour
     {
+        [Tooltip("The amount of damage this enemy will cause to the player on collision.")]
+        public int playerDamage = 1;
         public PatrolPath path;
         public AudioClip ouch;
 
@@ -50,6 +52,5 @@ namespace Platformer.Mechanics
                 control.move.x = Mathf.Clamp(mover.Position.x - transform.position.x, -1, 1);
             }
         }
-
     }
 }

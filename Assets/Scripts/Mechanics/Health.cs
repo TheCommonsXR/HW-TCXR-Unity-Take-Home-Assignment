@@ -10,10 +10,11 @@ namespace Platformer.Mechanics
     /// </summary>
     public class Health : MonoBehaviour
     {
+        public HealthBar healthBar;
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
-        public int maxHP = 1;
+        public int maxHP = 10;
 
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
@@ -25,18 +26,20 @@ namespace Platformer.Mechanics
         /// <summary>
         /// Increment the HP of the entity.
         /// </summary>
-        public void Increment()
+        public void Increment(int amount = 1)
         {
-            currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
+            currentHP = Mathf.Clamp(currentHP + amount, 0, maxHP);
+            UpdateHealthBar();
         }
 
         /// <summary>
         /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
         /// current HP reaches 0.
         /// </summary>
-        public void Decrement()
+        public void Decrement(int amount = 1)
         {
-            currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
+            currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
+            UpdateHealthBar();
             if (currentHP == 0)
             {
                 var ev = Schedule<HealthIsZero>();
@@ -45,11 +48,23 @@ namespace Platformer.Mechanics
         }
 
         /// <summary>
+        /// Updates the health bar to reflect the current HP of the entity.
+        /// </summary>
+        public void UpdateHealthBar()
+        {
+            if (healthBar != null)
+            {
+                healthBar.UpdateHealthBar(currentHP, maxHP);
+            }
+        }
+
+        /// <summary>
         /// Decrement the HP of the entitiy until HP reaches 0.
         /// </summary>
         public void Die()
         {
-            while (currentHP > 0) Decrement();
+            while (currentHP > 0) 
+                Decrement();
         }
 
         void Awake()
