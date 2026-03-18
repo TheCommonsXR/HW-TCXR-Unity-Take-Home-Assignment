@@ -10,7 +10,7 @@ public class HealthBar : MonoBehaviour
     [SerializeField]
     private Animator barAnimator;
 
-    void Start()
+    void Awake()
     {
         // Set the max HP for the health bar.
         if (bar != null)
@@ -31,19 +31,13 @@ public class HealthBar : MonoBehaviour
 
     public void SetHealthBarActive(bool active)
     {
-        if (bar != null)
+        if (active)
         {
-            this.gameObject.SetActive(active);
+            barAnimator.Play("HealthBarAppear", 0, 0f);
         }
-    }
-
-    private void OnEnable() 
-    {
-        barAnimator.Play("HealthBarAppear", 0, 0f);
-    }
-    
-    private void OnDisable()
-    {
-        barAnimator.Play("HealthBarDisappear", 0, 0f);
+        else
+        {
+            barAnimator.Play("HealthBarDisappear", 0, 0f);
+        }
     }
 }
