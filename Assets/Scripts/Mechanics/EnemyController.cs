@@ -50,7 +50,7 @@ namespace Platformer.Mechanics
                 var enemyHealth = GetComponent<Health>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.Decrement(1);  // 1 damage per bullet
+                    enemyHealth.Decrement(bullet.Damage);  // 1 damage per bullet
                     if (!enemyHealth.IsAlive)
                     {
                         Schedule<EnemyDeath>().enemy = this;

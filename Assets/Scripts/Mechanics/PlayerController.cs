@@ -14,6 +14,9 @@ namespace Platformer.Mechanics
     /// </summary>
     public class PlayerController : KinematicObject
     {
+         [Tooltip("The amount of damage caused by this player to an enemy on bullet hit.")]
+        public int enemyDamage = 1;
+
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;

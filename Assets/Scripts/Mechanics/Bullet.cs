@@ -8,6 +8,14 @@ public class Bullet : MonoBehaviour
     private Rigidbody2D rb;
     public float speed = 20f;
     private Vector2 direction = Vector2.right;  // Default direction
+    
+    [SerializeField]
+    private int damage = 1;
+    public int Damage
+    {
+        get { return damage; }
+        set { damage = value; }
+    }
 
     private void Start()
     {
