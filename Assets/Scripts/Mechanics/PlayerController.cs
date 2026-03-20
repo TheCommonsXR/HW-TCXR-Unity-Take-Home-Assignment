@@ -5,6 +5,7 @@ using Platformer.Gameplay;
 using static Platformer.Core.Simulation;
 using Platformer.Model;
 using Platformer.Core;
+using System.Security.Cryptography;
 
 namespace Platformer.Mechanics
 {
@@ -33,6 +34,12 @@ namespace Platformer.Mechanics
         /*internal new*/ public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
+
+        [Header("Gun Settings")]
+        public GameObject bulletPrefab;
+        public Transform firePoint;
+        public int bulletDamage = 1;
+        public KeyCode fireKey = KeyCode.F;
 
         bool jump;
         Vector2 move;
@@ -70,6 +77,10 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
+            if (Input.GetKeyDown(fireKey) && bulletPrefab != null && firePoint != null)
+            {
+                FireBullet();
+            }
         }
 
         void UpdateJumpState()
@@ -127,6 +138,29 @@ namespace Platformer.Mechanics
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
             targetVelocity = move * maxSpeed;
+        }
+        
+        void FireBullet()
+        {
+            // Create the bullet
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+
+            // Determine direction based on player facing
+            float dir = spriteRenderer.flipX ? -1f : 1f;
+
+            // Set bullet velocity
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.velocity = new Vector2(dir * 10f, 0);
+            }
+
+            // Assign bullet damage
+            Bullet bulletScript = bullet.GetComponent<Bullet>();
+            if (bulletScript != null)
+            {
+                bulletScript.damage = bulletDamage;
+            }
         }
 
         public enum JumpState

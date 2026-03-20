@@ -3,6 +3,7 @@ using System.Security;
 using Platformer.Core;
 using Platformer.Mechanics;
 using Platformer.Model;
+using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
 
@@ -29,7 +30,7 @@ namespace Platformer.Gameplay
                 var enemyHealth = enemy.GetComponent<Health>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.TakeDamamage(enemy.damage);
+                    enemyHealth.TakeDamage(enemy.damage);
                     if (!enemyHealth.IsAlive)
                     {
                         Schedule<EnemyDeath>().enemy = enemy;
@@ -48,11 +49,11 @@ namespace Platformer.Gameplay
             }
             else
             {
-                player.health.TakeDamamage(enemy.damage);
+                player.health.TakeDamage(enemy.damage);
                 player.Bounce(7);
                 if (!player.health.IsAlive)
                 {
-                    Schedule<PlayerDeath>().player = player;
+                    Schedule<PlayerDeath>();
                 }
             }
         }

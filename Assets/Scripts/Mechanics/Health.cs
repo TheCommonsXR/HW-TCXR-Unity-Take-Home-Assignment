@@ -2,6 +2,7 @@ using System;
 using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
+using System.Collections;
 
 namespace Platformer.Mechanics
 {
@@ -52,7 +53,7 @@ namespace Platformer.Mechanics
         /// Decrement the HP of the entity by a specified amount. Will trigger a HealthIsZero event when
         /// current HP reaches 0.
         /// </summary>
-        public void TakeDamamage(int amount)
+        public void TakeDamage(int amount)
         {
             if (gameObject.CompareTag("Player") && isInvincible) return;
 
