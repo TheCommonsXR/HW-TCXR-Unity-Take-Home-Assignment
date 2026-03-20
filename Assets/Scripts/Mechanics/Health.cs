@@ -23,6 +23,11 @@ namespace Platformer.Mechanics
         int currentHP;
 
         /// <summary>
+        /// Indicates if the entity is currently invincible.
+        /// </summary>
+        private bool isInvincible = false;
+
+        /// <summary>
         /// Increment the HP of the entity.
         /// </summary>
         public void Increment()
@@ -49,13 +54,27 @@ namespace Platformer.Mechanics
         /// </summary>
         public void TakeDamamage(int amount)
         {
+            if (gameObject.CompareTag("Player") && isInvincible) return;
+
             currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
             Debug.Log($"{gameObject.name} took {amount} damage. Current Hp: {currentHP}");
+
             if (currentHP == 0)
             {
                 var ev = Schedule<HealthIsZero>();
                 ev.health = this;
             }
+
+            StartCoroutine(Invincibility(1f));
+        }
+        /// <summary>
+        /// Coroutine to make the player invincible for a short duration after taking damage.
+        /// </summary>
+        IEnumerator Invincibility(float duration)
+        {
+            isInvincible = true;
+            yield return new WaitForSeconds(duration);
+            isInvincible = false;
         }
         /// <summary>
         /// Decrement the HP of the entitiy until HP reaches 0.
