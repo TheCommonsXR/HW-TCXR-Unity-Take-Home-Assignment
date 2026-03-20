@@ -1,3 +1,5 @@
+using System.Diagnostics.Contracts;
+using System.Security;
 using Platformer.Core;
 using Platformer.Mechanics;
 using Platformer.Model;
@@ -27,7 +29,7 @@ namespace Platformer.Gameplay
                 var enemyHealth = enemy.GetComponent<Health>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.Decrement();
+                    enemyHealth.TakeDamamage(enemy.damage);
                     if (!enemyHealth.IsAlive)
                     {
                         Schedule<EnemyDeath>().enemy = enemy;
@@ -46,7 +48,12 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                player.health.TakeDamamage(enemy.damage);
+                player.Bounce(7);
+                if (!player.health.IsAlive)
+                {
+                    Schedule<PlayerDeath>().player = player;
+                }
             }
         }
     }

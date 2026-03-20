@@ -43,7 +43,20 @@ namespace Platformer.Mechanics
                 ev.health = this;
             }
         }
-
+        /// <summary>
+        /// Decrement the HP of the entity by a specified amount. Will trigger a HealthIsZero event when
+        /// current HP reaches 0.
+        /// </summary>
+        public void TakeDamamage(int amount)
+        {
+            currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
+            Debug.Log($"{gameObject.name} took {amount} damage. Current Hp: {currentHP}");
+            if (currentHP == 0)
+            {
+                var ev = Schedule<HealthIsZero>();
+                ev.health = this;
+            }
+        }
         /// <summary>
         /// Decrement the HP of the entitiy until HP reaches 0.
         /// </summary>
