@@ -15,6 +15,7 @@ namespace Platformer.Mechanics
     /// </summary>
     public class PlayerController : KinematicObject
     {
+        public GameMode currentGameMode;
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
@@ -56,6 +57,12 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+            if (currentGameMode != null)
+            {
+                health.maxHP = currentGameMode.playerHealth;
+                transform.position = currentGameMode.playerStartPosition;
+                maxSpeed = currentGameMode.playerSpeed;
+            }
         }
 
         protected override void Update()
