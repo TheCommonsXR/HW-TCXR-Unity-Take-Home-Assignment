@@ -15,7 +15,11 @@ namespace Platformer.Gameplay
 
         public override void Execute()
         {
-            Schedule<PlayerDeath>();
+            PlayerController player = health.GetComponent<PlayerController>(); // (Q3) This checks if Health component belongs to the player only 
+            if (player != null)
+            {
+              Schedule<PlayerDeath>();
+            }
         }
     }
 }

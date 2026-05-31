@@ -19,7 +19,9 @@ namespace Platformer.Gameplay
             var player = model.player;
             if (player.health.IsAlive)
             {
-                player.health.Die();
+                player.health.Die();   // (Q1) calls the Die function if player still alive 
+            }
+                
                 model.virtualCamera.m_Follow = null;
                 model.virtualCamera.m_LookAt = null;
                 // player.collider.enabled = false;
@@ -30,7 +32,7 @@ namespace Platformer.Gameplay
                 player.animator.SetTrigger("hurt");
                 player.animator.SetBool("dead", true);
                 Simulation.Schedule<PlayerSpawn>(2);
-            }
+            
         }
     }
 }

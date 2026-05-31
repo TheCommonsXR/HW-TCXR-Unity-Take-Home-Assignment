@@ -42,6 +42,13 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => collider2d.bounds;
 
+        public bool Inviciblestate = false; //(Q2) created a true/false statement for when the player is invicible or not
+        public float Inviciblewindow = 1f;  //(Q2) How long the player is invicible after getting hit from the enemy
+
+        public GameObject bulletPrefab;
+        public float bulletvelocity = 10;    //(Q3)
+        public int bulletdamage = 1;    // (Q3)
+
         void Awake()
         {
             health = GetComponent<Health>();
@@ -53,6 +60,20 @@ namespace Platformer.Mechanics
 
         protected override void Update()
         {
+
+            if (Inviciblestate)    // (Q2) Starts countdown the moment the invincible state activates
+            {
+                Inviciblewindow -= Time.deltaTime;
+
+                if (Inviciblewindow <= 0f)
+                {
+                    Inviciblestate = false;
+
+                }
+
+            }
+
+
             if (controlEnabled)
             {
                 move.x = Input.GetAxis("Horizontal");
@@ -70,6 +91,39 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
+            // (Q3) When the player presses the F key the bullet is created at the players position 
+            if (Input.GetKeyDown(KeyCode.F))    
+            {
+
+                GameObject bullet = Instantiate(bulletPrefab,transform.position,Quaternion.identity); // Spawns the bullet
+                // Sets the bullet damge 
+                Bullet bulletScript = bullet.GetComponent<Bullet>();
+
+                if (bulletScript != null)
+                {
+                    bulletScript.bulletdamage = bulletdamage;
+                }
+                Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+
+                if (spriteRenderer.flipX)
+                {
+                    rb.velocity = Vector2.left * bulletvelocity; // When player faces left and fires the bullet it will go left
+
+                }
+
+                else
+
+                {
+                    rb.velocity = Vector2.right * bulletvelocity; // When player faces right and fires the bullet it will go right
+
+                }
+
+
+            }
+
+
+
+
         }
 
         void UpdateJumpState()

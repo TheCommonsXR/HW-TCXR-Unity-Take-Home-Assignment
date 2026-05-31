@@ -18,6 +18,8 @@ namespace Platformer.Gameplay
 
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
+        
+
         public override void Execute()
         {
             var willHurtEnemy = player.Bounds.center.y >= enemy.Bounds.max.y;
@@ -46,7 +48,32 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                if (player.Inviciblestate)
+                    
+                    return;
+
+
+                Debug.Log("Enemy hit player");
+                Health HP = player.GetComponent<Health>(); // (Q1) created a HP variable to compare to the health component
+
+                if (HP != null)    
+                {
+                    Debug.Log("Player Health found");
+                    HP.Decrement(enemy.injure);   // (Q1) if health component (HP) exist then calls decrement 
+
+                    player.Inviciblestate = true;  // (Q2) When the player has been hit by the enemy the invinciblity state activates
+                    player.Inviciblewindow = 1f;
+                    Debug.Log("1 second invicibility state active ");
+                }
+
+                if (!HP.IsAlive)
+                {
+                    Debug.Log("Player Health is zero");
+                    Schedule<PlayerDeath>();
+
+                }
+                
+
             }
         }
     }

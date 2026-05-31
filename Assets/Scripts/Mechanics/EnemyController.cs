@@ -22,6 +22,7 @@ namespace Platformer.Mechanics
         SpriteRenderer spriteRenderer;
 
         public Bounds Bounds => _collider.bounds;
+        public int injure = 1;  // (Q1) added a damage varaible 
 
         void Awake()
         {
