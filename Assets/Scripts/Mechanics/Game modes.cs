@@ -9,7 +9,7 @@ namespace Platformer.Mechanics
     {
         public int playerhp = 3;   // player starting health 
         public Vector3 playerPosition;   // player starting position
-        public float playerSpeed = 7f;
-        public int enemyHp = 1;
+        public float playerSpeed = 7f;  // players starting speed
+        public int enemyHp = 1;  // Enemy starting health 
     }
 }
