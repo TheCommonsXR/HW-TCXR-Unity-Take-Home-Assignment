@@ -46,8 +46,8 @@ namespace Platformer.Mechanics
         public float Inviciblewindow = 1f;  //(Q2) How long the player is invicible after getting hit from the enemy
 
         public GameObject bulletPrefab;
-        public float bulletvelocity = 10;    //(Q3)
-        public int bulletdamage = 1;    // (Q3)
+        public float bulletvelocity = 10;    //(Q3) How fast the bullet travels 
+        public int bulletdamage = 1;    // (Q3) How much damge the bullet does 
 
         void Awake()
         {
