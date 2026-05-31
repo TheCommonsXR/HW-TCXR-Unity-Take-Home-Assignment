@@ -33,10 +33,13 @@ namespace Platformer.Mechanics
         /*internal new*/ public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
+        public float invinicility = 1f;
+        public float lastHit;
 
         bool jump;
         Vector2 move;
         SpriteRenderer spriteRenderer;
+        Color baseColor;
         internal Animator animator;
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
@@ -48,7 +51,27 @@ namespace Platformer.Mechanics
             audioSource = GetComponent<AudioSource>();
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+            baseColor = spriteRenderer.color;
             animator = GetComponent<Animator>();
+        }
+
+        public bool isInvincible() {
+            return Time.time < lastHit + invinicility;
+        }
+
+        public void FlashOnDamage()
+        {
+            StartCoroutine(DamageFlash());
+        }
+
+        IEnumerator DamageFlash()
+        {
+            const float blinkInterval = 0.1f;
+            while (isInvincible()) {
+                spriteRenderer.color = spriteRenderer.color == baseColor ? Color.red : baseColor;
+                yield return new WaitForSeconds(blinkInterval);
+            }
+            spriteRenderer.color = baseColor;
         }
 
         protected override void Update()

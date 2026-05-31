@@ -21,7 +21,7 @@ namespace Platformer.Gameplay
         public override void Execute()
         {
             var willHurtEnemy = player.Bounds.center.y >= enemy.Bounds.max.y;
-
+            if (player.isInvincible()) return;
             if (willHurtEnemy)
             {
                 var enemyHealth = enemy.GetComponent<Health>();
@@ -43,10 +43,16 @@ namespace Platformer.Gameplay
                     Schedule<EnemyDeath>().enemy = enemy;
                     player.Bounce(2);
                 }
-            }
-            else
+            } else
             {
-                Schedule<PlayerDeath>();
+                player.health.Decrement(enemy.GetComponent<Damage>().amount);
+                player.lastHit = Time.time;
+                if (!player.health.IsAlive) {
+                    Schedule<PlayerDeath>();
+                }
+                else {
+                    player.FlashOnDamage();
+                }
             }
         }
     }
