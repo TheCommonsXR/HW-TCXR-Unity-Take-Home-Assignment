@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
@@ -18,10 +19,15 @@ namespace Platformer.Mechanics
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
         /// </summary>
-        public bool IsAlive => currentHP > 0;
-
+        
         int currentHP;
-
+        private bool isImmune = false;
+        void Awake()
+        {
+            currentHP = maxHP;
+        }
+        
+        public bool IsAlive => currentHP > 0;
         /// <summary>
         /// Increment the HP of the entity.
         /// </summary>
@@ -36,25 +42,41 @@ namespace Platformer.Mechanics
         /// </summary>
         public void Decrement()
         {
+            Debug.Log(currentHP);
+            if (!IsAlive || isImmune)
+            {
+                return;
+            }
+            
             currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
             if (currentHP == 0)
             {
-                var ev = Schedule<HealthIsZero>();
-                ev.health = this;
+                Die();
+            }
+            else
+            {
+                StartCoroutine(DamageCoolDown());
             }
         }
 
+
+        IEnumerator DamageCoolDown()
+        {
+            isImmune = true;
+            yield return new WaitForSeconds(1);
+            isImmune = false;
+        }
         /// <summary>
         /// Decrement the HP of the entitiy until HP reaches 0.
         /// </summary>
         public void Die()
         {
-            while (currentHP > 0) Decrement();
+            currentHP = 0;
+
+            var ev = Schedule<HealthIsZero>();
+            ev.health = this;
         }
 
-        void Awake()
-        {
-            currentHP = maxHP;
-        }
+        
     }
 }

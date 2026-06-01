@@ -33,6 +33,7 @@ namespace Platformer.Mechanics
         /*internal new*/ public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
+        private GunController _gunController;
 
         bool jump;
         Vector2 move;
@@ -41,6 +42,7 @@ namespace Platformer.Mechanics
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
         public Bounds Bounds => collider2d.bounds;
+        
 
         void Awake()
         {
@@ -49,6 +51,7 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+            _gunController = GetComponent<GunController>();
         }
 
         protected override void Update()
@@ -62,6 +65,11 @@ namespace Platformer.Mechanics
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
+                }
+                
+                if(Input.GetButtonDown("Fire1"))
+                {
+                   _gunController.Fire();
                 }
             }
             else
