@@ -39,4 +39,6 @@ The game designer would like to add a player "gun" weapon.  On a keypress, the P
 ## Question 4
 The game designer would like to create different game modes.  These modes would require a different configuration of game values like player health and starting position.  Implement the necessary changes to allow the game designer to be independent of a developer, add and run new game mode configurations.  It is expected the designer can be working inside unity but will not write any code.
 
+- By using scriptable objects, we can allow any developer to create a platformer for a mode and use the Game Load Manager to load it. You can easily add more things to the Game Mode item as development goes a long and it will still be intuitive for the developer. Easy to expand upon and easy to execute.
+
 

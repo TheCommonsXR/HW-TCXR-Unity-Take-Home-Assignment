@@ -107,10 +107,10 @@ namespace Platformer.Mechanics
         {
             if (bullet == null) return;
             var pos = firePoint != null ? firePoint.position : transform.position;
-            var bullet = Instantiate(bullet, pos, Quaternion.identity);
-            bullet.damage = bulletDamage;
+            var instance = Instantiate(bullet, pos, Quaternion.identity);
+            instance.damage = bulletDamage;
             var facing = spriteRenderer.flipX ? Vector2.left : Vector2.right;
-            bullet.Shoot(facing);
+            instance.Shoot(facing);
         }
 
         void UpdateJumpState()
