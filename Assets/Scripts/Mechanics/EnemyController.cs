@@ -15,6 +15,8 @@ namespace Platformer.Mechanics
         public PatrolPath path;
         public AudioClip ouch;
 
+        public int EnemyDamage = 1;
+
         internal PatrolPath.Mover mover;
         internal AnimationController control;
         internal Collider2D _collider;
@@ -37,6 +39,7 @@ namespace Platformer.Mechanics
             if (player != null)
             {
                 var ev = Schedule<PlayerEnemyCollision>();
+                ev.collisionDamage = EnemyDamage;
                 ev.player = player;
                 ev.enemy = this;
             }

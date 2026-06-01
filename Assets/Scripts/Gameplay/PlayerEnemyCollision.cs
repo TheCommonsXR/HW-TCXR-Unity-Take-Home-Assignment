@@ -15,6 +15,7 @@ namespace Platformer.Gameplay
     {
         public EnemyController enemy;
         public PlayerController player;
+        public int collisionDamage = 0;
 
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
@@ -27,7 +28,7 @@ namespace Platformer.Gameplay
                 var enemyHealth = enemy.GetComponent<Health>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.Decrement();
+                    enemyHealth.Decrement(collisionDamage);
                     if (!enemyHealth.IsAlive)
                     {
                         Schedule<EnemyDeath>().enemy = enemy;
@@ -46,7 +47,12 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                //Schedule<PlayerDeath>();
+                var playerHealth = player.GetComponent<Health>();
+                if (playerHealth != null)
+                {
+                    playerHealth.Decrement(collisionDamage);
+                }
             }
         }
     }
