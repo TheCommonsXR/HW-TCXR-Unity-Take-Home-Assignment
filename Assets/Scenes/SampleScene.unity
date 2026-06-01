@@ -103915,12 +103915,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89057c51f6864a248b1294017ca14dc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameConfigPrefab: {fileID: 917874090511741182, guid: 0e5c782e2caa0924590171b77606573a,
+    type: 3}
   player: {fileID: 0}
-  playerMaxSpeed: 2
-  playerJumpTakeOffSpeed: 7
-  playerYDamage: 2
-  playerMaxHP: 1
-  playerSpawnPoint: {x: 0, y: 0}
 --- !u!4 &1206521757
 Transform:
   m_ObjectHideFlags: 0
