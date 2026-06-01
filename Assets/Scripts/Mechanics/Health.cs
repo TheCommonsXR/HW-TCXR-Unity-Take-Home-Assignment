@@ -21,7 +21,18 @@ namespace Platformer.Mechanics
         /// </summary>
         public bool IsAlive => currentHP > 0;
 
+        /// <summary>
+        /// How long player stays invincible after taking damage.
+        /// </summary>
+        public float InvincibilityDuration = 1f;
+
+        /// <summary>
+        /// Used to manage player invincibility state.
+        /// </summary>
+        bool CanTakeDamage = true;
+
         int currentHP;
+        
 
         /// <summary>
         /// Increment the HP of the entity.
@@ -38,17 +49,7 @@ namespace Platformer.Mechanics
         /// </summary>
         public void Decrement(int dmg)
         {
-            Debug.Log("Damage Received: " + dmg);
-            Debug.Log("Health Before Hit: " + currentHP);
-            currentHP = Mathf.Clamp(currentHP, 0, maxHP);
-            currentHP -= dmg;
-            if (currentHP <= 0)
-            {
-                Debug.Log("Health reached 0, firing HealthIsZero event.");
-                var ev = Schedule<HealthIsZero>();
-                ev.health = this;
-            }
-            Debug.Log("Health After Hit: " + currentHP);
+            StartCoroutine(InvinicibleOnCollision(dmg));
         }
 
         /// <summary>
@@ -63,6 +64,26 @@ namespace Platformer.Mechanics
         {
             currentHP = maxHP;
         }
+        public IEnumerator InvinicibleOnCollision(int dmg)
+        {
+            if (!CanTakeDamage) yield break;
+            CanTakeDamage = false;
 
+            Debug.Log("Damage Received: " + dmg);
+            Debug.Log("Health Before Hit: " + currentHP);
+            currentHP = Mathf.Clamp(currentHP, 0, maxHP);
+            currentHP -= dmg;
+            if (currentHP <= 0)
+            {
+                Debug.Log("Health reached 0, firing HealthIsZero event.");
+                var ev = Schedule<HealthIsZero>();
+                ev.health = this;
+            }
+            Debug.Log("Health After Hit: " + currentHP);
+
+            
+            yield return new WaitForSeconds(InvincibilityDuration);
+            CanTakeDamage = true;
+        }
     }
 }
