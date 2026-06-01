@@ -1,4 +1,6 @@
 using Platformer.Core;
+using System.Collections;
+using System.Collections.Generic;
 using Platformer.Mechanics;
 using Platformer.Model;
 using UnityEngine;
@@ -46,7 +48,11 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                if (player.invulnTimer > 0)
+                    return;
+                player.health.Decrement(enemy.enemyDamage);
+                player.invulnTimer = 1f;
+
             }
         }
     }

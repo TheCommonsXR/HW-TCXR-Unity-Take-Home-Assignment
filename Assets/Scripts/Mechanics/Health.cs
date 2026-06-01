@@ -1,6 +1,7 @@
 using System;
 using Platformer.Gameplay;
 using UnityEngine;
+using UnityEngine.UI;
 using static Platformer.Core.Simulation;
 
 namespace Platformer.Mechanics
@@ -13,12 +14,15 @@ namespace Platformer.Mechanics
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
-        public int maxHP = 1;
-
+        public int maxHP=5;
+        float UIHealthBarMaxHP;
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
         /// </summary>
         public bool IsAlive => currentHP > 0;
+
+        public Image UIHealthBar;
+
 
         int currentHP;
 
@@ -30,6 +34,15 @@ namespace Platformer.Mechanics
             currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
         }
 
+        // public void baseMaxHP(int _health)
+        // {
+        //     maxHP = _health;
+        // }
+        public void setMaxHp()
+        {
+            fillUIHealth();
+            while (currentHP < maxHP) Increment();
+        }
         /// <summary>
         /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
         /// current HP reaches 0.
@@ -37,6 +50,19 @@ namespace Platformer.Mechanics
         public void Decrement()
         {
             currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
+            if (currentHP == 0)
+            {
+                var ev = Schedule<HealthIsZero>();
+                ev.health = this;
+            }
+
+        }
+        public void Decrement(int amount)
+        {
+            currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
+            //Debug.Log(currentHP);
+            //reduce health bar
+            UIHealthBar.fillAmount=(float)currentHP/UIHealthBarMaxHP;
             if (currentHP == 0)
             {
                 var ev = Schedule<HealthIsZero>();
@@ -51,10 +77,17 @@ namespace Platformer.Mechanics
         {
             while (currentHP > 0) Decrement();
         }
-
+        public int getCurrentHP(){
+            return currentHP;
+        }
+         public void fillUIHealth(){
+             UIHealthBar.fillAmount=(float)maxHP; 
+         }
         void Awake()
         {
             currentHP = maxHP;
+
+            UIHealthBarMaxHP=(float)maxHP;
         }
     }
 }

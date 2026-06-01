@@ -34,6 +34,14 @@ namespace Platformer.Mechanics
         public Health health;
         public bool controlEnabled = true;
 
+        public GameObject bullet;
+
+        public int bulletDamage;
+
+        public float invulnTimer = 0f;
+
+        
+        //public int maxHealth;
         bool jump;
         Vector2 move;
         SpriteRenderer spriteRenderer;
@@ -49,10 +57,19 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+            //health.baseMaxHP(maxHealth);
+            
         }
-
+        // public void baseMaxHP(){
+        //     health.baseMaxHP(maxHealth);
+        // }
         protected override void Update()
         {
+            //reduce timer for invulnerability when its active
+            if (invulnTimer > 0)
+            {
+                invulnTimer -= Time.deltaTime;
+            }
             if (controlEnabled)
             {
                 move.x = Input.GetAxis("Horizontal");
@@ -62,6 +79,15 @@ namespace Platformer.Mechanics
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
+                }
+                //when leftclick is pressed shoot create bullet and record position and direction
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    var newBullet = Instantiate(bullet);
+                    newBullet.transform.position = transform.position;
+                    var bulletMove = newBullet.GetComponent<Bullet>();
+                    if (bulletMove)
+                        bulletMove.Init(new Vector2(spriteRenderer.flipX ? -1 : 1, 0), bulletDamage);
                 }
             }
             else
@@ -137,5 +163,6 @@ namespace Platformer.Mechanics
             InFlight,
             Landed
         }
+
     }
 }
