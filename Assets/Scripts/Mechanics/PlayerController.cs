@@ -36,6 +36,12 @@ namespace Platformer.Mechanics
         public float invinicility = 1f;
         public float lastHit;
 
+        public Bullet bullet;
+
+        public Transform firePoint;
+
+        public int bulletDamage = 1;
+
         bool jump;
         Vector2 move;
         SpriteRenderer spriteRenderer;
@@ -86,6 +92,8 @@ namespace Platformer.Mechanics
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
                 }
+                if (Input.GetButtonDown("Fire1"))
+                    Fire();
             }
             else
             {
@@ -93,6 +101,16 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
+        }
+
+        void Fire()
+        {
+            if (bullet == null) return;
+            var pos = firePoint != null ? firePoint.position : transform.position;
+            var bullet = Instantiate(bullet, pos, Quaternion.identity);
+            bullet.damage = bulletDamage;
+            var facing = spriteRenderer.flipX ? Vector2.left : Vector2.right;
+            bullet.Shoot(facing);
         }
 
         void UpdateJumpState()
