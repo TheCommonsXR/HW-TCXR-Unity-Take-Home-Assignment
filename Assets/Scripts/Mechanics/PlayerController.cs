@@ -4,6 +4,7 @@ using Platformer.Model;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using static Platformer.Core.Simulation;
 
@@ -45,7 +46,12 @@ namespace Platformer.Mechanics
         public GameObject projectile;
         public GameObject firePoint;
         public int bulletDamage = 1;
+        public int MaxProjectileCount = 45;
+        int currentProjectileCount = 0;
+        public bool InfiniteProjectiles = true;
 
+        [Header("Game Values")]
+        public Vector2 spawnPoint;
 
         public Bounds Bounds => collider2d.bounds;
 
@@ -56,7 +62,9 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+            currentProjectileCount = MaxProjectileCount;
 
+            transform.position = spawnPoint;
         }
 
         protected override void Update()
@@ -142,6 +150,10 @@ namespace Platformer.Mechanics
 
         void FireBullet()
         {
+            if (!InfiniteProjectiles && currentProjectileCount <= 0) return;
+
+            if (!InfiniteProjectiles) currentProjectileCount--;
+
             GameObject new_bullet = Instantiate(projectile, firePoint.transform.position, Quaternion.identity);
             ProjectileBehavior bulletScript = new_bullet.GetComponent<ProjectileBehavior>();
 

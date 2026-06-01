@@ -31,7 +31,7 @@ namespace Platformer.Gameplay
                     enemyHealth.Decrement(collisionDamage);
                     if (!enemyHealth.IsAlive)
                     {
-                        Schedule<EnemyDeath>().enemy = enemy;
+                        var ev = Schedule<EnemyDeath>().enemy = enemy;
                         player.Bounce(2);
                     }
                     else

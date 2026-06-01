@@ -49,9 +49,7 @@ namespace Platformer.Mechanics
                 {
                     Schedule<EnemyDeath>().enemy = enemy;
                 }
-
             }
-
         }
 
         public void SetDirection(Vector2 dir)

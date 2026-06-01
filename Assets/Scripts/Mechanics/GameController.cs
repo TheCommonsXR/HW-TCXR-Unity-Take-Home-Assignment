@@ -1,6 +1,8 @@
 using Platformer.Core;
 using Platformer.Model;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using static Cinemachine.CinemachineTriggerAction.ActionSettings;
 
 namespace Platformer.Mechanics
 {
@@ -20,9 +22,15 @@ namespace Platformer.Mechanics
         //conveniently configured inside the inspector.
         public PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
+        public bool TimedMode = false;
+        public float MaxTime = 120f; // 2 minutes in seconds
+        float minuteTimer = 0f;
+
         void OnEnable()
         {
             Instance = this;
+
+            if (TimedMode) minuteTimer = MaxTime;
         }
 
         void OnDisable()
@@ -33,6 +41,19 @@ namespace Platformer.Mechanics
         void Update()
         {
             if (Instance == this) Simulation.Tick();
+
+            if (TimedMode)
+            {
+                minuteTimer -= Time.deltaTime;
+
+                if (minuteTimer <= 0)
+                {
+                    // Handle time running out (e.g., end game, respawn, etc.)
+                    minuteTimer = 0; // Ensure timer doesn't go negative
+                    //Restart scene
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                }
+            }
         }
     }
 }
