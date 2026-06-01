@@ -42,6 +42,9 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => collider2d.bounds;
 
+        public GameObject bulletPrefab;
+        public float yDamage = 5f; 
+
         void Awake()
         {
             health = GetComponent<Health>();
@@ -62,6 +65,10 @@ namespace Platformer.Mechanics
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
+                }
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    Shoot();
                 }
             }
             else
@@ -136,6 +143,20 @@ namespace Platformer.Mechanics
             Jumping,
             InFlight,
             Landed
+        }
+
+        void Shoot()
+        {
+            Vector2 direction = spriteRenderer.flipX ? Vector2.left : Vector2.right;
+
+            Vector2 spawnPosition = (Vector2)transform.position + direction * 0.5f;
+
+            GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+            Builet bulletScript = bullet.GetComponent<Builet>();
+            if (bulletScript != null)
+            {
+                bulletScript.SetDirDmg(direction, yDamage);
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
+using System.Collections;
 
 namespace Platformer.Mechanics
 {
@@ -13,12 +14,15 @@ namespace Platformer.Mechanics
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
-        public int maxHP = 1;
+        public int maxHP = 3;
 
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
         /// </summary>
         public bool IsAlive => currentHP > 0;
+
+        public bool isInvincible = false; // Check if player is currently immune to damage
+
 
         int currentHP;
 
@@ -42,6 +46,7 @@ namespace Platformer.Mechanics
                 var ev = Schedule<HealthIsZero>();
                 ev.health = this;
             }
+            Debug.Log($"{gameObject.name} HP: {currentHP}");
         }
 
         /// <summary>
@@ -49,12 +54,40 @@ namespace Platformer.Mechanics
         /// </summary>
         public void Die()
         {
-            while (currentHP > 0) Decrement();
+            if (currentHP > 0) Decrement();
+        }
+
+        /// <summary>
+        /// Reset the HP of the entity to max HP. Called after player respawn.
+        /// </summary>
+        public void ResetHealth()
+        {
+            currentHP = maxHP;
         }
 
         void Awake()
         {
             currentHP = maxHP;
+        }
+
+        /// <summary>
+        /// Starts temp invincibility coroutine.
+        /// </summary>
+        /// <param name="duration"></param>
+        public void StartInvincibility(float duration)
+        {
+            if (!isInvincible)
+                StartCoroutine(InvincibilityCoroutine(duration));
+        }
+
+        /// <summary>
+        /// Starts a coroutine to make the entity invincible for a specified duration.
+        /// </summary>
+        private IEnumerator InvincibilityCoroutine(float duration)
+        {
+            isInvincible = true;
+            yield return new WaitForSeconds(duration);
+            isInvincible = false;
         }
     }
 }

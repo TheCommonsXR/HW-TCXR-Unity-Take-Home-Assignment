@@ -23,6 +23,8 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => _collider.bounds;
 
+        public float health = 10f; // Enemy health
+
         void Awake()
         {
             control = GetComponent<AnimationController>();
@@ -48,6 +50,18 @@ namespace Platformer.Mechanics
             {
                 if (mover == null) mover = path.CreateMover(control.maxSpeed * 0.5f);
                 control.move.x = Mathf.Clamp(mover.Position.x - transform.position.x, -1, 1);
+            }
+        }
+
+        /// <summary>
+        /// Applies damage to the enemy and calls enemy death event if health reaches 0.
+        /// </summary>
+        public void TakeDamage(float damage)
+        {
+            health -= damage;
+            if (health <= 0)
+            {
+                Schedule<EnemyDeath>().enemy = this;
             }
         }
 

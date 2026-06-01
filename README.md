@@ -39,4 +39,10 @@ The game designer would like to add a player "gun" weapon.  On a keypress, the P
 ## Question 4
 The game designer would like to create different game modes.  These modes would require a different configuration of game values like player health and starting position.  Implement the necessary changes to allow the game designer to be independent of a developer, add and run new game mode configurations.  It is expected the designer can be working inside unity but will not write any code.
 
+## Implementations
 
+Q1 and Q2: Edited Health, PlayerDeath, and PlayerSpawn scripts.
+
+Q3: Created a Builet script(accidentally mispelled Bullet) and edited EnemyController and PlayerController.
+
+Q4: WIP
