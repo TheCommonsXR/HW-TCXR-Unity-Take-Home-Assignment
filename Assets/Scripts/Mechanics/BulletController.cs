@@ -19,7 +19,9 @@ public class BulletController : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector2.right * direction * speed * Time.deltaTime);
+        transform.Translate(
+            Vector2.right * direction * speed * Time.deltaTime
+        );
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -40,5 +42,10 @@ public class BulletController : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    public void SetSpeed(float newSpeed)
+    {
+        speed = newSpeed;
     }
 }

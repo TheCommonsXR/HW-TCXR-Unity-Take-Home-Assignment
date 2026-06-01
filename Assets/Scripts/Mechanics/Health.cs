@@ -11,6 +11,10 @@ namespace Platformer.Mechanics
     /// </summary>
     public class Health : MonoBehaviour
     {
+        
+        [SerializeField]
+        private float immunityTime = 1f;
+        
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
@@ -63,7 +67,7 @@ namespace Platformer.Mechanics
         IEnumerator DamageCoolDown()
         {
             isImmune = true;
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(immunityTime);
             isImmune = false;
         }
         /// <summary>
@@ -75,6 +79,17 @@ namespace Platformer.Mechanics
 
             var ev = Schedule<HealthIsZero>();
             ev.health = this;
+        }
+        
+        public void SetMaxHealth(int value)
+        {
+            maxHP = value;
+            currentHP = maxHP;
+        }
+
+        public void SetImmunityTime(float value)
+        {
+            immunityTime = value;
         }
 
         
