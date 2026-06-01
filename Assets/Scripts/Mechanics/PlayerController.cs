@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using Platformer.Core;
+using Platformer.Gameplay;
+using Platformer.Model;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Platformer.Gameplay;
+using UnityEngine.UIElements;
 using static Platformer.Core.Simulation;
-using Platformer.Model;
-using Platformer.Core;
 
 namespace Platformer.Mechanics
 {
@@ -40,6 +41,12 @@ namespace Platformer.Mechanics
         internal Animator animator;
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
+        [Header("Projectile Settings")]
+        public GameObject projectile;
+        public GameObject firePoint;
+        public int bulletDamage = 1;
+
+
         public Bounds Bounds => collider2d.bounds;
 
         void Awake()
@@ -49,6 +56,7 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+
         }
 
         protected override void Update()
@@ -62,6 +70,11 @@ namespace Platformer.Mechanics
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
+                }
+                //Press left click to shoot
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    FireBullet();
                 }
             }
             else
@@ -118,15 +131,31 @@ namespace Platformer.Mechanics
                 }
             }
 
-            if (move.x > 0.01f)
-                spriteRenderer.flipX = false;
-            else if (move.x < -0.01f)
-                spriteRenderer.flipX = true;
+            if (move.x > 0.01f) spriteRenderer.flipX = false;
+            else if (move.x < -0.01f) spriteRenderer.flipX = true;
 
             animator.SetBool("grounded", IsGrounded);
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
             targetVelocity = move * maxSpeed;
+        }
+
+        void FireBullet()
+        {
+            GameObject new_bullet = Instantiate(projectile, firePoint.transform.position, Quaternion.identity);
+            ProjectileBehavior bulletScript = new_bullet.GetComponent<ProjectileBehavior>();
+
+            bulletScript.SetDamage(bulletDamage);
+
+            if (spriteRenderer.flipX )
+            {
+                bulletScript.SetDirection(Vector2.left);
+            }
+
+            else
+            {
+                bulletScript.SetDirection(Vector2.right);
+            }
         }
 
         public enum JumpState
