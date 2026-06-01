@@ -45,4 +45,4 @@ Q1 and Q2: Edited Health, PlayerDeath, and PlayerSpawn scripts.
 
 Q3: Created a Builet script(accidentally mispelled Bullet) and edited EnemyController and PlayerController.
 
-Q4: WIP
+Q4: Added GameConfig and GameModeManager scripts. Also, made a DefaultMode prefab to which the GameConfig script is attached with default player values. A game designer can copy this prefab to create a new one with different values, and then replace it in the GameModeManager inspector to change the game mode.
