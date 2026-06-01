@@ -3,6 +3,7 @@ using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
 using System.Collections;
+using TMPro;
 
 namespace Platformer.Mechanics
 {
@@ -23,6 +24,8 @@ namespace Platformer.Mechanics
 
         public bool isInvincible = false; // Check if player is currently immune to damage
 
+        public TMP_Text healthText;
+
 
         int currentHP;
 
@@ -32,6 +35,7 @@ namespace Platformer.Mechanics
         public void Increment()
         {
             currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
+            healthText.text = $"HP: {currentHP}";
         }
 
         /// <summary>
@@ -46,6 +50,7 @@ namespace Platformer.Mechanics
                 var ev = Schedule<HealthIsZero>();
                 ev.health = this;
             }
+            healthText.text = $"HP: {currentHP}";
             Debug.Log($"{gameObject.name} HP: {currentHP}");
         }
 
@@ -63,11 +68,13 @@ namespace Platformer.Mechanics
         public void ResetHealth()
         {
             currentHP = maxHP;
+            healthText.text = $"HP: {currentHP}";
         }
 
         void Awake()
         {
             currentHP = maxHP;
+            healthText.text = $"HP: {currentHP}";
         }
 
         /// <summary>
