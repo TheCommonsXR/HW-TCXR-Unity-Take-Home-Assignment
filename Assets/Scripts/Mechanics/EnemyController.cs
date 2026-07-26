@@ -23,6 +23,8 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => _collider.bounds;
 
+       
+
         void Awake()
         {
             control = GetComponent<AnimationController>();
