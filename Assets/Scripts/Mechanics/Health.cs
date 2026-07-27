@@ -44,18 +44,19 @@ namespace Platformer.Mechanics
         public void Damage ( int damageAmount )
         {
             if (IsInvulnerable) return;
+            currentHP -= damageAmount;
             Debug.Log("Collision");
-            currentHP = Mathf.Clamp(currentHP - damageAmount, 0, maxHP);
-            UpdateHealthText();
-            Debug.Log($"[Health] Took {damageAmount} damage! Current HP: {currentHP}/{maxHP}");
-            if (currentHP == 0)
+            if (currentHP <= 0)
             {
-                var ev = Schedule<HealthIsZero>();
-                ev.health = this;
-            } else
+                currentHP = 0; 
+                Schedule<HealthIsZero>().health = this;
+            } 
+            else
             {
                 TriggerTimer();
             }
+            UpdateHealthText();
+            Debug.Log($"[Health] Took {damageAmount} damage! Current HP: {currentHP}/{maxHP}");
         }
 
         public void RestoreHealth()
@@ -66,8 +67,11 @@ namespace Platformer.Mechanics
         }
         public void Increment()
         {
-            currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
-            UpdateHealthText();
+            if (currentHP < maxHP)
+            {
+                currentHP++;
+                UpdateHealthText();
+            }
         }
 
         public void Die()
