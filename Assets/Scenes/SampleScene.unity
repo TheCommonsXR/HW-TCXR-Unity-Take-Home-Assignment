@@ -100879,6 +100879,16 @@ PrefabInstance:
       propertyPath: hptext
       value: 
       objectReference: {fileID: 1942859917}
+    - target: {fileID: 6082575806313374961, guid: 7d60c822c3f1b408ea7a00ecdb5e047a,
+        type: 3}
+      propertyPath: immunitytimer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6082575806313374961, guid: 7d60c822c3f1b408ea7a00ecdb5e047a,
+        type: 3}
+      propertyPath: immunityduration
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -11,31 +11,40 @@ namespace Platformer.Mechanics
     /// </summary>
     public class Health : MonoBehaviour
     {
-        /// <summary>
-        /// The maximum hit points for the entity.
-        /// </summary>
+     
         public int maxHP;
 
-        /// <summary>
-        /// Indicates if the entity should be considered 'alive'.
-        /// </summary>
+    public float immunityduration;
+    public float immunitytimer;
+    public bool IsInvulnerable => immunitytimer > 0;   
         public bool IsAlive => currentHP > 0;
 
         int currentHP;
         [SerializeField] TMP_Text hptext;
-        /// <summary>
-        /// Increment the HP of the entity.
-        /// </summary>
-        /// 
-        /// 
-        /// 
+   
         public void Awake()
         {
             currentHP = maxHP;
             UpdateHealthText();
         }
+
+         public void Update()
+        {
+            if (immunitytimer > 0)
+            {
+                immunitytimer -= Time.deltaTime;
+            }
+        }  
+
+        public void TriggerTimer()
+        {
+            immunitytimer = immunityduration;
+        }
+ 
         public void Damage ( int damageAmount )
         {
+            if (IsInvulnerable) return;
+            Debug.Log("Collision");
             currentHP = Mathf.Clamp(currentHP - damageAmount, 0, maxHP);
             UpdateHealthText();
             Debug.Log($"[Health] Took {damageAmount} damage! Current HP: {currentHP}/{maxHP}");
@@ -43,12 +52,16 @@ namespace Platformer.Mechanics
             {
                 var ev = Schedule<HealthIsZero>();
                 ev.health = this;
+            } else
+            {
+                TriggerTimer();
             }
         }
 
         public void RestoreHealth()
         {
             currentHP = maxHP;
+            immunitytimer = 0f;
             UpdateHealthText();
         }
         public void Increment()
@@ -57,13 +70,6 @@ namespace Platformer.Mechanics
             UpdateHealthText();
         }
 
-      
-        public void Decrement()
-        {
-            Damage(1);
-        }
-
-       
         public void Die()
         {
             Damage(currentHP);
@@ -72,5 +78,6 @@ namespace Platformer.Mechanics
         {
             hptext.text = $"HP: {currentHP}/{maxHP}";
         }
+
     }
 }

@@ -27,7 +27,7 @@ namespace Platformer.Gameplay
                 var enemyHealth = enemy.GetComponent<Health>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.Decrement();
+                    enemyHealth.Damage(enemy.damage);
                     if (!enemyHealth.IsAlive)
                     {
                         Schedule<EnemyDeath>().enemy = enemy;
@@ -47,6 +47,7 @@ namespace Platformer.Gameplay
             else
             {
                 var playerHealth = player.GetComponent<Health>();
+                if (playerHealth.IsInvulnerable) return;
                 playerHealth.Damage(enemy.damage);
                 if (!playerHealth.IsAlive)
                 {
