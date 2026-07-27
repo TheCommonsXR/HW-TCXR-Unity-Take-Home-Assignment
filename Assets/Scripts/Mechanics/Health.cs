@@ -1,5 +1,6 @@
 using System;
 using Platformer.Gameplay;
+using TMPro;
 using UnityEngine;
 using static Platformer.Core.Simulation;
 
@@ -21,14 +22,23 @@ namespace Platformer.Mechanics
         public bool IsAlive => currentHP > 0;
 
         int currentHP;
-
+        [SerializeField] TMP_Text hptext;
         /// <summary>
         /// Increment the HP of the entity.
         /// </summary>
         /// 
+        /// 
+        /// 
+        public void Awake()
+        {
+            currentHP = maxHP;
+            UpdateHealthText();
+        }
         public void Damage ( int damageAmount )
         {
             currentHP = Mathf.Clamp(currentHP - damageAmount, 0, maxHP);
+            UpdateHealthText();
+            Debug.Log($"[Health] Took {damageAmount} damage! Current HP: {currentHP}/{maxHP}");
             if (currentHP == 0)
             {
                 var ev = Schedule<HealthIsZero>();
@@ -39,32 +49,28 @@ namespace Platformer.Mechanics
         public void RestoreHealth()
         {
             currentHP = maxHP;
+            UpdateHealthText();
         }
         public void Increment()
         {
             currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
+            UpdateHealthText();
         }
 
-        /// <summary>
-        /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
-        /// current HP reaches 0.
-        /// </summary>
+      
         public void Decrement()
         {
             Damage(1);
         }
 
-        /// <summary>
-        /// Decrement the HP of the entitiy until HP reaches 0.
-        /// </summary>
+       
         public void Die()
         {
             Damage(currentHP);
         }
-
-        void Awake()
+    private void UpdateHealthText()
         {
-            currentHP = maxHP;
+            hptext.text = $"HP: {currentHP}/{maxHP}";
         }
     }
 }

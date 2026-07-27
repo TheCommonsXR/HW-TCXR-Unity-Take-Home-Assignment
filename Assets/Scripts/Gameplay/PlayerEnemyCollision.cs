@@ -15,7 +15,7 @@ namespace Platformer.Gameplay
     {
         public EnemyController enemy;
         public PlayerController player;
-
+ 
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
         public override void Execute()
@@ -46,7 +46,18 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                var playerHealth = player.GetComponent<Health>();
+                playerHealth.Damage(enemy.damage);
+                if (!playerHealth.IsAlive)
+                {
+                    Schedule<PlayerDeath>();
+                }
+                else
+                {
+                    player.Bounce(5);
+                    player.audioSource.PlayOneShot(player.ouchAudio);
+                    player.animator.SetTrigger("hurt");
+                }
             }
         }
     }

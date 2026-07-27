@@ -23,7 +23,7 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => _collider.bounds;
 
-       
+       public int damage;
 
         void Awake()
         {
