@@ -9,7 +9,7 @@ using Platformer.Core;
 namespace Platformer.Mechanics
 {
     /// <summary>
-    /// Represebts the current vital statistics of some game entity.
+    /// Represents the current vital statistics of some game entity.
     /// </summary>
     public class Health : MonoBehaviour
     {
@@ -27,8 +27,21 @@ namespace Platformer.Mechanics
 
         public GameObject damageNumberPrefab;
         public Color damageNumberColor = Color.red;
+        public Color immunityDamageNumberColor = Color.white;
 
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
+
+        public SpriteRenderer sr;
+        Color playerColor;
+        public Color immunityColor;
+
+        public float immunityTime = 1f;
+        bool hasImmunity;
+
+        /// <summary>
+        /// Indicates if the player has immunity and should not recieve damage
+        /// </summary>
+        public bool HasImmunity => hasImmunity;
 
         /// <summary>
         /// Increment the HP of the entity.
@@ -76,18 +89,38 @@ namespace Platformer.Mechanics
         /// <summary>
         /// Instantiate damage number
         /// </summary>
-        public void SpawnDamageNumber(int damage)
+        public void SpawnDamageNumber(int damage, Color color)
         {
             // Spawn the damageNumber slightly above the player
             GameObject damageNumber = Instantiate(damageNumberPrefab, transform.position + Vector3.up * 0.25f, Quaternion.identity);
             // Give it damage value and color
-            damageNumber.GetComponent<DamageNumber>().Setup(damage, damageNumberColor);
+            damageNumber.GetComponent<DamageNumber>().Setup(damage, color);
+        }
+
+        /// <summary>
+        /// After collision, give player immunity for x seconds
+        /// </summary>
+        public void GiveImmmunity()
+        {
+            hasImmunity = true;
+            sr.color = immunityColor;
+            Invoke("EndImmunity", immunityTime);
+        }
+
+        /// <summary>
+        /// End immunity after x seconds
+        /// </summary>
+        void EndImmunity()
+        {
+            hasImmunity = false;
+            sr.color = playerColor;
         }
 
         void Awake()
         {
             currentHP = maxHP;
             model.healthText.text = currentHP.ToString();
+            playerColor = sr.color;
         }
     }
 }

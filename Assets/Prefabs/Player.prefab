@@ -278,6 +278,10 @@ MonoBehaviour:
   maxHP: 3
   damageNumberPrefab: {fileID: 8092932317588900056, guid: 921f0c09b50664535bb4a7e9233ed5ab,
     type: 3}
+  damageNumberColor: {r: 1, g: 0, b: 0, a: 1}
+  immunityDamageNumberColor: {r: 1, g: 1, b: 1, a: 1}
+  sr: {fileID: 212064061491315838}
+  immunityTime: 1
 --- !u!61 &1824045667
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -46,16 +46,28 @@ namespace Platformer.Gameplay
             }
             else
             {
-                // Show damage number based on damage dealt
-                player.health.SpawnDamageNumber(enemy.damage);
-
-                // Deal damage to player so long as they're alive
-                for (int i = 0; i < enemy.damage; i++)
+                // Player does NOT have immunity
+                if (!player.health.HasImmunity)
                 {
-                    if (player.health.IsAlive)
-                        player.health.Decrement();
-                    else
-                        break;
+                    // Show damage number based on damage dealt
+                    player.health.SpawnDamageNumber(enemy.damage, player.health.damageNumberColor);
+
+                    // Deal damage to player so long as they're alive
+                    for (int i = 0; i < enemy.damage; i++)
+                    {
+                        if (player.health.IsAlive)
+                            player.health.Decrement();
+                        else
+                            break;
+                    }
+
+                    player.health.GiveImmmunity();
+                }
+                // Player HAS immunity. Deal no damage
+                else
+                {
+                    // Show that no damage is dealt
+                    player.health.SpawnDamageNumber(0, player.health.immunityDamageNumberColor);
                 }
             }
         }
