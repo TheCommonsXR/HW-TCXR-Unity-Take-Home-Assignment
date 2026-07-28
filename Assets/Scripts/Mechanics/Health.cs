@@ -15,6 +15,7 @@ namespace Platformer.Mechanics
         /// </summary>
         public int maxHP = 1;
 
+
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
         /// </summary>
@@ -34,10 +35,11 @@ namespace Platformer.Mechanics
         /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
         /// current HP reaches 0.
         /// </summary>
-        public void Decrement()
+        public void Decrement(int dmg )//question1
         {
-            currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
-            if (currentHP == 0)
+            currentHP = Mathf.Clamp(currentHP - dmg, 0, maxHP); //question1
+            Debug.Log($"{currentHP}/{maxHP}"); //question1
+            if (currentHP == 0 && GetComponent<PlayerController>() != null) //question 3 had to add this so player doesn't die
             {
                 var ev = Schedule<HealthIsZero>();
                 ev.health = this;
@@ -49,7 +51,13 @@ namespace Platformer.Mechanics
         /// </summary>
         public void Die()
         {
-            while (currentHP > 0) Decrement();
+            while (currentHP > 0) Decrement(1);
+        }
+
+        public void SetHealth(int amount) // question 4
+        {
+            maxHP = amount;
+            currentHP = amount;
         }
 
         void Awake()

@@ -21,6 +21,8 @@ namespace Platformer.Mechanics
         internal AudioSource _audio;
         SpriteRenderer spriteRenderer;
 
+        public int dmg = 1; //question1
+
         public Bounds Bounds => _collider.bounds;
 
         void Awake()
