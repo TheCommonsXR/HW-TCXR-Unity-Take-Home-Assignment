@@ -2,6 +2,9 @@ using System;
 using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
+using TMPro;
+using Platformer.Model;
+using Platformer.Core;
 
 namespace Platformer.Mechanics
 {
@@ -23,6 +26,9 @@ namespace Platformer.Mechanics
         int currentHP;
 
         public GameObject damageNumberPrefab;
+        public Color damageNumberColor = Color.red;
+
+        PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
         /// <summary>
         /// Increment the HP of the entity.
@@ -30,6 +36,8 @@ namespace Platformer.Mechanics
         public void Increment()
         {
             currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
+
+            model.healthText.text = currentHP.ToString();
         }
 
         /// <summary>
@@ -38,17 +46,14 @@ namespace Platformer.Mechanics
         /// </summary>
         public void Decrement()
         {
-            // Spawn the damageNumber slightly above the player
-            GameObject damageNumber = Instantiate(damageNumberPrefab, transform.position + Vector3.up * 0.25f, Quaternion.identity);
-            // Give it damage value and color
-            damageNumber.GetComponent<DamageNumber>().Setup(1, Color.red);
-
             currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
             if (currentHP == 0)
             {
                 var ev = Schedule<HealthIsZero>();
                 ev.health = this;
             }
+
+            model.healthText.text = currentHP.ToString();
         }
 
         /// <summary>
@@ -65,11 +70,24 @@ namespace Platformer.Mechanics
         public void ResetHealth()
         {
             currentHP = maxHP;
+            model.healthText.text = currentHP.ToString();
+        }
+
+        /// <summary>
+        /// Instantiate damage number
+        /// </summary>
+        public void SpawnDamageNumber(int damage)
+        {
+            // Spawn the damageNumber slightly above the player
+            GameObject damageNumber = Instantiate(damageNumberPrefab, transform.position + Vector3.up * 0.25f, Quaternion.identity);
+            // Give it damage value and color
+            damageNumber.GetComponent<DamageNumber>().Setup(damage, damageNumberColor);
         }
 
         void Awake()
         {
             currentHP = maxHP;
+            model.healthText.text = currentHP.ToString();
         }
     }
 }

@@ -1,5 +1,6 @@
 using Platformer.Mechanics;
 using UnityEngine;
+using TMPro;
 
 namespace Platformer.Model
 {
@@ -38,5 +39,9 @@ namespace Platformer.Model
         /// </summary>
         public float jumpDeceleration = 0.5f;
 
+        /// <summary>
+        /// The health text UI in the scene
+        /// </summary>
+        public TMP_Text healthText;
     }
 }

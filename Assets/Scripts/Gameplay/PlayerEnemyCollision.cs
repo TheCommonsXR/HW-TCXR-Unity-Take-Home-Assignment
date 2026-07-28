@@ -46,7 +46,17 @@ namespace Platformer.Gameplay
             }
             else
             {
-                player.health.Decrement();
+                // Show damage number based on damage dealt
+                player.health.SpawnDamageNumber(enemy.damage);
+
+                // Deal damage to player so long as they're alive
+                for (int i = 0; i < enemy.damage; i++)
+                {
+                    if (player.health.IsAlive)
+                        player.health.Decrement();
+                    else
+                        break;
+                }
             }
         }
     }
