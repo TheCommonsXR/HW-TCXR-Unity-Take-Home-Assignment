@@ -276,6 +276,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 3
+  damageNumberPrefab: {fileID: 8092932317588900056, guid: 921f0c09b50664535bb4a7e9233ed5ab,
+    type: 3}
 --- !u!61 &1824045667
 BoxCollider2D:
   m_ObjectHideFlags: 0

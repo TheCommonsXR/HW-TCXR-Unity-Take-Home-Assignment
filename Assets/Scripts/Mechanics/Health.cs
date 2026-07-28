@@ -22,6 +22,8 @@ namespace Platformer.Mechanics
 
         int currentHP;
 
+        public GameObject damageNumberPrefab;
+
         /// <summary>
         /// Increment the HP of the entity.
         /// </summary>
@@ -36,6 +38,11 @@ namespace Platformer.Mechanics
         /// </summary>
         public void Decrement()
         {
+            // Spawn the damageNumber slightly above the player
+            GameObject damageNumber = Instantiate(damageNumberPrefab, transform.position + Vector3.up * 0.25f, Quaternion.identity);
+            // Give it damage value and color
+            damageNumber.GetComponent<DamageNumber>().Setup(1, Color.red);
+
             currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
             if (currentHP == 0)
             {
