@@ -34,6 +34,11 @@ namespace Platformer.Mechanics
         public Health health;
         public bool controlEnabled = true;
 
+        public int dmg = 1; //question1 question 3
+
+        public Bullet bullet;
+        public Transform fire;
+
         bool jump;
         Vector2 move;
         SpriteRenderer spriteRenderer;
@@ -41,6 +46,12 @@ namespace Platformer.Mechanics
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
         public Bounds Bounds => collider2d.bounds;
+
+        public float immuneDuration = 1.0f; //question2
+        private float immuneTime = 0f; //question2
+
+        public bool isImmune = false; //question2
+        public Vector2 face;//question 3
 
         void Awake()
         {
@@ -53,6 +64,14 @@ namespace Platformer.Mechanics
 
         protected override void Update()
         {
+            if(isImmune){ //question2
+                immuneTime -= Time.deltaTime; //question2
+            if(immuneTime <= 0f) //question2
+                {
+                    immuneTime = 0f; //question 2
+                    isImmune = false; //question2
+                }
+            }
             if (controlEnabled)
             {
                 move.x = Input.GetAxis("Horizontal");
@@ -68,10 +87,27 @@ namespace Platformer.Mechanics
             {
                 move.x = 0;
             }
+            if (Input.GetKeyDown(KeyCode.F)) //question 3
+            {
+                Shoot();
+            }
             UpdateJumpState();
             base.Update();
         }
 
+        private void Shoot() //question 3
+        {
+            if (spriteRenderer.flipX)
+            {
+                face = Vector2.left;
+            }
+            else
+            {
+                face = Vector2.right;
+            }
+            Bullet spawnBullet =  Instantiate(bullet, fire.position, Quaternion.identity); //question 3
+            spawnBullet.getPlayerInfo(face, dmg);
+        }
         void UpdateJumpState()
         {
             jump = false;
@@ -129,6 +165,14 @@ namespace Platformer.Mechanics
             targetVelocity = move * maxSpeed;
         }
 
+
+        public void immune() //question2
+        {
+            isImmune = true;
+            immuneTime = immuneDuration;
+
+        }
+        
         public enum JumpState
         {
             Grounded,
