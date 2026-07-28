@@ -52,6 +52,14 @@ namespace Platformer.Mechanics
             while (currentHP > 0) Decrement();
         }
 
+        /// <summary>
+        /// Reset currentHP to maxHP
+        /// </summary>
+        public void ResetHealth()
+        {
+            currentHP = maxHP;
+        }
+
         void Awake()
         {
             currentHP = maxHP;
