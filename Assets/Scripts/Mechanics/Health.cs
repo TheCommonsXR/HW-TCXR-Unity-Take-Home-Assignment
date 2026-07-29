@@ -2,6 +2,7 @@ using System;
 using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
+using System.Collections;
 
 namespace Platformer.Mechanics
 {
@@ -13,14 +14,17 @@ namespace Platformer.Mechanics
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
-        public int maxHP = 1;
+        public int maxHP = 3;
 
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
         /// </summary>
         public bool IsAlive => currentHP > 0;
 
-        int currentHP;
+        public int currentHP;
+
+        private bool isInvulnerable = false;
+        [SerializeField] private float invulnerabilityTime = 1f;
 
         /// <summary>
         /// Increment the HP of the entity.
@@ -34,9 +38,21 @@ namespace Platformer.Mechanics
         /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
         /// current HP reaches 0.
         /// </summary>
+        ///
+
         public void Decrement()
         {
-            currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
+            TakeDamage(1);
+        }
+        public void TakeDamage(int damage)
+        {
+            if (!IsAlive || isInvulnerable)
+                return;
+
+            currentHP = Mathf.Clamp(currentHP - damage, 0, maxHP);
+
+            StartCoroutine(Invulnerability());
+
             if (currentHP == 0)
             {
                 var ev = Schedule<HealthIsZero>();
@@ -44,17 +60,34 @@ namespace Platformer.Mechanics
             }
         }
 
+
+
+        private IEnumerator Invulnerability()
+        {   
+            isInvulnerable = true;
+
+            yield return new WaitForSeconds(invulnerabilityTime);
+
+            isInvulnerable = false;
+        }
+
         /// <summary>
         /// Decrement the HP of the entitiy until HP reaches 0.
         /// </summary>
         public void Die()
         {
-            while (currentHP > 0) Decrement();
+            TakeDamage(currentHP);
         }
 
         void Awake()
         {
             currentHP = maxHP;
         }
+
+        public void ResetHealth()
+        {
+            currentHP = maxHP;
+        }
+
     }
 }
