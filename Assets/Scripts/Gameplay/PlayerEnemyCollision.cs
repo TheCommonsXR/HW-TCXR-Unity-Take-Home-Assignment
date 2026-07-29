@@ -27,7 +27,18 @@ namespace Platformer.Gameplay
                 var enemyHealth = enemy.GetComponent<Health>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.Decrement();
+                    // Show damage number based on damage dealt
+                    enemyHealth.SpawnDamageNumber(player.stompDamage, enemyHealth.damageNumberColor);
+
+                    // Deal damage to enemy so long as they're alive
+                    for (int i = 0; i < player.stompDamage; i++)
+                    {
+                        if (enemyHealth.IsAlive)
+                            enemyHealth.Decrement();
+                        else
+                            break;
+                    }
+
                     if (!enemyHealth.IsAlive)
                     {
                         Schedule<EnemyDeath>().enemy = enemy;

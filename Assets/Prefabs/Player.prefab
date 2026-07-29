@@ -63,6 +63,11 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   health: {fileID: 6082575806313374961}
   controlEnabled: 1
+  bulletPrefab: {fileID: 7698271358840393019, guid: 96d0835a7bcc649bc9b4becd02bf31b7,
+    type: 3}
+  bulletSpeed: 5
+  bulletDamage: 1
+  stompDamage: 3
 --- !u!212 &212064061491315838
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -107,7 +112,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_Sprite: {fileID: 21300020, guid: ba86c7b200abe499cb750833482830b3, type: 3}
-  m_Color: {r: 0.18039216, g: 0.8901961, b: 0.99215686, a: 1}
+  m_Color: {r: 0.19215687, g: 0.8901961, b: 0.99215686, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -281,7 +286,9 @@ MonoBehaviour:
   damageNumberColor: {r: 1, g: 0, b: 0, a: 1}
   immunityDamageNumberColor: {r: 1, g: 1, b: 1, a: 1}
   sr: {fileID: 212064061491315838}
+  immunityAlpha: 0.6
   immunityTime: 1
+  isEnemy: 0
 --- !u!61 &1824045667
 BoxCollider2D:
   m_ObjectHideFlags: 0

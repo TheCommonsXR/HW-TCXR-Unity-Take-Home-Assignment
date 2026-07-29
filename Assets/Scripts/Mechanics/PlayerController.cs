@@ -43,6 +43,12 @@ namespace Platformer.Mechanics
         float knockbackTime;
         bool knockbackDir;
 
+        public GameObject bulletPrefab;
+        public float bulletSpeed;
+        public int bulletDamage;
+
+        public int stompDamage;
+
         public Bounds Bounds => collider2d.bounds;
 
         void Awake()
@@ -65,6 +71,12 @@ namespace Platformer.Mechanics
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
+                }
+
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    GameObject bullet = Instantiate(bulletPrefab, transform.position + Vector3.down * 0.1f, Quaternion.identity);
+                    bullet.GetComponent<Bullet>().Setup(spriteRenderer.flipX, bulletSpeed, bulletDamage, Color.red);
                 }
             }
             else

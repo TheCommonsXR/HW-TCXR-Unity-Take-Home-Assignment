@@ -32,11 +32,12 @@ namespace Platformer.Mechanics
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
         public SpriteRenderer sr;
-        Color playerColor;
-        public Color immunityColor;
+        [Range(0f, 1f)] public float immunityAlpha;
 
         public float immunityTime = 1f;
         bool hasImmunity;
+
+        public bool isEnemy;
 
         /// <summary>
         /// Indicates if the player has immunity and should not recieve damage
@@ -50,7 +51,7 @@ namespace Platformer.Mechanics
         {
             currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
 
-            model.healthText.text = currentHP.ToString();
+            if (!isEnemy) model.healthText.text = currentHP.ToString();
         }
 
         /// <summary>
@@ -60,13 +61,13 @@ namespace Platformer.Mechanics
         public void Decrement()
         {
             currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
-            if (currentHP == 0)
+            if (currentHP == 0 && !isEnemy)
             {
                 var ev = Schedule<HealthIsZero>();
                 ev.health = this;
             }
 
-            model.healthText.text = currentHP.ToString();
+            if (!isEnemy) model.healthText.text = currentHP.ToString();
         }
 
         /// <summary>
@@ -83,7 +84,7 @@ namespace Platformer.Mechanics
         public void ResetHealth()
         {
             currentHP = maxHP;
-            model.healthText.text = currentHP.ToString();
+            if (!isEnemy) model.healthText.text = currentHP.ToString();
         }
 
         /// <summary>
@@ -103,7 +104,12 @@ namespace Platformer.Mechanics
         public void GiveImmmunity()
         {
             hasImmunity = true;
-            sr.color = immunityColor;
+
+            // Change alpha to show immunity duration
+            Color spriteColor = sr.color;
+            spriteColor.a = immunityAlpha;
+            sr.color = spriteColor;
+
             Invoke("EndImmunity", immunityTime);
         }
 
@@ -113,14 +119,17 @@ namespace Platformer.Mechanics
         void EndImmunity()
         {
             hasImmunity = false;
-            sr.color = playerColor;
+
+            // Return alpha to normal
+            Color spriteColor = sr.color;
+            spriteColor.a = 1f;
+            sr.color = spriteColor;
         }
 
         void Awake()
         {
             currentHP = maxHP;
-            model.healthText.text = currentHP.ToString();
-            playerColor = sr.color;
+            if (!isEnemy) model.healthText.text = currentHP.ToString();
         }
     }
 }
