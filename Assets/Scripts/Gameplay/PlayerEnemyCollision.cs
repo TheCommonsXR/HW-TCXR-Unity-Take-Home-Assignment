@@ -27,7 +27,18 @@ namespace Platformer.Gameplay
                 var enemyHealth = enemy.GetComponent<Health>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.Decrement();
+                    // Show damage number based on damage dealt
+                    enemyHealth.SpawnDamageNumber(player.stompDamage, enemyHealth.damageNumberColor);
+
+                    // Deal damage to enemy so long as they're alive
+                    for (int i = 0; i < player.stompDamage; i++)
+                    {
+                        if (enemyHealth.IsAlive)
+                            enemyHealth.Decrement();
+                        else
+                            break;
+                    }
+
                     if (!enemyHealth.IsAlive)
                     {
                         Schedule<EnemyDeath>().enemy = enemy;
@@ -46,7 +57,33 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                // Player does NOT have immunity
+                if (!player.health.HasImmunity)
+                {
+                    // Show damage number based on damage dealt
+                    player.health.SpawnDamageNumber(enemy.damage, player.health.damageNumberColor);
+
+                    // Deal damage to player so long as they're alive
+                    for (int i = 0; i < enemy.damage; i++)
+                    {
+                        if (player.health.IsAlive)
+                            player.health.Decrement();
+                        else
+                            break;
+                    }
+
+                    // Give immunity to player
+                    player.health.GiveImmmunity();
+                }
+                // Player HAS immunity. Deal no damage
+                else
+                {
+                    // Show that no damage is dealt
+                    player.health.SpawnDamageNumber(0, player.health.immunityDamageNumberColor);
+                }
+
+                // Give the player knockback based on position of enemy
+                player.ApplyKnockback(player.transform.position.x > enemy.transform.position.x);
             }
         }
     }

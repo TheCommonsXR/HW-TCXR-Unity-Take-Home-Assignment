@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - TutorialRequirement
+  - Bullet
+  - Crystal
+  - Checkpoint
+  - Cactus
+  - Walls
   layers:
   - Default
   - TransparentFX
@@ -12,7 +17,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Enemy
   - 
   - 
   - 

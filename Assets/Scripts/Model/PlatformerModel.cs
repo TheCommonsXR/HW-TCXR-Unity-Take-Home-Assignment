@@ -1,5 +1,6 @@
 using Platformer.Mechanics;
 using UnityEngine;
+using TMPro;
 
 namespace Platformer.Model
 {
@@ -38,5 +39,19 @@ namespace Platformer.Model
         /// </summary>
         public float jumpDeceleration = 0.5f;
 
+        /// <summary>
+        /// The health text UI in the scene
+        /// </summary>
+        public TMP_Text healthText;
+
+        /// <summary>
+        /// Knockback modifier applied velocities.
+        /// </summary>
+        public float knockbackModifier = 1.5f;
+
+        /// <summary>
+        /// Dissipate knockback over time
+        /// </summary>
+        public float knockbackDeceleration = 0.5f;
     }
 }

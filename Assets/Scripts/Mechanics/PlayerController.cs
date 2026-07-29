@@ -40,6 +40,15 @@ namespace Platformer.Mechanics
         internal Animator animator;
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
+        float knockbackTime;
+        bool knockbackDir;
+
+        public GameObject bulletPrefab;
+        public float bulletSpeed;
+        public int bulletDamage;
+
+        public int stompDamage;
+
         public Bounds Bounds => collider2d.bounds;
 
         void Awake()
@@ -63,6 +72,12 @@ namespace Platformer.Mechanics
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
                 }
+
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    GameObject bullet = Instantiate(bulletPrefab, transform.position + Vector3.down * 0.1f, Quaternion.identity);
+                    bullet.GetComponent<Bullet>().Setup(spriteRenderer.flipX, bulletSpeed, bulletDamage, Color.red);
+                }
             }
             else
             {
@@ -70,6 +85,9 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
+
+            // Knockback timer
+            knockbackTime = Mathf.Max(0f, knockbackTime - Time.deltaTime);
         }
 
         void UpdateJumpState()
@@ -126,7 +144,24 @@ namespace Platformer.Mechanics
             animator.SetBool("grounded", IsGrounded);
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
-            targetVelocity = move * maxSpeed;
+            // Apply knockback (lerp between player movement and knockback movement)
+            targetVelocity.x = Mathf.Lerp(move.x * maxSpeed, (knockbackDir ? 1f : -1f) * model.knockbackModifier, knockbackTime / model.knockbackDeceleration);
+        }
+
+        // Start knockback after colliding with enemy
+        public void ApplyKnockback(bool knockbackDir)
+        {
+            knockbackTime = model.knockbackDeceleration;
+            velocity.y = model.knockbackModifier;
+            this.knockbackDir = knockbackDir;
+        }
+
+        void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Checkpoint"))
+            {
+                collision.GetComponent<Checkpoint>().ActivateCheckpoint();
+            }
         }
 
         public enum JumpState
