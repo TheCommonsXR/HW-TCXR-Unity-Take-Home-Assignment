@@ -16,14 +16,16 @@ using UnityEngine;
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             Shoot();
+
         }
 
     }
 public void Shoot()
     {
+        Debug.Log("Key Pressed");
         GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
         int direction = 1;
         if (bullet_sprite.flipX)

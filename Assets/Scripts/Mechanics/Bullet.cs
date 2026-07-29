@@ -23,15 +23,19 @@ public class Bullet : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)  
      {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.name == "CinemachineConfiner")
             {
                 return;
             }
-
-        if (collision.gameObject.CompareTag("Enemy"))
+         Debug.Log(" Bullet collision:  " + collision.gameObject.name);
+        if (collision.gameObject.CompareTag("Enemies"))
             {
-                 var enemyHealth = collision.gameObject.GetComponent<Health>();
+                Debug.Log(" Collided with Enemy! ");
+                 var enemyHealth = collision.gameObject.GetComponentInParent<Health>();
+                 Debug.Log("Dealing " + bulletdamage + " damage.");
                 enemyHealth.Damage(bulletdamage);
+                Debug.Log(" Destroying enemy");
+                Destroy(collision.gameObject);
 
             }
         Destroy (gameObject);
