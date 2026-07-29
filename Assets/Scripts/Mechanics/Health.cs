@@ -164,7 +164,7 @@ namespace Platformer.Mechanics
             }
         }
 
-        void Awake()
+        void Start()
         {
             currentHP = maxHP;
             if (!isEnemy) model.healthText.text = currentHP.ToString();

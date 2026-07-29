@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 772289407653213039}
   - component: {fileID: 5843668731025413174}
   - component: {fileID: 4555341382253332153}
-  m_Layer: 13
+  m_Layer: 6
   m_Name: Enemy
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -328,6 +328,7 @@ MonoBehaviour:
     type: 3}
   damageNumberColor: {r: 1, g: 0, b: 1, a: 1}
   immunityDamageNumberColor: {r: 1, g: 1, b: 1, a: 1}
+  healNumberColor: {r: 0, g: 1, b: 0, a: 1}
   sr: {fileID: 1577774018119691272}
   immunityAlpha: 0.6
   immunityTime: 1
