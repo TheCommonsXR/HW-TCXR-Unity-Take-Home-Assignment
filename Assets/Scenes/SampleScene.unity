@@ -250314,6 +250314,8 @@ MonoBehaviour:
     jumpModifier: 0.9
     jumpDeceleration: 0
     healthText: {fileID: 517126698}
+    knockbackModifier: 4
+    knockbackDeceleration: 1
 --- !u!4 &1754240608
 Transform:
   m_ObjectHideFlags: 0

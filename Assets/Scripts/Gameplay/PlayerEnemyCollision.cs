@@ -69,6 +69,9 @@ namespace Platformer.Gameplay
                     // Show that no damage is dealt
                     player.health.SpawnDamageNumber(0, player.health.immunityDamageNumberColor);
                 }
+
+                // Give the player knockback based on position of enemy
+                player.ApplyKnockback(player.transform.position.x > enemy.transform.position.x);
             }
         }
     }

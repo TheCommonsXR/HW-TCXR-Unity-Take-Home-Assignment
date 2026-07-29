@@ -40,6 +40,9 @@ namespace Platformer.Mechanics
         internal Animator animator;
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
+        float knockbackTime;
+        bool knockbackDir;
+
         public Bounds Bounds => collider2d.bounds;
 
         void Awake()
@@ -70,6 +73,9 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
+
+            // Knockback timer
+            knockbackTime = Mathf.Max(0f, knockbackTime - Time.deltaTime);
         }
 
         void UpdateJumpState()
@@ -126,7 +132,16 @@ namespace Platformer.Mechanics
             animator.SetBool("grounded", IsGrounded);
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
-            targetVelocity = move * maxSpeed;
+            // Apply knockback (lerp between player movement and knockback movement)
+            targetVelocity.x = Mathf.Lerp(move.x * maxSpeed, (knockbackDir ? 1f : -1f) * model.knockbackModifier, knockbackTime / model.knockbackDeceleration);
+        }
+
+        // Start knockback after colliding with enemy
+        public void ApplyKnockback(bool knockbackDir)
+        {
+            knockbackTime = model.knockbackDeceleration;
+            velocity.y = model.knockbackModifier;
+            this.knockbackDir = knockbackDir;
         }
 
         public enum JumpState
