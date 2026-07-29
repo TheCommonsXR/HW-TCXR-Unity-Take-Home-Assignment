@@ -8,6 +8,7 @@ TagManager:
   - Bullet
   - Crystal
   - Checkpoint
+  - Cactus
   layers:
   - Default
   - TransparentFX

@@ -129,12 +129,35 @@ namespace Platformer.Mechanics
 
         void OnTriggerEnter2D(Collider2D collision)
         {
+            if (isEnemy) return;
+
             // Give player one health on collision with Health Crystal
-            if (!isEnemy && collision.CompareTag("Crystal"))
+            if (collision.CompareTag("Crystal"))
             {
                 Increment();
                 Destroy(collision.gameObject);
                 SpawnDamageNumber(1, healNumberColor);
+            }
+
+            // Damage and knockback player if they run into Cactus
+            if (collision.CompareTag("Cactus"))
+            {
+                Cactus cactus = collision.GetComponent<Cactus>();
+
+                // Show damage number based on damage dealt
+                SpawnDamageNumber(cactus.damage, damageNumberColor);
+
+                // Deal damage to enemy so long as they're alive
+                for (int i = 0; i < cactus.damage; i++)
+                {
+                    if (IsAlive)
+                        Decrement();
+                    else
+                        break;
+                }
+
+                // Give the player knockback based on position of enemy
+                model.player.ApplyKnockback(model.player.transform.position.x > collision.transform.position.x);
             }
         }
 
