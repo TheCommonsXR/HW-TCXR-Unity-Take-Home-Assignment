@@ -46,7 +46,21 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                var playerHealth = player.GetComponent<Health>();
+
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(enemy.damage);
+
+                    if (!playerHealth.IsAlive)
+                    {
+                        Schedule<PlayerDeath>();
+                    }
+                }
+                else
+                {
+                    Schedule<PlayerDeath>();
+                }
             }
         }
     }
