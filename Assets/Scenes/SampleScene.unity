@@ -250354,6 +250354,7 @@ MonoBehaviour:
     spawnPoint: {fileID: 421228357}
     jumpModifier: 0.9
     jumpDeceleration: 0
+  gameMode: {fileID: 11400000, guid: 015e9ceb5cd494356b66bf5ff48adcab, type: 2}
 --- !u!4 &1754240608
 Transform:
   m_ObjectHideFlags: 0
