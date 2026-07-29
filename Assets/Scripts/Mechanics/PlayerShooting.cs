@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro;
+//using TMPro;
 
 
     namespace Platformer.Mechanics
@@ -11,15 +11,15 @@ using TMPro;
     public float bulletSpeed = 10f;
     public SpriteRenderer bullet_sprite;
     public int bulletDamage;
-    [SerializeField] TMP_Text bullettext;
+    //[SerializeField] TMP_Text bullettext;
  public void Awake()
     {
         bullet_sprite = GetComponent<SpriteRenderer>();
-        UpdateHealthText();
+        //UpdateHealthText();
     }
     public void Start()
     {
-         UpdateHealthText();
+         //UpdateHealthText();
     }
     public void Update()
     {
@@ -41,9 +41,9 @@ public void Shoot()
         }
         bullet.GetComponent<Bullet>().Setup(direction, bulletDamage);
     }
-public void UpdateHealthText()
+/*public void UpdateHealthText()
     {
         bullettext.text = "Bullet Damage: " + bulletDamage.ToString();
-    }
+    }*/
 }
 }
