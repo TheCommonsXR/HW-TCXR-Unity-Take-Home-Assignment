@@ -42,6 +42,11 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => collider2d.bounds;
 
+        public int bulletDamage = 1;
+
+        public GameObject bulletPrefab;
+        public Transform firePoint;
+
         void Awake()
         {
             health = GetComponent<Health>();
@@ -53,6 +58,10 @@ namespace Platformer.Mechanics
 
         protected override void Update()
         {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                Fire();
+            }
             if (controlEnabled)
             {
                 move.x = Input.GetAxis("Horizontal");
@@ -136,6 +145,19 @@ namespace Platformer.Mechanics
             Jumping,
             InFlight,
             Landed
+        }
+
+        private void Fire()
+        {
+            GameObject bullet = Instantiate(
+                bulletPrefab,
+                firePoint.position,
+                Quaternion.identity);
+
+            Vector2 direction = spriteRenderer.flipX ? Vector2.left : Vector2.right;
+
+            bullet.GetComponent<Bullet>()
+                  .Initialize(direction, bulletDamage);
         }
     }
 }
