@@ -52,10 +52,6 @@ namespace Platformer.Gameplay
                 {
                     playerHealth.TakeDamage(enemy.damage);
 
-                    if (!playerHealth.IsAlive)
-                    {
-                        Schedule<PlayerDeath>();
-                    }
                 }
                 else
                 {

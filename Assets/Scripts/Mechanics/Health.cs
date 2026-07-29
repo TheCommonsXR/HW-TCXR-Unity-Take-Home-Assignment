@@ -2,6 +2,7 @@ using System;
 using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
+using System.Collections;
 
 namespace Platformer.Mechanics
 {
@@ -22,6 +23,9 @@ namespace Platformer.Mechanics
 
         public int currentHP;
 
+        private bool isInvulnerable = false;
+        [SerializeField] private float invulnerabilityTime = 1f;
+
         /// <summary>
         /// Increment the HP of the entity.
         /// </summary>
@@ -35,17 +39,6 @@ namespace Platformer.Mechanics
         /// current HP reaches 0.
         /// </summary>
         ///
-        /*
-        public void Decrement()
-        {
-            currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
-            if (currentHP == 0)
-            {
-                var ev = Schedule<HealthIsZero>();
-                ev.health = this;
-            }
-        }
-        */
 
         public void Decrement()
         {
@@ -53,21 +46,29 @@ namespace Platformer.Mechanics
         }
         public void TakeDamage(int damage)
         {
-            if (!IsAlive)
+            if (!IsAlive || isInvulnerable)
                 return;
 
             currentHP = Mathf.Clamp(currentHP - damage, 0, maxHP);
 
-            Debug.Log($"{gameObject.name} took {damage} damage. HP: {currentHP}/{maxHP}");
+            StartCoroutine(Invulnerability());
 
-            if (currentHP <= 0)
+            if (currentHP == 0)
             {
-                currentHP = 0;
-
                 var ev = Schedule<HealthIsZero>();
-                Debug.Log("Player is dead");
                 ev.health = this;
             }
+        }
+
+
+
+        private IEnumerator Invulnerability()
+        {   
+            isInvulnerable = true;
+
+            yield return new WaitForSeconds(invulnerabilityTime);
+
+            isInvulnerable = false;
         }
 
         /// <summary>
@@ -82,5 +83,11 @@ namespace Platformer.Mechanics
         {
             currentHP = maxHP;
         }
+
+        public void ResetHealth()
+        {
+            currentHP = maxHP;
+        }
+
     }
 }
