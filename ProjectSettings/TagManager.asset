@@ -9,6 +9,7 @@ TagManager:
   - Crystal
   - Checkpoint
   - Cactus
+  - Walls
   layers:
   - Default
   - TransparentFX

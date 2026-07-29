@@ -156,6 +156,9 @@ namespace Platformer.Mechanics
                         break;
                 }
 
+                // Give immunity to player
+                GiveImmmunity();
+
                 // Give the player knockback based on position of enemy
                 model.player.ApplyKnockback(model.player.transform.position.x > collision.transform.position.x);
             }

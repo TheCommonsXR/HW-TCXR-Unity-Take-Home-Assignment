@@ -72,6 +72,7 @@ namespace Platformer.Gameplay
                             break;
                     }
 
+                    // Give immunity to player
                     player.health.GiveImmmunity();
                 }
                 // Player HAS immunity. Deal no damage

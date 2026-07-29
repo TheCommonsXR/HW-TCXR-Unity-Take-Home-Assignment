@@ -23,4 +23,13 @@ public class Bullet : MonoBehaviour
         this.damage = damage;
         sr.color = color;
     }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        // Destroy bullet on collision with walls or cactus
+        if (collision.CompareTag("Walls") || collision.CompareTag("Cactus"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }
