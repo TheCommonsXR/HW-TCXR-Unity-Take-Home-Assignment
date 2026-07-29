@@ -6,6 +6,8 @@ TagManager:
   tags:
   - TutorialRequirement
   - Bullet
+  - Crystal
+  - Checkpoint
   layers:
   - Default
   - TransparentFX

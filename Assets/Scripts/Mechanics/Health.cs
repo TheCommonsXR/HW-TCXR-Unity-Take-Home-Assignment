@@ -28,6 +28,7 @@ namespace Platformer.Mechanics
         public GameObject damageNumberPrefab;
         public Color damageNumberColor = Color.red;
         public Color immunityDamageNumberColor = Color.white;
+        public Color healNumberColor = Color.green;
 
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
@@ -49,7 +50,7 @@ namespace Platformer.Mechanics
         /// </summary>
         public void Increment()
         {
-            currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
+            currentHP++;
 
             if (!isEnemy) model.healthText.text = currentHP.ToString();
         }
@@ -124,6 +125,17 @@ namespace Platformer.Mechanics
             Color spriteColor = sr.color;
             spriteColor.a = 1f;
             sr.color = spriteColor;
+        }
+
+        void OnTriggerEnter2D(Collider2D collision)
+        {
+            // Give player one health on collision with Health Crystal
+            if (!isEnemy && collision.CompareTag("Crystal"))
+            {
+                Increment();
+                Destroy(collision.gameObject);
+                SpawnDamageNumber(1, healNumberColor);
+            }
         }
 
         void Awake()

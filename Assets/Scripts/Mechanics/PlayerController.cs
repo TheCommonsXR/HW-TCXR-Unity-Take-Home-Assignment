@@ -156,6 +156,14 @@ namespace Platformer.Mechanics
             this.knockbackDir = knockbackDir;
         }
 
+        void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Checkpoint"))
+            {
+                collision.GetComponent<Checkpoint>().ActivateCheckpoint();
+            }
+        }
+
         public enum JumpState
         {
             Grounded,
