@@ -10,6 +10,8 @@ namespace Platformer.Mechanics
     /// </summary>
     public class Health : MonoBehaviour
     {
+        float invulnerabilityTimer = 1f;
+        float invulnerabilityEnd;
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
@@ -47,11 +49,19 @@ namespace Platformer.Mechanics
         //created overload for specific amount of damage that is present in the enemy controller
         public void Decrement(int amount)
         {
-            currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
-            if (currentHP == 0)
+            if (Time.time < invulnerabilityEnd)
             {
-                var ev = Schedule<HealthIsZero>();
-                ev.health = this;
+                return;
+            }
+            else
+            {
+                invulnerabilityEnd = Time.time + invulnerabilityTimer;
+                currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
+                if (currentHP == 0)
+                {
+                    var ev = Schedule<HealthIsZero>();
+                    ev.health = this;
+                }
             }
         }
 
