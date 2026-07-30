@@ -16,6 +16,8 @@ namespace Platformer.Gameplay
         public EnemyController enemy;
         public PlayerController player;
 
+        //[SerializeField] float damage = .25f;
+
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
         public override void Execute()
@@ -46,7 +48,15 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                var playerHealth = player.GetComponent<Health>();
+                if (playerHealth != null)
+                {
+                    playerHealth.Decrement(enemy.damage);
+                }
+                else
+                {
+                    Schedule<PlayerDeath>();
+                }
             }
         }
     }
