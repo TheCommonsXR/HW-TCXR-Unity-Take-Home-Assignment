@@ -23,6 +23,7 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => _collider.bounds;
 
+        [SerializeField] public int damage = 1;
         void Awake()
         {
             control = GetComponent<AnimationController>();

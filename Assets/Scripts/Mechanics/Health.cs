@@ -10,10 +10,12 @@ namespace Platformer.Mechanics
     /// </summary>
     public class Health : MonoBehaviour
     {
+        float invulnerabilityTimer = 1f;
+        float invulnerabilityEnd;
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
-        public int maxHP = 1;
+        public int maxHP = 10;
 
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
@@ -41,6 +43,25 @@ namespace Platformer.Mechanics
             {
                 var ev = Schedule<HealthIsZero>();
                 ev.health = this;
+            }
+        }
+
+        //created overload for specific amount of damage that is present in the enemy controller
+        public void Decrement(int amount)
+        {
+            if (Time.time < invulnerabilityEnd)
+            {
+                return;
+            }
+            else
+            {
+                invulnerabilityEnd = Time.time + invulnerabilityTimer;
+                currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
+                if (currentHP == 0)
+                {
+                    var ev = Schedule<HealthIsZero>();
+                    ev.health = this;
+                }
             }
         }
 

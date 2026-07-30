@@ -29,8 +29,10 @@ namespace Platformer.Mechanics
 
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
-        /*internal new*/ public Collider2D collider2d;
-        /*internal new*/ public AudioSource audioSource;
+        /*internal new*/
+        public Collider2D collider2d;
+        /*internal new*/
+        public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
 
@@ -42,6 +44,10 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => collider2d.bounds;
 
+        [SerializeField] public Bullet bullet;
+        public int bulletDamage = 1;//set specific to player
+        public int bulletSpeed = 4;//set specific to player
+       
         void Awake()
         {
             health = GetComponent<Health>();
@@ -67,6 +73,11 @@ namespace Platformer.Mechanics
             else
             {
                 move.x = 0;
+            }
+
+            if (Input.GetButtonDown("Fire"))
+            {
+                Shoot();
             }
             UpdateJumpState();
             base.Update();
@@ -136,6 +147,14 @@ namespace Platformer.Mechanics
             Jumping,
             InFlight,
             Landed
+        }
+
+        public void Shoot()
+        {
+            Bullet newBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+            newBullet.damage = bulletDamage;
+            newBullet.speed = bulletSpeed;
+            newBullet.direction = spriteRenderer.flipX ? Vector2.left : Vector2.right;
         }
     }
 }
