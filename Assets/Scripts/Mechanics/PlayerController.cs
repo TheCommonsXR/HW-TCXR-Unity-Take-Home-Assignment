@@ -34,6 +34,9 @@ namespace Platformer.Mechanics
         public Health health;
         public bool controlEnabled = true;
 
+        public float immunity = 1f;  // 1 second of immunity after getting hit
+        [System.NonSerialized] public float immuneTime; // ignores the enemy hits until a certian time.
+
         bool jump;
         Vector2 move;
         SpriteRenderer spriteRenderer;
