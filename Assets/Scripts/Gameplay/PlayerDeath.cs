@@ -17,7 +17,7 @@ namespace Platformer.Gameplay
         public override void Execute()
         {
             var player = model.player;
-            if (player.health.IsAlive)
+            if (!player.animator.GetBool("dead")) //runs the sequence once per death. "dead" is set to true again below and then gets set to false in PlayerSpawn
             {
                 player.health.Die();
                 model.virtualCamera.m_Follow = null;
