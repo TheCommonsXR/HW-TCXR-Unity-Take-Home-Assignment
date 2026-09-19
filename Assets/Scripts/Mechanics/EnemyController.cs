@@ -13,6 +13,7 @@ namespace Platformer.Mechanics
     public class EnemyController : MonoBehaviour
     {
         public PatrolPath path;
+        public int damage = 1 ; ///Making a damage varible for the enemy in unity so we can change how much damage each enemy does
         public AudioClip ouch;
 
         internal PatrolPath.Mover mover;

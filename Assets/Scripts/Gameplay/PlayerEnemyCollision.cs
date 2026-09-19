@@ -44,9 +44,10 @@ namespace Platformer.Gameplay
                     player.Bounce(2);
                 }
             }
-            else
+            else if (Time.time >= player.immuneTime) // will only hit the player if immunity window ended
             {
-                Schedule<PlayerDeath>();
+                player.health.Decrement(enemy.damage); // damages the player based on enemy.damage
+                player.immuneTime = Time.time + player.immunity; //after getting hit, player is immune to damage for player.immunity which is 1 seconds right now
             }
         }
     }

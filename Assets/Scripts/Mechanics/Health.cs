@@ -22,6 +22,13 @@ namespace Platformer.Mechanics
 
         int currentHP;
 
+        ///<summary>
+        /// after the player dies his health should get reset to the maximum HP
+        /// </summary>
+        public void ResetToMax() 
+        {
+            currentHP=maxHP;
+        }
         /// <summary>
         /// Increment the HP of the entity.
         /// </summary>
@@ -34,9 +41,9 @@ namespace Platformer.Mechanics
         /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
         /// current HP reaches 0.
         /// </summary>
-        public void Decrement()
+        public void Decrement(int amount = 1) ///MAKING it so that decrement is now a variable amount and not fixed at 1)
         {
-            currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
+            currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
             if (currentHP == 0)
             {
                 var ev = Schedule<HealthIsZero>();

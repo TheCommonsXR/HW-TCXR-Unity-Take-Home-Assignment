@@ -15,7 +15,8 @@ namespace Platformer.Gameplay
 
         public override void Execute()
         {
-            Schedule<PlayerDeath>();
+            if (health.GetComponent<PlayerController>() != null) // runs whenever anyones health reaches 0. only starts PlayerDeath if player health reaches 0, without this hitting an enemy will also reduce player health
+                Schedule<PlayerDeath>();
         }
     }
 }

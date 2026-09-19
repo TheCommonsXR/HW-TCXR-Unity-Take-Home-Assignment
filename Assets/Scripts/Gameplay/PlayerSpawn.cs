@@ -18,7 +18,7 @@ namespace Platformer.Gameplay
             player.controlEnabled = false;
             if (player.audioSource && player.respawnAudio)
                 player.audioSource.PlayOneShot(player.respawnAudio);
-            player.health.Increment();
+            player.health.ResetToMax(); // Resets the player health back to the maxHP instead of just incrementing it to 1
             player.Teleport(model.spawnPoint.transform.position);
             player.jumpState = PlayerController.JumpState.Grounded;
             player.animator.SetBool("dead", false);
