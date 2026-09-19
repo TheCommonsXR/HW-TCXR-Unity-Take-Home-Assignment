@@ -37,6 +37,9 @@ namespace Platformer.Mechanics
         public float immunity = 1f;  // 1 second of immunity after getting hit
         [System.NonSerialized] public float immuneTime; // ignores the enemy hits until a certian time.
 
+        public GameObject BulletPrefab;
+        public int bulletDamage = 1; //public variable for bullet damage by default it is 1
+
         bool jump;
         Vector2 move;
         SpriteRenderer spriteRenderer;
@@ -66,6 +69,7 @@ namespace Platformer.Mechanics
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
                 }
+                if (Input.GetButtonDown("Fire1"))Fire(); //shoot once when fire1 (left mouse button) is pressed
             }
             else
             {
@@ -103,6 +107,13 @@ namespace Platformer.Mechanics
                     jumpState = JumpState.Grounded;
                     break;
             }
+        }
+
+        void Fire()
+        {
+            var bullet = Instantiate(BulletPrefab, transform.position, Quaternion.identity).GetComponent<Bullet>(); //new copy of the bullet at player position
+            bullet.direction = spriteRenderer.flipX ? Vector2.left : Vector2.right; //flipping the bullet sprite depending on the player facing direction
+            bullet.damage = bulletDamage;
         }
 
         protected override void ComputeVelocity()
