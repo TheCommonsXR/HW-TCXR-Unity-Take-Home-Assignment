@@ -114,6 +114,7 @@ namespace Platformer.Mechanics
             var bullet = Instantiate(BulletPrefab, transform.position, Quaternion.identity).GetComponent<Bullet>(); //new copy of the bullet at player position
             bullet.direction = spriteRenderer.flipX ? Vector2.left : Vector2.right; //flipping the bullet sprite depending on the player facing direction
             bullet.damage = bulletDamage;
+            bullet.GetComponent<SpriteRenderer>().flipX = spriteRenderer.flipX;
         }
 
         protected override void ComputeVelocity()
