@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Platformer.Gameplay;
@@ -33,6 +33,10 @@ namespace Platformer.Mechanics
         /*internal new*/ public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
+        /// <summary>
+        /// Started as false because the player hasn't begun dying yet
+        /// </summary>
+        public bool deathStarted = false;
 
         bool jump;
         Vector2 move;

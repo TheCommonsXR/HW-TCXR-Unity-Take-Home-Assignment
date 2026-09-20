@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Platformer.Core;
 using Platformer.Model;
@@ -17,8 +17,14 @@ namespace Platformer.Gameplay
         public override void Execute()
         {
             var player = model.player;
-            if (player.health.IsAlive)
+            /// if (player.health.IsAlive)
+            /// <summary>
+            /// In the erlier if condition worked because collsion req death while player still had health
+            /// In new approach we substract health first so "has health remaining" can no longer be requirement for death handeling
+            /// </summary>
+            if (!player.deathStarted)
             {
+                player.deathStarted = true;
                 player.health.Die();
                 model.virtualCamera.m_Follow = null;
                 model.virtualCamera.m_LookAt = null;
