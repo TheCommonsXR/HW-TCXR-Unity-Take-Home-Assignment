@@ -37,6 +37,7 @@ namespace Platformer.Mechanics
         /// Started as false because the player hasn't begun dying yet
         /// </summary>
         public bool deathStarted = false;
+        public float immuneUntil = 0f;
 
         bool jump;
         Vector2 move;

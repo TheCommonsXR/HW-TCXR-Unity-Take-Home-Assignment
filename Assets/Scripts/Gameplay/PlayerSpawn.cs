@@ -18,6 +18,10 @@ namespace Platformer.Gameplay
             /// Flips the deathStarted after dying.
             /// </summary>
             player.deathStarted = false;
+            /// <summary>
+            /// Flips the immuneUntil after dying.
+            /// </summary>
+            player.immuneUntil = 0f;
             player.collider2d.enabled = true;
             player.controlEnabled = false;
             if (player.audioSource && player.respawnAudio)
