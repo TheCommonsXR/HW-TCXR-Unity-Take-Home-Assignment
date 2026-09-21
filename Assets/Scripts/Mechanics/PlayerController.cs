@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Platformer.Gameplay;
@@ -33,6 +33,13 @@ namespace Platformer.Mechanics
         /*internal new*/ public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
+        /// <summary>
+        /// Started as false because the player hasn't begun dying yet
+        /// </summary>
+        public bool deathStarted = false;
+        public float immuneUntil = 0f;
+        public Bullet bulletPrefab;
+        public int bulletDamage = 2;
 
         bool jump;
         Vector2 move;
@@ -70,6 +77,35 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
+            
+            if (controlEnabled && health.IsAlive && Input.GetButtonDown("Fire1"))
+            {
+                Vector2 direction;
+
+                if (spriteRenderer.flipX)
+                {
+                    direction = Vector2.left;
+                }
+                else
+                {
+                    direction = Vector2.right;
+                }
+
+                if (bulletPrefab != null)
+                {
+                    Vector3 spawnPosition = collider2d.bounds.center;
+                    spawnPosition += (Vector3)direction *
+                        (collider2d.bounds.extents.x + 0.2f);
+
+                    Bullet bullet = Instantiate(
+                        bulletPrefab,
+                        spawnPosition,
+                        Quaternion.identity
+                    );
+
+                    bullet.Initialize(direction, bulletDamage);
+                }
+            }
         }
 
         void UpdateJumpState()

@@ -29,6 +29,34 @@ namespace Platformer.Mechanics
         {
             currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public void TakeDamage(int amount)
+        {
+            if (amount <= 0 || !IsAlive)
+            {
+                return;
+            }
+
+            currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
+            Debug.Log($"{gameObject.name} took {amount} damage. HP: {currentHP}/{maxHP}");
+
+            if (currentHP == 0)
+            {
+                var ev = Schedule<HealthIsZero>();
+                ev.health = this;
+            }
+        }
+        
+        /// <summary>
+        /// On respawn it restores Health to full instead of incrementing it
+        /// </summary>
+        public void RestoreFullHealth()
+        {
+          currentHP = maxHP;
+        }
 
         /// <summary>
         /// Decrement the HP of the entity. Will trigger a HealthIsZero event when

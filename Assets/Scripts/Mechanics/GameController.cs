@@ -19,6 +19,29 @@ namespace Platformer.Mechanics
         //shared reference when the scene loads, allowing the model to be
         //conveniently configured inside the inspector.
         public PlatformerModel model = Simulation.GetModel<PlatformerModel>();
+        public GameModeConfig gameMode;
+        
+        void Start()
+        {
+            if (gameMode == null)
+            {
+                return;
+            }
+
+            var player = model.player;
+
+            player.health.maxHP = Mathf.Max(1, gameMode.startingHealth);
+            player.health.RestoreFullHealth();
+
+            Vector3 startPosition = new Vector3(
+                gameMode.startingPosition.x,
+                gameMode.startingPosition.y,
+                player.transform.position.z
+            );
+
+            model.spawnPoint.position = startPosition;
+            player.Teleport(startPosition);
+        }
 
         void OnEnable()
         {

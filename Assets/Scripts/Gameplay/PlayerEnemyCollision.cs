@@ -46,7 +46,20 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                //Schedule<PlayerDeath>();
+                //player.health.TakeDamage(enemy.damage);
+                if (!player.health.IsAlive || enemy.damage <= 0)
+                {
+                  return;
+                }
+                
+                if (Time.time < player.immuneUntil)
+                {
+                  return;
+                }
+                
+                player.immuneUntil = Time.time + 1f;
+                player.health.TakeDamage(enemy.damage);
             }
         }
     }
