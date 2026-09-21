@@ -67,6 +67,7 @@ MonoBehaviour:
   immuneUntil: 0
   bulletPrefab: {fileID: 4475714214270782326, guid: 561b9cd6d1003214c89c68d50e9f31cc,
     type: 3}
+  bulletDamage: 3
 --- !u!212 &212064061491315838
 SpriteRenderer:
   m_ObjectHideFlags: 0

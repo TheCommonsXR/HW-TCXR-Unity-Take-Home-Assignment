@@ -39,6 +39,7 @@ namespace Platformer.Mechanics
         public bool deathStarted = false;
         public float immuneUntil = 0f;
         public Bullet bulletPrefab;
+        public int bulletDamage = 2;
 
         bool jump;
         Vector2 move;
@@ -102,7 +103,7 @@ namespace Platformer.Mechanics
                         Quaternion.identity
                     );
 
-                    bullet.Initialize(direction);
+                    bullet.Initialize(direction, bulletDamage);
                 }
             }
         }

@@ -15,7 +15,13 @@ namespace Platformer.Gameplay
 
         public override void Execute()
         {
-            Schedule<PlayerDeath>();
+            // Schedule<PlayerDeath>();
+            var player = health.GetComponent<PlayerController>();
+            
+            if (player != null)
+            {
+              Schedule<PlayerDeath>();
+            }
         }
     }
 }
